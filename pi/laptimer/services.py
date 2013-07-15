@@ -33,10 +33,10 @@ def track_remove(name):
 
 # Session related functions
 
-def session_start(track, name):
+def session_start(track, name, started):
 	pass
 
-def session_finish(name):
+def session_finish(name, finished):
 	pass
 
 def session_remove(name):
@@ -45,10 +45,10 @@ def session_remove(name):
 
 # Lap related functions
 
-def lap_start(session, rider, time):
+def lap_start(session, rider, started):
 	pass
 
-def lap_finish(session, time):
+def lap_finish(session, finished):
 	pass
 
 def lap_timeout(session):
