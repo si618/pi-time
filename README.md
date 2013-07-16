@@ -13,14 +13,15 @@ Pump track lap timer running on a solar powered Raspberry Pi.
 
 #### Recommended
 
-* [pip](http://www.pip-installer.org/en/latest/installing.html) ([install on windows](http://stackoverflow.com/a/12476379/44540)) (tested on 1.5)
+* [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540)) (tested on 1.5)
 
 ## Hardware
 
-* Raspberry Pi (tested on [512MB Model B](http://au.element14.com/Raspberry_Pi))
+* Raspberry Pi (tested on [model b](http://au.element14.com/Raspberry_Pi))
+* USB WiFi & optional antenna (ensure compatible with raspberry pi)
 * Power source (tested on [solar charger and battery pack](http://cgi.cottonpickers.plus.com/~cottonpickers/forum/viewtopic.php?f=2&t=474&sid=ec0e5edc2965ab799801f71ed28f6c23))
   * [USB 5V to 12V](http://www.ebay.com.au/itm/271176652645?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649) step up to power 12V sensor.
-  * [4 x AA to D](http://www.ebay.com.au/itm/281077247363?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649) adapters, simply because we have lots of AA rechargables, and no D size.
+  * [4 x AA to D](http://www.ebay.com.au/itm/281077247363?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649) adapters.
 * Sensor (tested on [active infrared dectector](http://www.ebay.com.au/itm/350771078173?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649))
 * Enclosure (tested on IP66 [190x290x140 TIBOX](http://www.ebay.com.au/itm/121133523629?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649) but lid width was just too small so had to dremel and silicon)
  
