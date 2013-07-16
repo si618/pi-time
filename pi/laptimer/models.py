@@ -9,12 +9,13 @@ class Track(models.Model):
 		return self.name    
 
 class Session(models.Model):
+	name = models.CharField(max_length=64, unique=True)
 	track = models.ForeignKey(Track)
 	start = models.DateTimeField()
 	end = models.DateTimeField(null=True, blank=True)
 
 	def __unicode__(self):
-		return self.track.name + ' ' + unicode(self.start)
+		return self.name
 
 class Rider(models.Model):
 	name = models.CharField(max_length=64, unique=True)
@@ -28,6 +29,7 @@ class Lap(models.Model):
 	start = models.DateTimeField()
 	end =  models.DateTimeField(null=True, blank=True)
 
+"""
 class Settings(models.Model):
 	METRIC = 'SI'
 	IMPERIAL = 'IMP'
@@ -39,3 +41,10 @@ class Settings(models.Model):
 
 	class Meta:
 		verbose_name_plural = 'Settings'
+
+class QueryCriteria(models.Model):
+	track = models.ForeignKey(Track)
+	session = models.ForeignKey(Session)
+	rider = models.ForeignKey(Rider)
+	top = models.IntegerField()
+"""

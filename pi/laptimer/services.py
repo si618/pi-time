@@ -55,16 +55,16 @@ def lap_timeout(session):
 	pass
 
 
-# Report related functions
+# Query related functions
 
-def get_fastest_lap_time(track, session, rider):
+def get_fastest_lap_times(top=None, track=None, session=None, rider=None):
 	pass
 
-def get_average_lap_time(track, session, rider):
+def get_average_lap_times(top=None, track=None, session=None, rider=None):
 	pass
 
-def get_lap_count(track, session, rider):
+def get_lap_counts(top=None, track=None, session=None, rider=None):
 	pass
 
-def get_distance_ridden(track, session, rider):
+def get_distance_ridden(top=None, track=None, session=None, rider=None):
 	pass
