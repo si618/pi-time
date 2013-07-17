@@ -1,0 +1,28 @@
+{
+	"folders":
+	[
+		{
+			"path": "./"
+		}
+	],
+	"settings":
+	[
+		{
+			"tab_size": 4,
+			"translate_tabs_to_spaces": false
+		}
+	],
+	"build_systems":
+	[
+		{
+			"name": "Run Django Tests",
+			"working_dir": "${project_path}/pi",
+			"cmd": ["python", "manage.py", "test", "--noinput"]
+		},
+		{
+			"name": "Run LapTimer Tests",
+			"working_dir": "${project_path}/pi",
+			"cmd": ["python", "manage.py", "test", "laptimer", "--noinput"]
+		}
+	]
+}

@@ -1,4 +1,7 @@
+import django_settings
 from django.db import models
+from django.conf import settings
+
 
 class Track(models.Model):
 	name = models.CharField(max_length=64, unique=True)
@@ -29,22 +32,20 @@ class Lap(models.Model):
 	start = models.DateTimeField()
 	end =  models.DateTimeField(null=True, blank=True)
 
-"""
-class Settings(models.Model):
-	METRIC = 'SI'
-	IMPERIAL = 'IMP'
-	UNIT_OF_MEASUREMENT = (
-		(METRIC, 'Metric'),
-		(IMPERIAL, 'Imperial'),
-	)
-	unit_of_measurement = models.CharField(max_length=3, choices=UNIT_OF_MEASUREMENT, default=METRIC)
 
+class Settings(django_settings.db.Model):
+	unit_of_measurement = models.CharField(max_length=2, choices=settings.UNIT_OF_MEASUREMENT, default=settings.METRIC)
+	
 	class Meta:
+		abstract = True
 		verbose_name_plural = 'Settings'
 
+django_settings.register(Settings)
+
+'''
 class QueryCriteria(models.Model):
 	track = models.ForeignKey(Track)
 	session = models.ForeignKey(Session)
 	rider = models.ForeignKey(Rider)
 	top = models.IntegerField()
-"""
+'''
