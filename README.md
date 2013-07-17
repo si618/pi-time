@@ -8,7 +8,7 @@ Pump track lap timer running on a solar powered Raspberry Pi.
 
 * [python](http://python.org/download/) (tested on 2.7)
 * [django](https://docs.djangoproject.com/en/1.5/intro/install/) (tested on 1.5)
-* [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup) (tested on 1.3-2 beta)
+* [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup) (tested on 1.3-3 beta)
 * [djangorestframework](http://django-rest-framework.org/#installation) (tested on 2.3.6)
 
 #### Recommended
