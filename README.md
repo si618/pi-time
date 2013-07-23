@@ -8,7 +8,7 @@ An active infrared sensor is placed on a suitable point on a bicycle pump track,
 
 A python application runs on the RPi listening to the sensor, recording lap times as well as information on the track, session and rider.
 
-The RPi acts as both a wireless access point and a web server. This allows any authenticated user to connect to the application via a web browser or mobile app.
+RPi acts as both a wireless access point and web server, allowing any authenticated user to connect to the application via a web browser or mobile app.
 
 Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and PV panel are housed in an enclosure to provide protection from adverse weather, with an external toggle switch to turn on both the RPi and sensor. 
 
