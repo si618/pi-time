@@ -4,11 +4,11 @@ Pump track lap timer running on a solar powered Raspberry Pi with battery backup
 
 ## Overview
 
-An active infrared sensor is placed on a suitable point on a bicycle pump track, a cable runs between the sensors and a Raspberry Pi (RPi) providing data to trigger when a lap starts or finishes.
+An active infrared sensor is placed at a suitable point on a [pump track[(http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), a cable runs between the sensors and a Raspberry Pi (RPi) providing data to trigger when a lap starts or finishes.
 
-A python application runs on the RPi listening to the sensor, recording lap times as well as information on the track, session and rider.
+A python application runs on the RPi listening to the sensor, recording lap times as well as information on the track, the current session and rider.
 
-RPi acts as both a wireless access point and web server, allowing any authenticated user to connect to the application via a web browser or mobile app.
+RPi acts as both a wireless access point and web server, allowing authenticateds user to use the application via a web browser or mobile app.
 
 Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and PV panel are housed in an enclosure to provide protection from adverse weather, with an external toggle switch to turn on both the RPi and sensor. 
 
@@ -30,10 +30,11 @@ Data is stored on the RPi SD card with the option to backup all data to an authe
 
 #### Undecided
 
-* [djangorestframework](http://django-rest-framework.org/#installation) (testing 2.3.6) vs [autobahn.ws] (http://autobahn.ws/python) (testing 0.5.14)
+* [djangorestframework](http://django-rest-framework.org/#installation) (testing 2.3.6) vs [autobahn.ws] (http://autobahn.ws/python) (testing 0.5.14) - probably need fallback for old browsers if using websockets...
 
 #### Recommended
 
+* [python-dev](http://packages.debian.org/wheezy/python-dev)
 * [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540)) (tested on 1.5)
 
 ## Hardware
