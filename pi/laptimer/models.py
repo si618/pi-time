@@ -3,6 +3,7 @@ import django_settings
 import utils
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.timezone import localtime
 
 
@@ -46,7 +47,8 @@ class Session(models.Model):
 
 	def save(self, *args, **kwargs):
 		if (self.start is None):
-			self.start = datetime.datetime.now()
+			self.start = timezone.make_aware(datetime.datetime.now(),
+				timezone.get_default_timezone())
 		super(Session, self).save(*args, **kwargs)
 
 class Rider(models.Model):
@@ -69,7 +71,8 @@ class Lap(models.Model):
 
 	def save(self, *args, **kwargs):
 		if (self.start is None):
-			self.start = datetime.datetime.now()
+			self.start = timezone.make_aware(datetime.datetime.now(),
+				timezone.get_default_timezone())
 		super(Lap, self).save(*args, **kwargs)
 
 	def delta_to_str(self, delta):
