@@ -166,5 +166,7 @@ UNIT_OF_MEASUREMENT = (
 )
 
 DJANGO_SETTINGS = {
-   'unit_of_measurement': ('String', METRIC),
+	'unit_of_measurement': ('String', METRIC),
+	'gpio_app': ('Integer', 11),
+	'gpio_sensor': ('Integer', 13),
 }
