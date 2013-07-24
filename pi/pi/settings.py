@@ -168,5 +168,26 @@ UNIT_OF_MEASUREMENT = (
 DJANGO_SETTINGS = {
 	'unit_of_measurement': ('String', METRIC),
 	'gpio_app': ('Integer', 11),
-	'gpio_sensor': ('Integer', 13),
+	'gpio_lap': ('Integer', 13),
+	'gpio_sensor': ('Integer', 5),
 }
+
+GPIO_LAYOUT = (
+	(3, 'GPIO 2'),
+	(5, 'GPIO 3'),
+	(7, 'GPIO 4 (GPCLK0)'),
+	(8, 'GPIO 14 (UART0_TXD)'),
+	(10, 'GPIO 15 (UART0_RXD)'),
+	(11, 'GPIO 17'),
+	(12, 'GPIO 18 (PCMCLK)'),
+	(13, 'GPIO 27'),
+	(15, 'GPIO 22'),
+	(16, 'GPIO 23'),
+	(18, 'GPIO 24'),
+	(19, 'GPIO 10 (SPI0_MOSI)'),
+	(21, 'GPIO 9 (SPI0_MISO '),
+	(22, 'GPIO 25'),
+	(23, 'GPIO 11 (SPI0_SCLK)'),
+	(24, 'GPIO 8 (SPI0_CE0_N)'),
+	(26, 'GPIO 7 (SPI0_CE1_N)'),
+)

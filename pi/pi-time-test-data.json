@@ -2,15 +2,17 @@
 	{
 		"model": "laptimer.Track",
 		"pk": 1,
-		"fields": 
+		"fields":
 		{
-			"name": "Test Track"
+			"name": "Test Track",
+			"distance": 50,
+			"timeout": 100
 		}
 	},
 	{
 		"model": "laptimer.Rider",
 		"pk": 1,
-		"fields": 
+		"fields":
 		{
 			"name": "Test Rider"
 		}
@@ -18,7 +20,7 @@
 	{
 		"model": "laptimer.Session",
 		"pk": 1,
-		"fields": 
+		"fields":
 		{
 			"name": "Test Session",
 			"track": 1,
@@ -28,7 +30,7 @@
 	{
 		"model": "laptimer.Lap",
 		"pk": 1,
-		"fields": 
+		"fields":
 		{
 			"session": 1,
 			"rider": 1,
@@ -39,7 +41,7 @@
 	{
 		"model": "laptimer.Lap",
 		"pk": 2,
-		"fields": 
+		"fields":
 		{
 			"session": 1,
 			"rider": 1,

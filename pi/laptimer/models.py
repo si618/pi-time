@@ -1,23 +1,39 @@
 import datetime
 import django_settings
+import utils
 from django.conf import settings
 from django.db import models
 from django.utils.timezone import localtime
 
+
+class Settings(django_settings.db.Model):
+	gpio_app = models.PositiveSmallIntegerField(choices=settings.GPIO_LAYOUT,
+		default=11)
+	gpio_lap = models.PositiveSmallIntegerField(choices=settings.GPIO_LAYOUT,
+		default=13)
+	gpio_sensor = models.PositiveSmallIntegerField(choices=settings.GPIO_LAYOUT,
+		default=5)
+	unit_of_measurement = models.CharField(max_length=2,
+		choices=settings.UNIT_OF_MEASUREMENT, default=settings.METRIC)
+
+	class Meta:
+		abstract = True
+		verbose_name_plural = 'Settings'
+
+django_settings.register(Settings)
 
 class Track(models.Model):
 	name = models.CharField(max_length=64, unique=True)
 	distance = models.FloatField()
 	timeout = models.PositiveSmallIntegerField()
 
-	def __unicode__(self):
-		return self.name
-
 	def save(self, *args, **kwargs):
 		if (self.timeout is None):
-			# Default to 2 seconds per metre/yard
-			self.timeout = int(distance * 2)
+			self.timeout = int(self.distance * 2)
 		super(Track, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return self.name
 
 class Session(models.Model):
 	name = models.CharField(max_length=64, unique=True)
@@ -64,26 +80,9 @@ class Lap(models.Model):
 		return '%s:%s:%s.%s' % (hours, minutes, seconds, milliseconds)
 
 	def avg_speed_per_hour(self):
-		if (self.finish is None):
-			return None
-	    # 3600 seconds in a hour / 1,000 metres in a kilometre
-		avg_per_hour = self.avg_speed_per_second() * 3.6
-		return avg_per_hour
+		return utils.avg_speed_per_hour(self.start, self.finish,
+			self.session.track.distance)
 
 	def avg_speed_per_second(self):
-		if (self.finish is None):
-			return None
-		delta = self.finish - self.start
-		avg_per_second = self.session.track.distance / delta.seconds
-		return avg_per_second
-
-class Settings(django_settings.db.Model):
-	unit_of_measurement = models.CharField(max_length=2, choices=settings.UNIT_OF_MEASUREMENT, default=settings.METRIC)
-	gpio_app = models.PositiveSmallIntegerField(default=11)
-	gpio_sensor = models.PositiveSmallIntegerField(default=13)
-
-	class Meta:
-		abstract = True
-		verbose_name_plural = 'Settings'
-
-django_settings.register(Settings)
+		return utils.avg_speed_per_second(self.start, self.finish,
+			self.session.track.distance)
