@@ -1,7 +1,7 @@
-import django_settings
 import datetime
-from django.db import models
+import django_settings
 from django.conf import settings
+from django.db import models
 from django.utils.timezone import localtime
 
 
