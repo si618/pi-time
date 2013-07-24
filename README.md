@@ -12,12 +12,6 @@ RPi acts as both a wireless access point and web server, allowing authenticateds
 
 Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and PV panel are housed in an enclosure to provide protection from adverse weather, with an external toggle switch to turn on both the RPi and sensor. 
 
-LEDs mounted to the enclosure are used to show:
-* When the PV is charging (Green via PV Panel)
-* When the RPi is on (Red via GPIO 3.3V to 0V)
-* When the app is running (Blue via GPIO port, solid = ok, flashing = problem)
-* When a rider is on an active lap (White via GPIO port)
-
 Data is stored on the RPi SD card with the option to backup all data to an authenticated client.
 
 ## Software
@@ -34,8 +28,10 @@ Data is stored on the RPi SD card with the option to backup all data to an authe
 
 #### Recommended
 
+* [raspbian](http://www.raspberrypi.org/downloads) (tested on wheezy)
 * [python-dev](http://packages.debian.org/wheezy/python-dev)
 * [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540)) (tested on 1.5)
+
 
 ## Hardware
 
@@ -48,7 +44,18 @@ Data is stored on the RPi SD card with the option to backup all data to an authe
 
 ## Installation
 
-TODO
+TODO - Detail setup of 
+
+## Diagnostics
+
+LEDs mounted to the enclosure are used to show:
+* When the PV is charging (Green via PV Panel)
+* When the RPi is on (Red via GPIO 3.3V to 0V)
+* When the app is running (Blue via GPIO port, solid = ok, flashing = problem)
+* When a rider is on an active lap (White via GPIO port)
+
+TODO - Add ability to query app log
+
 
 ## Issues
 
