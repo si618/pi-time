@@ -44,7 +44,7 @@ Data is stored on the RPi SD card with the option to backup all data to an authe
 
 ## Installation
 
-TODO - Detail setup of 
+TODO - Detail setup of both hardware and software. 
 
 ## Diagnostics
 
@@ -65,7 +65,7 @@ _Fix_: Use radio tags on bikes passing a receiver instead of using an infrared s
 _Issue_:  Possible to shortcut tracks which cross over.  
 _Fix_: Add beacons at key points in the track which have to be triggered before the lap counts as finished.
 
-_Issue_ : Start and stop must be from the same location.
+_Issue_ : Start and stop must be from the same location.  
 _Fix_: Add beacons to allow different sensors for start and stop locations.
 
 ## Improvements
