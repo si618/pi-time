@@ -6,22 +6,35 @@ from django.db import models
 from django.utils import timezone
 from django.utils.timezone import localtime
 
+# Setting models
+
+class GPIOLayout(django_settings.db.Model):
+    value = models.PositiveSmallIntegerField(max_length=2, choices=settings.GPIO_LAYOUT)
+
+    class Meta:
+        abstract = True
+
+class UnitOfMeasurement(django_settings.db.Model):
+    value = models.CharField(max_length=2, choices=settings.UNIT_OF_MEASUREMENT)
+
+    class Meta:
+        abstract = True
 
 class Settings(django_settings.db.Model):
-	gpio_app = models.PositiveSmallIntegerField(choices=settings.GPIO_LAYOUT,
-		default=11)
-	gpio_lap = models.PositiveSmallIntegerField(choices=settings.GPIO_LAYOUT,
-		default=13)
-	gpio_sensor = models.PositiveSmallIntegerField(choices=settings.GPIO_LAYOUT,
-		default=5)
-	unit_of_measurement = models.CharField(max_length=2,
-		choices=settings.UNIT_OF_MEASUREMENT, default=settings.METRIC)
+	gpio_app = GPIOLayout()
+	gpio_lap = GPIOLayout()
+	gpio_sensor = GPIOLayout()
+	unit_of_measurement = UnitOfMeasurement()
 
 	class Meta:
 		abstract = True
 		verbose_name_plural = 'Settings'
 
+django_settings.register(GPIOLayout)
+django_settings.register(UnitOfMeasurement)
 django_settings.register(Settings)
+
+# Data models
 
 class Track(models.Model):
 	name = models.CharField(max_length=64, unique=True)
@@ -65,9 +78,9 @@ class Lap(models.Model):
 
 	def __unicode__(self):
 		if (self.finish is None):
-			return 'Lap started ' + localtime(self.start).isoformat(' ')
+			return 'Elapsed Time: ' + utils.time_to_str(self.start, None)
 		else:
-			return 'Lap time ' + self.delta_to_str(self.finish - self.start)
+			return 'Lap Time: ' + utils.time_to_str(self.start, self.finish)
 
 	def save(self, *args, **kwargs):
 		if (self.start is None):
@@ -75,17 +88,17 @@ class Lap(models.Model):
 				timezone.get_default_timezone())
 		super(Lap, self).save(*args, **kwargs)
 
-	def delta_to_str(self, delta):
-		hours = delta.seconds // 3600
-		minutes = (delta.seconds // 60) - (hours * 60)
-		seconds = delta.seconds - minutes * 60 - hours * 3600
-		milliseconds = delta.microseconds // 1000
-		return '%s:%s:%s.%s' % (hours, minutes, seconds, milliseconds)
-
-	def avg_speed_per_hour(self):
-		return utils.avg_speed_per_hour(self.start, self.finish,
+	def average_speed_per_hour(self):
+		return utils.average_speed_per_hour(self.start, self.finish,
 			self.session.track.distance)
 
-	def avg_speed_per_second(self):
-		return utils.avg_speed_per_second(self.start, self.finish,
+	def average_speed_per_second(self):
+		return utils.average_speed_per_second(self.start, self.finish,
 			self.session.track.distance)
+
+class Statistics:
+	number_of_laps = int
+	lap_time = float
+	average_speed_per_hour = float
+	average_speed_per_second = float
+

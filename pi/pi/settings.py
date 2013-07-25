@@ -162,32 +162,32 @@ METRIC = 'SI'
 IMPERIAL = 'IM'
 UNIT_OF_MEASUREMENT = (
 	(METRIC, 'Metric'),
-	(IMPERIAL, 'Imperial'),
+	(IMPERIAL, 'Imperial')
 )
 
 DJANGO_SETTINGS = {
-	'unit_of_measurement': ('String', METRIC),
-	'gpio_app': ('Integer', 11),
-	'gpio_lap': ('Integer', 13),
-	'gpio_sensor': ('Integer', 5),
+	'unit_of_measurement': ('UnitOfMeasurement', METRIC),
+	'gpio_app': ('GPIOLayout', 11),
+	'gpio_lap': ('GPIOLayout', 13),
+	'gpio_sensor': ('GPIOLayout', 5)
 }
 
 GPIO_LAYOUT = (
-	(3, 'GPIO 2'),
-	(5, 'GPIO 3'),
-	(7, 'GPIO 4 (GPCLK0)'),
-	(8, 'GPIO 14 (UART0_TXD)'),
-	(10, 'GPIO 15 (UART0_RXD)'),
-	(11, 'GPIO 17'),
-	(12, 'GPIO 18 (PCMCLK)'),
-	(13, 'GPIO 27'),
-	(15, 'GPIO 22'),
-	(16, 'GPIO 23'),
-	(18, 'GPIO 24'),
-	(19, 'GPIO 10 (SPI0_MOSI)'),
-	(21, 'GPIO 9 (SPI0_MISO '),
-	(22, 'GPIO 25'),
-	(23, 'GPIO 11 (SPI0_SCLK)'),
-	(24, 'GPIO 8 (SPI0_CE0_N)'),
-	(26, 'GPIO 7 (SPI0_CE1_N)'),
+	(3, '3 = GPIO 2'),
+	(5, '5 = GPIO 3'),
+	(7, '7 = GPIO 4 (GPCLK0)'),
+	(8, '8 = GPIO 14 (UART0_TXD)'),
+	(10, '10 = GPIO 15 (UART0_RXD)'),
+	(11, '11 = GPIO 17'),
+	(12, '12 = GPIO 18 (PCMCLK)'),
+	(13, '13 = GPIO 27'),
+	(15, '14 = GPIO 22'),
+	(16, '15 = GPIO 23'),
+	(18, '18 = GPIO 24'),
+	(19, '19 = GPIO 10 (SPI0_MOSI)'),
+	(21, '21 = GPIO 9 (SPI0_MISO '),
+	(22, '22 = GPIO 25'),
+	(23, '23 = GPIO 11 (SPI0_SCLK)'),
+	(24, '24 = GPIO 8 (SPI0_CE0_N)'),
+	(26, '26 = GPIO 7 (SPI0_CE1_N)')
 )

@@ -1,5 +1,7 @@
+import compute
 import datetime
 import django_settings
+import unittest
 from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
@@ -57,22 +59,119 @@ class LapTestCase(TestCase):
 		Lap.objects.create(session=Session.objects.get(name='Test Session'),
 			rider=Rider.objects.get(name='Test Rider'), start=self.start)
 
-	def test_avg_speed_per_hour_return_none_when_no_finish(self):
-		lap = Lap.objects.get(id=1)
-		self.assertEqual(None, lap.avg_speed_per_hour())
 
-	def test_avg_speed_per_second_return_none_when_no_finish(self):
-		lap = Lap.objects.get(id=1)
-		self.assertEqual(None, lap.avg_speed_per_second())
+class ComputeTestCase(unittest.TestCase):
 
-	def test_avg_speed_per_hour_return_12kph_50m_in_15s(self):
-		lap = Lap.objects.get(id=1)
-		self.assertEqual(50, lap.session.track.distance)
-		lap.finish = lap.start + datetime.timedelta(seconds=15)
-		self.assertEqual(12, lap.avg_speed_per_hour())
+	def test_average_kilometres_per_hour_returns_none_when_no_start(self):
+		finish = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_kilometres_per_hour(None, finish, 10))
 
-	def test_avg_speed_per_second_return_5mps_50m_in_10s(self):
-		lap = Lap.objects.get(id=1)
-		self.assertEqual(50, lap.session.track.distance)
-		lap.finish = lap.start + datetime.timedelta(seconds=10)
-		self.assertEqual(5, lap.avg_speed_per_second())
+	def test_average_miles_per_hour_returns_none_when_no_start(self):
+		finish = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_miles_per_hour(None, finish, 10))
+
+	def test_average_speed_per_hour_returns_none_when_no_start(self):
+		finish = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_speed_per_hour(None, finish, 10))
+
+	def test_average_speed_per_second_returns_none_when_no_start(self):
+		finish = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_speed_per_second(None, finish, 10))
+
+	def test_average_kilometres_per_hour_returns_none_when_no_finish(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_kilometres_per_hour(start, None, 10))
+
+	def test_average_miles_per_hour_returns_none_when_no_finish(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_miles_per_hour(start, None, 10))
+
+	def test_average_speed_per_hour_returns_none_when_no_finish(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_speed_per_hour(start, None, 10))
+
+	def test_average_speed_per_second_returns_none_when_no_finish(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		self.assertEqual(None, 
+			compute.average_speed_per_second(start, None, 10))
+
+	def test_average_speed_per_second_raises_exception_when_finish_equals_start(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start
+		with self.assertRaises(ValueError):
+			compute.average_speed_per_second(start, finish, 10)
+
+	def test_average_speed_per_second_raises_exception_when_finish_less_than_start(self):
+		finish = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		start = finish + datetime.timedelta(seconds=1)
+		with self.assertRaises(ValueError):
+			compute.average_speed_per_second(start, finish, 10)
+
+	def test_average_speed_per_second_raises_exception_when_distance_equals_zero(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start + datetime.timedelta(seconds=1)
+		with self.assertRaises(ValueError):
+			compute.average_speed_per_second(start, finish, 0)
+
+	def test_average_speed_per_second_raises_exception_when_distance_less_than_zero(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start + datetime.timedelta(seconds=1)
+		with self.assertRaises(ValueError):
+			compute.average_speed_per_second(start, finish, -0.1)
+
+	def test_average_speed_per_second_returns_5mps_50m_in_10s(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start + datetime.timedelta(seconds=10)			
+		self.assertEqual(5, 
+			compute.average_speed_per_second(start, finish, 50))
+
+	def test_average_kilometres_per_hour_returns_12kph_50m_in_15s(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start + datetime.timedelta(seconds=15)			
+		self.assertEqual(12, 
+			compute.average_kilometres_per_hour(start, finish, 50))
+
+	def test_average_miles_per_hour_returns_expected_6_8182mph_50y_in_15s(self):
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start + datetime.timedelta(seconds=15)			
+		self.assertEqual(6.8182, 
+			compute.average_miles_per_hour(start, finish, 50))
+
+	def test_average_speed_per_hour_returns_metric_result(self):
+		django_settings.set('String', 'unit_of_measurement', settings.METRIC)
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start + datetime.timedelta(seconds=15)			
+		self.assertEqual(12, 
+			compute.average_speed_per_hour(start, finish, 50))
+
+	def test_average_speed_per_hour_returns_imperial_result(self):
+		django_settings.set('String', 'unit_of_measurement', settings.IMPERIAL)
+		start = timezone.make_aware(datetime.datetime.now(),
+			timezone.get_default_timezone())
+		finish = start + datetime.timedelta(seconds=15)
+		self.assertEqual(6.8182, 
+			compute.average_speed_per_hour(start, finish, 50))
+		django_settings.set('String', 'unit_of_measurement', settings.METRIC)
