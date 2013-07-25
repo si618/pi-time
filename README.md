@@ -59,15 +59,18 @@ TODO - Add ability to query app log
 
 ## Issues
 
-_Problem_:  Only one rider can be on the track at any one time.  
-_Solution_: Use radio tags on bikes passing a receiver instead of using an infrared sensor.
+_Issue_:  Only one rider can be on the track at any one time.  
+_Fix_: Use radio tags on bikes passing a receiver instead of using an infrared sensor.
 
-_Problem_:  Possible to shortcut tracks which cross over.  
-_Solution_: Add beacons at key points in the track which have to be triggered before the lap counts as finished.
+_Issue_:  Possible to shortcut tracks which cross over.  
+_Fix_: Add beacons at key points in the track which have to be triggered before the lap counts as finished.
 
-## Improvements to prototype
+_Issue_ : Start and stop must be from the same location.
+_Fix_: Add beacons to allow different sensors for start and stop locations.
+
+## Improvements
 
 * Cheaper to use 12v lead acid battery instead of AA or D batteries. No converter required for 12v sensor.
 * PV panels should be optional (possible with prototype but fairly tightly coupled)
 * Cheaper enclosure by using metal or plastic box and appropriate use of silicon.
-* Provide option to connect to existing WiFi access point instead with RPi access point as fallback.
+* Provide option to connect to existing WiFi access point instead, use RPi access point as fallback.
