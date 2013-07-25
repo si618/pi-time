@@ -1,6 +1,6 @@
 # Pi-time
 
-Pump track lap timer running on a solar powered Raspberry Pi with battery backup.
+Pump track lap timer running on a solar powered Raspberry Pi.
 
 ## Overview
 
