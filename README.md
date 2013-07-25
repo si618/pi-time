@@ -4,7 +4,7 @@ Pump track lap timer running on a solar powered Raspberry Pi with battery backup
 
 ## Overview
 
-An active infrared sensor is placed at a suitable point on a [pump track[(http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), a cable runs between the sensors and a Raspberry Pi (RPi) providing data to trigger when a lap starts or finishes.
+An active infrared sensor is placed at a suitable point on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), a cable runs between the sensors and a Raspberry Pi (RPi) providing data to trigger when a lap starts or finishes.
 
 A python application runs on the RPi listening to the sensor, recording lap times as well as information on the track, the current session and rider.
 
