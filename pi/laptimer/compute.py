@@ -1,6 +1,7 @@
 import django_settings
 from django.conf import settings
 
+
 def average_kilometres_per_hour(start, finish, metres):
 	avg_per_second = average_speed_per_second(start, finish, metres)
 	if (avg_per_second is None):

@@ -8,31 +8,27 @@ from django.utils.timezone import localtime
 
 # Setting models
 
-class GPIOLayout(django_settings.db.Model):
-    value = models.PositiveSmallIntegerField(max_length=2, choices=settings.GPIO_LAYOUT)
-
-    class Meta:
-        abstract = True
-
-class UnitOfMeasurement(django_settings.db.Model):
-    value = models.CharField(max_length=2, choices=settings.UNIT_OF_MEASUREMENT)
-
-    class Meta:
-        abstract = True
-
-class Settings(django_settings.db.Model):
-	gpio_app = GPIOLayout()
-	gpio_lap = GPIOLayout()
-	gpio_sensor = GPIOLayout()
-	unit_of_measurement = UnitOfMeasurement()
+class Boolean(django_settings.db.Model):
+	value = models.BooleanField()
 
 	class Meta:
 		abstract = True
-		verbose_name_plural = 'Settings'
 
+class GPIOLayout(django_settings.db.Model):
+	value = models.PositiveSmallIntegerField(max_length=2, choices=settings.GPIO_LAYOUT)
+
+	class Meta:
+		abstract = True
+
+class UnitOfMeasurement(django_settings.db.Model):
+	value = models.CharField(max_length=2, choices=settings.UNIT_OF_MEASUREMENT)
+
+	class Meta:
+		abstract = True
+
+django_settings.register(Boolean)
 django_settings.register(GPIOLayout)
 django_settings.register(UnitOfMeasurement)
-django_settings.register(Settings)
 
 # Data models
 
@@ -101,4 +97,3 @@ class Statistics:
 	lap_time = float
 	average_speed_per_hour = float
 	average_speed_per_second = float
-

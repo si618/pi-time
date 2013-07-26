@@ -123,7 +123,7 @@ INSTALLED_APPS = (
 	'django.contrib.admin',
 	'django.contrib.admindocs',
 	'django_settings', # See https://github.com/jqb/django-settings
-	'rest_framework', # See http://django-rest-framework.org/
+	#'rest_framework', # See http://django-rest-framework.org/
 	'laptimer', # See https://github.com/si618/pi-time
 )
 
@@ -166,6 +166,7 @@ UNIT_OF_MEASUREMENT = (
 )
 
 DJANGO_SETTINGS = {
+	'debug_app': ('Boolean', DEBUG),
 	'unit_of_measurement': ('UnitOfMeasurement', METRIC),
 	'gpio_app': ('GPIOLayout', 11),
 	'gpio_lap': ('GPIOLayout', 13),
