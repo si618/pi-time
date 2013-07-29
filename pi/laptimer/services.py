@@ -10,14 +10,14 @@ class API:
 
 	def get_all_data(self):
 		'''Gets all track, session, rider, lap data and settings.'''
-		return 'Testing API - get_all_data called'	
+		return 'Testing API - get_all_data called'
 
 	# Rider functions
 
 	def add_rider(self, rider_name):
 		'''Add a new rider. Rider name must be unique.'''
-		print 'Add rider %s' % rider_name
-		return True	
+		print 'Adding rider: %s' % rider_name
+		return True
 
 	def change_rider(self, old_rider_name, new_rider_name):
 		'''Changes the riders name. Rider name must be unique.'''
@@ -26,6 +26,7 @@ class API:
 
 	def remove_rider(self, rider_name):
 		'''Removes a rider, including all track, session and lap data.'''
+		print 'Remove rider %s' % (rider_name)
 		pass
 
 	def get_rider_laps(self, rider_name):

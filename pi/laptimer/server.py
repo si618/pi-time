@@ -18,18 +18,18 @@ class APIServerProtocol(WebSocketServerProtocol):
 		if 'args' not in msg:
 			data['args'] = {}
 		call = data['call']
-		args = data['args']
-		print 'call: %s args: %s' % (call, args)
+		kwargs = data['args']
+		print 'call: %s args: %s' % (call, kwargs)
 		method = getattr(services.API(), call)
 		if not method:
 			raise Exception('Method not implemented: %s' % method)
-		result = method(*args)
-		self.sendMessage(json.dumps(call), binary)
+		result = method(**kwargs)
+		self.sendMessage(json.dumps(result), binary)
 
 
 if __name__ == '__main__':
 	# TODO: Get server and port from settings
-	factory = WebSocketServerFactory('ws://localhost:9000', 
+	factory = WebSocketServerFactory('ws://localhost:9000',
 		debug=django_settings.get('debug_app'))
 	factory.protocol = APIServerProtocol
 	listenWS(factory)

@@ -3,10 +3,10 @@ import json
 from twisted.internet import reactor
 from autobahn.websocket import WebSocketClientFactory, WebSocketClientProtocol
 from autobahn.websocket import connectWS
- 
- 
+
+
 class APIClientProtocol(WebSocketClientProtocol):
- 
+
    def callAPI(self):
 		self.sendMessage('{"call":"get_all_data"}')
 		self.sendMessage('{"call":"add_rider","args":{"rider_name":"Test API Rider"}}')
@@ -15,15 +15,15 @@ class APIClientProtocol(WebSocketClientProtocol):
 
    def onOpen(self):
 		self.callAPI()
- 
+
    def onMessage(self, msg, binary):
 		print "Result: " + msg
 		#reactor.callLater(1, self.callAPI)
- 
- 
+
+
 if __name__ == '__main__':
 	# TODO: Get server and port from settings
-	factory = WebSocketClientFactory("ws://localhost:9000", 
+	factory = WebSocketClientFactory("ws://localhost:9000",
 		debug=django_settings.get('debug_app'))
 	factory.protocol = APIClientProtocol
 	connectWS(factory)
