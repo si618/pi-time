@@ -10,7 +10,7 @@ class APIClientProtocol(WebSocketClientProtocol):
    def callAPI(self):
 		self.sendMessage('{"call":"get_all_data"}')
 		self.sendMessage('{"call":"add_rider","args":{"rider_name":"Test API Rider"}}')
-		self.sendMessage('{"call":"change_rider","args":{"old_rider_name":"Test API Rider","new_rider_name":"API Rider"}}')
+		self.sendMessage('{"call":"change_rider","args":{"rider_name":"Test API Rider","new_rider_name":"API Rider"}}')
 		self.sendMessage('{"call":"remove_rider","args":{"rider_name":"API Rider"}}')
 
    def onOpen(self):

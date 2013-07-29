@@ -19,9 +19,9 @@ class API:
 		print 'Adding rider: %s' % rider_name
 		return True
 
-	def change_rider(self, old_rider_name, new_rider_name):
+	def change_rider(self, rider_name, new_rider_name):
 		'''Changes the riders name. Rider name must be unique.'''
-		print 'Changing %s to %s' % (old_rider_name, new_rider_name)
+		print 'Changing %s to %s' % (rider_name, new_rider_name)
 		return None
 
 	def remove_rider(self, rider_name):
