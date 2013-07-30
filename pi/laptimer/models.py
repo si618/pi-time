@@ -1,10 +1,30 @@
-import datetime
-import django_settings
-import utils
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.timezone import localtime
+import datetime
+import django_settings
+import json
+import utils
+
+# API models
+
+class APIResult:
+	result = bool
+	data = object
+
+	def __init__(self, result=False, data=None):
+		self.result = result
+		self.data = data
+
+	def toJSON(self):
+		return json.dumps(self, default = lambda o: o.__dict__)
+
+class LapData:
+	lap_time_in_seconds = float
+	speed_per_hour = float
+	distance_per_second = float
+
 
 # Setting models
 
@@ -30,12 +50,15 @@ django_settings.register(Boolean)
 django_settings.register(GPIOLayout)
 django_settings.register(UnitOfMeasurement)
 
-# Data models
+
+# Django Data models
 
 class Track(models.Model):
 	name = models.CharField(max_length=64, unique=True)
 	distance = models.FloatField()
 	timeout = models.PositiveSmallIntegerField()
+	unit_of_measurement = models.CharField(max_length=2, 
+		choices=settings.UNIT_OF_MEASUREMENT, default=settings.METRIC)
 
 	def save(self, *args, **kwargs):
 		if (self.timeout is None):
@@ -91,9 +114,3 @@ class Lap(models.Model):
 	def average_speed_per_second(self):
 		return utils.average_speed_per_second(self.start, self.finish,
 			self.session.track.distance)
-
-class Statistics:
-	number_of_laps = int
-	lap_time = float
-	average_speed_per_hour = float
-	average_speed_per_second = float

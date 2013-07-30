@@ -1,30 +1,45 @@
-import django_settings
-import json
 from autobahn.websocket import WebSocketServerFactory, WebSocketServerProtocol
 from autobahn.websocket import listenWS
-from laptimer import services
-from laptimer import models
+from laptimer.models import APIResult
+from laptimer.services import API
 from twisted.internet import reactor
 from twisted.web.server import Site
 from twisted.web.static import File
+import django_settings
+import json
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 class APIServerProtocol(WebSocketServerProtocol):
+	
 	def onMessage(self, msg, binary):
-		print 'msg: %s' % (msg)
+		'''Processes an API call, returning an APIResult in JSON format.'''
 		data = json.loads(msg)
 		if data['call'] is None:
-			raise Exception('Missing "call"')
+			error = "Message missing 'call': %s" % msg
+			logger.error(error)
+			return APIResult(result=False, data=error)
 		if 'args' not in msg:
 			data['args'] = {}
 		call = data['call']
 		kwargs = data['args']
-		print 'call: %s args: %s' % (call, kwargs)
-		method = getattr(services.API(), call)
+		
+		method = getattr(API(), call)
 		if not method:
-			raise Exception('Method not implemented: %s' % method)
+			error = "Method not implemented in API: %s" % call
+			logger.error(error)
+			return APIResult(result=False, data=error)
+		logger.debug('%s(%s)' % (call, ', '.join(['%s=%s' % (key, value)
+			for key, value in kwargs.iteritems()])))
+		# http://xkcd.com/353/ applies above and below :)
 		result = method(**kwargs)
-		self.sendMessage(json.dumps(result), binary)
+		if (isinstance(result, APIResult) == False):
+			error = "Method must return APIResult, error in: %s" % call
+			logger.error(error)
+			result = APIResult(result=False, data=error)
+		self.sendMessage(result.toJSON(), binary)
 
 
 if __name__ == '__main__':
@@ -35,5 +50,5 @@ if __name__ == '__main__':
 	listenWS(factory)
 	webdir = File('.')
 	web = Site(webdir)
-	print 'Server is running...'
+	logger.debug('Running server...')
 	reactor.run()

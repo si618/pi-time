@@ -1,11 +1,11 @@
-import compute
-import datetime
-import django_settings
-import unittest
 from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from models import Track, Rider, Session, Lap
+import compute
+import datetime
+import django_settings
+import unittest
 
 class DjangoSettingsTestCase(TestCase):
 

@@ -1,5 +1,5 @@
-import django_settings
 from django.conf import settings
+import django_settings
 
 
 def average_kilometres_per_hour(start, finish, metres):

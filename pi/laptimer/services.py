@@ -1,33 +1,35 @@
+from django.conf import settings
+from django.utils import timezone
+from laptimer.models import APIResult, Track, Rider, Session, Lap
 import compute
 import datetime
 import django_settings
-from django.conf import settings
-from django.utils import timezone
-from models import Track, Rider, Session, Lap
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 class API:
+	'''Application service layer. All methods must return APIResult.'''
 
 	def get_all_data(self):
 		'''Gets all track, session, rider, lap data and settings.'''
-		return 'Testing API - get_all_data called'
+		return APIResult(result=True, data='Track data goes here...')
 
 	# Rider functions
 
 	def add_rider(self, rider_name):
 		'''Add a new rider. Rider name must be unique.'''
-		print 'Adding rider: %s' % rider_name
-		return True
+		return APIResult(result=True, data='Added rider: %s' % rider_name)
 
 	def change_rider(self, rider_name, new_rider_name):
 		'''Changes the riders name. Rider name must be unique.'''
-		print 'Changing %s to %s' % (rider_name, new_rider_name)
-		return None
+		return APIResult(result=True, data='Changed rider from: %s to: %s'
+			% (rider_name, new_rider_name))
 
 	def remove_rider(self, rider_name):
 		'''Removes a rider, including all track, session and lap data.'''
-		print 'Remove rider %s' % (rider_name)
-		pass
+		return APIResult(result=True, data='Removed rider %s: ' % rider_name)
 
 	def get_rider_laps(self, rider_name):
 		'''Gets statistics on a riders completed laps for all tracks.'''
@@ -68,11 +70,13 @@ class API:
 
 	# Track related functions
 
-	def add_track(self, track_name, track_distance, lap_timeout_in_seconds):
+	def add_track(self, track_name, track_distance, lap_timeout_in_seconds, 
+		unit_of_measurement):
 		'''Add a new track. Track name must be unique.'''
 		pass
 
-	def change_track(self, track_name, track_distance, lap_timeout_in_seconds):
+	def change_track(self, track_name, track_distance, lap_timeout_in_seconds,
+		unit_of_measurement):
 		'''Changes the track details. Track name must be unique.'''
 		pass
 
