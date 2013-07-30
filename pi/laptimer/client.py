@@ -10,17 +10,20 @@ logger = logging.getLogger(__name__)
 
 class APIClientProtocol(WebSocketClientProtocol):
 
-   def callAPI(self):
+	def callAPI(self):
 		self.sendMessage('{"call":"add_rider","args":{"rider_name":"Test API Rider"}}')
 		self.sendMessage('{"call":"change_rider","args":{"rider_name":"Test API Rider","new_rider_name":"API Rider"}}')
 		self.sendMessage('{"call":"remove_rider","args":{"rider_name":"API Rider"}}')
 		self.sendMessage('{"call":"get_all_data"}')
-
-   def onOpen(self):
+		
+	def onOpen(self):
 		self.callAPI()
 
-   def onMessage(self, msg, binary):
-		print msg
+	def onClose(self, wasClean, code, reason):
+		logger.debug('Closing connection')
+
+	def onMessage(self, msg, binary):
+		logger.debug(msg)
 
 
 if __name__ == '__main__':
