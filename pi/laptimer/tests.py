@@ -36,8 +36,7 @@ class TrackTestCase(TestCase):
 class SessionTestCase(TestCase):
 
 	def test_start_defaults_to_now_when_none(self):
-		now = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		now = timezone.now()
 		Track.objects.create(name='Test Track', distance=10)
 		track = Track.objects.get(id=1)
 		Session.objects.create(name='Test Session', track=track)
@@ -48,8 +47,7 @@ class LapTestCase(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		cls.start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		cls.start = timezone.now()
 
 	def setUp(self):
 		Track.objects.create(name='Test Track', distance=50, timeout=100)
@@ -63,114 +61,97 @@ class LapTestCase(TestCase):
 class ComputeTestCase(unittest.TestCase):
 
 	def test_average_kilometres_per_hour_returns_none_when_no_start(self):
-		finish = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		finish = timezone.now()
 		self.assertEqual(None, 
 			compute.average_kilometres_per_hour(None, finish, 10))
 
 	def test_average_miles_per_hour_returns_none_when_no_start(self):
-		finish = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		finish = timezone.now()
 		self.assertEqual(None, 
 			compute.average_miles_per_hour(None, finish, 10))
 
 	def test_average_speed_per_hour_returns_none_when_no_start(self):
-		finish = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		finish = timezone.now()
 		self.assertEqual(None, 
 			compute.average_speed_per_hour(None, finish, 10))
 
 	def test_average_speed_per_second_returns_none_when_no_start(self):
-		finish = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		finish = timezone.now()
 		self.assertEqual(None, 
 			compute.average_speed_per_second(None, finish, 10))
 
 	def test_average_kilometres_per_hour_returns_none_when_no_finish(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		self.assertEqual(None, 
 			compute.average_kilometres_per_hour(start, None, 10))
 
 	def test_average_miles_per_hour_returns_none_when_no_finish(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		self.assertEqual(None, 
 			compute.average_miles_per_hour(start, None, 10))
 
 	def test_average_speed_per_hour_returns_none_when_no_finish(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		self.assertEqual(None, 
 			compute.average_speed_per_hour(start, None, 10))
 
 	def test_average_speed_per_second_returns_none_when_no_finish(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		self.assertEqual(None, 
 			compute.average_speed_per_second(start, None, 10))
 
 	def test_average_speed_per_second_raises_exception_when_finish_equals_start(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start
 		with self.assertRaises(ValueError):
 			compute.average_speed_per_second(start, finish, 10)
 
 	def test_average_speed_per_second_raises_exception_when_finish_less_than_start(self):
-		finish = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		finish = timezone.now()
 		start = finish + datetime.timedelta(seconds=1)
 		with self.assertRaises(ValueError):
 			compute.average_speed_per_second(start, finish, 10)
 
 	def test_average_speed_per_second_raises_exception_when_distance_equals_zero(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start + datetime.timedelta(seconds=1)
 		with self.assertRaises(ValueError):
 			compute.average_speed_per_second(start, finish, 0)
 
 	def test_average_speed_per_second_raises_exception_when_distance_less_than_zero(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start + datetime.timedelta(seconds=1)
 		with self.assertRaises(ValueError):
 			compute.average_speed_per_second(start, finish, -0.1)
 
 	def test_average_speed_per_second_returns_5mps_50m_in_10s(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start + datetime.timedelta(seconds=10)			
 		self.assertEqual(5, 
 			compute.average_speed_per_second(start, finish, 50))
 
 	def test_average_kilometres_per_hour_returns_12kph_50m_in_15s(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start + datetime.timedelta(seconds=15)			
 		self.assertEqual(12, 
 			compute.average_kilometres_per_hour(start, finish, 50))
 
 	def test_average_miles_per_hour_returns_expected_6_8182mph_50y_in_15s(self):
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start + datetime.timedelta(seconds=15)			
 		self.assertEqual(6.8182, 
 			compute.average_miles_per_hour(start, finish, 50))
 
 	def test_average_speed_per_hour_returns_metric_result(self):
 		django_settings.set('String', 'unit_of_measurement', settings.METRIC)
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start + datetime.timedelta(seconds=15)			
 		self.assertEqual(12, 
 			compute.average_speed_per_hour(start, finish, 50))
 
 	def test_average_speed_per_hour_returns_imperial_result(self):
 		django_settings.set('String', 'unit_of_measurement', settings.IMPERIAL)
-		start = timezone.make_aware(datetime.datetime.now(),
-			timezone.get_default_timezone())
+		start = timezone.now()
 		finish = start + datetime.timedelta(seconds=15)
 		self.assertEqual(6.8182, 
 			compute.average_speed_per_hour(start, finish, 50))
