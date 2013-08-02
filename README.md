@@ -41,7 +41,7 @@ Data is stored on the RPi SD card with the option to backup all data to an authe
 
 ## Installation
 
-TODO: Detail setup of both hardware and software (TODO: pypi setup). 
+TODO: Detail setup of both hardware and software (pypi setup). 
 
 ## Diagnostics
 
