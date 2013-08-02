@@ -136,11 +136,8 @@ LOGGING = {
 	'version': 1,
 	'disable_existing_loggers': False,
 	'formatters': {
-		'verbose': {
-			'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-		},
 		'simple': {
-			'format': '%(message)s'
+			'format': '%(asctime)s %(message)s'
 		},
 	},	
 	'filters': {
@@ -157,12 +154,14 @@ LOGGING = {
 			'level': 'DEBUG',
 			'class': 'logging.StreamHandler',
 			'formatter': 'simple'
-		},	},
+		},	
+	},
 	'loggers': {
-		'__main__': {	
+		'laptimer': {	
 			'handlers': ['console'],
-			'level': 'DEBUG'
-		}
+			'level': 'DEBUG',
+			'propagate': False,
+		},
 	}
 }
 

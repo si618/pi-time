@@ -6,7 +6,7 @@ import json
 import logging
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('laptimer')
 
 class APIClientProtocol(WebSocketClientProtocol):
 
@@ -23,13 +23,33 @@ class APIClientProtocol(WebSocketClientProtocol):
 		logger.debug('Closing connection')
 
 	def onMessage(self, msg, binary):
-		logger.debug(msg)
+		jsonMsg = json.loads(msg)
+		if 'call' in msg:
+			call = jsonMsg['call']
+		else:
+			call = '<empty>'
+		if 'data' in msg:
+			data = jsonMsg['data']
+		else:
+			data = '<empty>'
+		if 'result' in msg:
+			if jsonMsg['result']:
+				ok = 'Successful'
+			else:
+				ok = 'Failed'
+			logger.debug('%s call: %s data: %s ' % (ok, call, data))
+			return
+		if 'event' in msg:
+			event = jsonMsg['event']
+			logger.debug('Received broadcast: %s data: %s' % (event, data))
+			return
+		logger.debug('Unknown message: %s' % msg)
 
 
 if __name__ == '__main__':
 	# TODO: Get server and port from settings
-	factory = WebSocketClientFactory("ws://localhost:9000",
-		debug=django_settings.get('debug_app'))
+	debug=django_settings.get('debug_app')
+	factory = WebSocketClientFactory("ws://localhost:9000", debug=debug)
 	factory.protocol = APIClientProtocol
 	connectWS(factory)
 	reactor.run()

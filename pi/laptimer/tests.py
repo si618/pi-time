@@ -7,6 +7,7 @@ import datetime
 import django_settings
 import unittest
 
+
 class DjangoSettingsTestCase(TestCase):
 
 	def test_unit_of_measurement_defaults_to_metric(self):

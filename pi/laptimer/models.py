@@ -17,22 +17,22 @@ class APIBase:
 		return json.dumps(self, default = lambda o: o.__dict__)
 
 class APIResult(APIBase):
+	call = str
 	result = bool
 	data = object
 
-	def __init__(self, result=False, data=None):
+	def __init__(self, call, result=False, data=None):
+		self.call = call
 		self.result = result
 		self.data = data
 
 class APIBroadcast(APIBase):
 	event = str
-	old = object
-	new = object
+	data = object
 
-	def __init__(self, event, old=None, new=None):
+	def __init__(self, event, data=None):
 		self.event = event
-		self.old = old
-		self.new = new
+		self.data = data
 
 
 # Setting models
