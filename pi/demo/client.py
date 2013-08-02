@@ -10,46 +10,47 @@ logger = logging.getLogger('laptimer')
 
 class APIClientProtocol(WebSocketClientProtocol):
 
-	def callAPI(self):
-		self.sendMessage('{"call":"add_rider","args":{"rider_name":"Test API Rider"}}')
-		self.sendMessage('{"call":"change_rider","args":{"rider_name":"Test API Rider","new_rider_name":"API Rider"}}')
-		self.sendMessage('{"call":"remove_rider","args":{"rider_name":"API Rider"}}')
-		self.sendMessage('{"call":"get_data"}')
-		
-	def onOpen(self):
-		self.callAPI()
+    def callAPI(self):
+        self.sendMessage('{"call":"add_rider","args":{"rider_name":"Test API Rider"}}')
+        self.sendMessage('{"call":"change_rider","args":{"rider_name":"Test API Rider","new_rider_name":"API Rider"}}')
+        self.sendMessage('{"call":"remove_rider","args":{"rider_name":"API Rider"}}')
+        self.sendMessage('{"call":"get_data"}')
 
-	def onClose(self, wasClean, code, reason):
-		logger.debug('Closing connection')
+    def onOpen(self):
+        logger.debug('Connection open')
+        self.callAPI()
 
-	def onMessage(self, msg, binary):
-		jsonMsg = json.loads(msg)
-		if 'call' in msg:
-			call = jsonMsg['call']
-		else:
-			call = '<empty>'
-		if 'data' in msg:
-			data = jsonMsg['data']
-		else:
-			data = '<empty>'
-		if 'result' in msg:
-			if jsonMsg['result']:
-				ok = 'Successful'
-			else:
-				ok = 'Failed'
-			logger.debug('%s call: %s data: %s ' % (ok, call, data))
-			return
-		if 'event' in msg:
-			event = jsonMsg['event']
-			logger.debug('Received broadcast: %s data: %s' % (event, data))
-			return
-		logger.debug('Unknown message: %s' % msg)
+    def onClose(self, wasClean, code, reason):
+        logger.debug('Connection closed')
+
+    def onMessage(self, msg, binary):
+        jsonMsg = json.loads(msg)
+        if 'call' in msg:
+            call = jsonMsg['call']
+        else:
+            call = '<empty>'
+        if 'data' in msg:
+            data = jsonMsg['data']
+        else:
+            data = '<empty>'
+        if 'result' in msg:
+            if jsonMsg['result']:
+                ok = 'Successful'
+            else:
+                ok = 'Failed'
+            logger.debug('%s call: %s data: %s ' % (ok, call, data))
+            return
+        if 'event' in msg:
+            event = jsonMsg['event']
+            logger.debug('Received broadcast: %s data: %s' % (event, data))
+            return
+        logger.debug('Unknown message')
 
 
 if __name__ == '__main__':
-	# TODO: Get server and port from settings
-	debug=django_settings.get('debug_app')
-	factory = WebSocketClientFactory("ws://localhost:9000", debug=debug)
-	factory.protocol = APIClientProtocol
-	connectWS(factory)
-	reactor.run()
+    # TODO: Get server and port from settings
+    debug=django_settings.get('debug_app')
+    factory = WebSocketClientFactory("ws://localhost:9000", debug=debug)
+    factory.protocol = APIClientProtocol
+    connectWS(factory)
+    reactor.run()
