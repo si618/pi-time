@@ -43,13 +43,13 @@ class APIMessageHandler:
 		self._broadcast(server, call, self._broadcast_post, result.data)
 
 	def _load_data(self, server, msg):
-		data = json.loads(msg)
 		if 'call' not in msg:
 			error = "Message missing 'call': %s" % msg
 			logger.error(error)
 			result = APIResult(call=None, result=False, data=error)
 			server.sendMessage(result.toJSON())
 			return
+		data = json.loads(msg)
 		if 'args' not in data:
 			data['args'] = {}
 		return data
