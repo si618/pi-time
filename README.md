@@ -4,13 +4,13 @@ Pump track lap timer running on a solar powered Raspberry Pi.
 
 ## Overview
 
-An active infrared sensor is placed at a suitable point on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks). A cable runs between the sensor and a Raspberry Pi, or RPi, providing data to trigger when a lap starts or finishes.
+An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
 
-RPi acts as both a wireless access point and web server, allowing authenticated users to use the application via a modern web browser or mobile app. A python application runs on the RPi, listening to the sensor, then recording and broadcasting lap data over wifi.
+RPi acts as a wireless access point, web server and app server, providing users access via any modern web browser or (TODO: mobile app).
 
-Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and PV panel are housed in an enclosure to provide protection from adverse weather, with an external toggle switch to turn on both the RPi and sensor.
+Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external toggle switch to turn on both the RPi and sensor.
 
-Data is stored on the RPi SD card with the option to backup all data to an authenticated client.
+Data is stored on the RPi SD card with backup to an authenticated client or (TODO: cloud service).
 
 ## Software
 
