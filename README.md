@@ -6,7 +6,7 @@ Pump track lap timer running on a solar powered Raspberry Pi.
 
 An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
 
-The Raspberry Pi (RPi) acts as a wireless access point, web server and app server, providing users access via any modern web browser or (TODO: mobile app).
+The Raspberry Pi, or RPi, acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or (TODO: mobile app).
 
 Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external toggle switch to turn on both the RPi and sensor.
 
@@ -31,7 +31,7 @@ Data is stored on the RPi SD card with backup to an authenticated client or (TOD
 ## Hardware
 
 * RPi (tested on [model b](http://au.element14.com/Raspberry_Pi))
-* USB WiFi & optional antenna (ensure compatiblity with RPi and can run as access point)
+* Compatible USB WiFi & optional antenna
 * Power source (tested on [solar charger and battery pack](http://cgi.cottonpickers.plus.com/~cottonpickers/forum/viewtopic.php?f=2&t=474&sid=ec0e5edc2965ab799801f71ed28f6c23))
   * [USB 5V to 12V](http://www.ebay.com.au/itm/271176652645?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649) step up to power 12V sensor.
 * Sensor (tested on [active infrared dectector](http://www.ebay.com.au/itm/350771078173?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649))
@@ -46,7 +46,7 @@ TODO: Detail setup of both hardware and software (pypi setup).
 LEDs mounted to the enclosure are used to show:
 * When the PV is charging (Green via PV Panel)
 * When the RPi is on (Red via GPIO 3.3V to 0V)
-* When the app is running (Blue via GPIO port, solid = ok, flashing = problem)
+* When the app is running (Blue via GPIO port))
 * When a rider is on an active lap (White via GPIO port)
 
 TODO: Add ability to query app log
