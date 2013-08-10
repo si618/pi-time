@@ -165,16 +165,21 @@ class API:
     def start_lap(self, session_name, rider_name, start_time):
         '''Starts a new lap.'''
         '''Sends a broadcast message after lap has started.'''
+        # TODO: Role enforcement - sensor only
         pass
 
     def end_lap(self, session_name, rider_name, end_time):
-        '''Ends the lap, and starts a new lap using the end time.'''
-        '''Sends a broadcast message after lap has ended.'''
+        '''
+        Ends the lap, starting a new lap using the end time as new start time.
+        Sends a broadcast message after lap has ended.
+        '''
+        # TODO: Role enforcement - sensor only
         pass
 
     def cancel_lap(self, session_name, rider_name, start_time):
         '''Cancels the current lap.'''
         '''Sends a broadcast message after lap has been cancelled.'''
+        # TODO: Role enforcement - only admin or current rider
         pass
 
     def remove_lap(self, session_name, rider_name, start_time):

@@ -6,7 +6,7 @@ def average_kilometres_per_hour(start, finish, metres):
     avg_per_second = average_speed_per_second(start, finish, metres)
     if (avg_per_second is None):
         return None
-    # Shortcut 3600 seconds in a hour / 1,000 metres in a kilometre
+    # Shortcut 3,600 seconds in a hour / 1,000 metres in a kilometre
     avg_km_per_hour = avg_per_second * 3.6
     return round(avg_km_per_hour, 4)
 

@@ -106,12 +106,14 @@ class APIServerFactory(WebSocketServerFactory):
 
     def register(self, client):
         if not client in self.clients:
-            log.msg('Registered client: ' + client.peerstr, logLevel=logging.DEBUG)
+            log.msg('Registered client: ' + client.peerstr,
+                logLevel=logging.DEBUG)
             self.clients.append(client)
 
     def unregister(self, client):
         if client in self.clients:
-            log.msg('Unregistered client: ' + client.peerstr, logLevel=logging.DEBUG)
+            log.msg('Unregistered client: ' + client.peerstr,
+                logLevel=logging.DEBUG)
             self.clients.remove(client)
 
     def broadcast(self, msg):

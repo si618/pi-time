@@ -44,13 +44,15 @@ class Boolean(django_settings.db.Model):
         abstract = True
 
 class GPIOLayout(django_settings.db.Model):
-    value = models.PositiveSmallIntegerField(max_length=2, choices=settings.GPIO_LAYOUT)
+    value = models.PositiveSmallIntegerField(max_length=2,
+        choices=settings.GPIO_LAYOUT)
 
     class Meta:
         abstract = True
 
 class UnitOfMeasurement(django_settings.db.Model):
-    value = models.CharField(max_length=2, choices=settings.UNIT_OF_MEASUREMENT)
+    value = models.CharField(max_length=2,
+        choices=settings.UNIT_OF_MEASUREMENT)
 
     class Meta:
         abstract = True

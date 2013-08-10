@@ -11,4 +11,3 @@ def time_to_string(start, finish):
     milliseconds = delta.microseconds // 1000
     time = '%s:%s:%s.%s' % (hours, minutes, seconds, milliseconds)
     return time
-

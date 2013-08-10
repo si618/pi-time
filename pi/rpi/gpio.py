@@ -8,7 +8,7 @@ import time
 
 logger = logging.getLogger('laptimer')
 
-class LapTimerGPIO:
+class PiTimeGPIO:
     gpio_app = django_settings.get('gpio_app')
     gpio_lap = django_settings.get('gpio_lap')
     gpio_sensor = django_settings.get('gpio_sensor')
@@ -17,15 +17,20 @@ class LapTimerGPIO:
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.gpio_app, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.gpio_lap, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(self.gpio_sensor, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.gpio_sensor, GPIO.IN, initial=GPIO.LOW,
+            pull_up_down=GPIO.PUD_DOWN)
         GPIO.add_event_detect(self.gpio_sensor, GPIO.RISING,
-            callback=_sensor_event_detected, bouncetime=1000)
+            callback=_sensor_event, bouncetime=1000)
         logging.debug('GPIO channels configured as app: %i lap: %i sensor: %i'
             % (self.gpio_app, self.gpio_lap, self.gpio_sensor))
 
-    def flashAppReady(self):
-        logging.debug('Flashing app ready')
+    def strobeAppOpen(self):
+        logging.debug('Strobe app open')
         _strobe_led(self.gpio_app, GPIO.HIGH)
+
+    def strobeAppClose(self):
+        logging.debug('Strobe app close')
+        _strobe_led(self.gpio_app, GPIO.LOW)
 
     def cleanup(self):
         logging.debug('Cleaning up')
@@ -34,10 +39,11 @@ class LapTimerGPIO:
         GPIO.remove_event_detect(self.gpio_sensor)
         GPIO.cleanup()
 
-    def _sensor_event_detected(self, channel):
+    def _sensor_event(self, channel):
         time = timezone.now()
-        logging.debug('Sensor event detected')
-        _strobe_led(self.gpio_lap, GPIO.HIGH)
+        logging.debug('Sensor event')
+        _strobe_led(self.gpio_lap, GPIO.LOW)
+        # TODO: Call API.end_lap
 
     def _strobe_led(self, channel, final_state):
         on = not GPIO.input(channel)
