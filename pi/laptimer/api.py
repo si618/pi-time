@@ -31,8 +31,7 @@ class API:
         '''Add a new rider. Rider name must be unique.'''
         '''Sends a broadcast message after rider has been added.'''
         if Rider.objects.filter(name=rider_name).exists():
-            # TODO: i18n
-            error = { 'error', 'Rider already exists' }
+            error = 'Rider already exists' # TODO: i18n
             return APIResult('add_rider', result=False, data=error)
         rider = Rider.objects.create(name=rider_name)
         return APIResult('add_rider', result=True, data=rider.name)
@@ -40,7 +39,16 @@ class API:
     def change_rider(self, rider_name, new_rider_name):
         '''Changes the riders name. Rider name must be unique.'''
         '''Sends a broadcast message after rider has been changed.'''
-        return APIResult('change_rider', result=True, data=new_rider_name)
+        if Rider.objects.filter(name=new_rider_name).exists():
+            error = 'Rider already exists' # TODO: i18n
+            return APIResult('change_rider', result=False, data=error)
+        if not Rider.objects.filter(name=rider_name).exists():
+            error = 'Rider not found' # TODO: i18n
+            return APIResult('change_rider', result=False, data=error)
+        rider = Rider.objects.get(name=rider_name)
+        rider.name = new_rider_name
+        rider.save()
+        return APIResult('change_rider', result=True, data=rider.name)
 
     def remove_rider(self, rider_name):
         '''Removes a rider, including all track, session and lap data.'''

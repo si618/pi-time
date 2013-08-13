@@ -168,12 +168,35 @@ class ApiTestCase(TestCase):
     def test_add_rider_fails_when_rider_exists(self):
         rider = Rider.objects.create(name='bogus')
         # TODO: i18n
-        error = { 'error', 'Rider already exists' }
+        error = 'Rider already exists'
         result = API().add_rider(rider.name)
         self.assertFalse(result.result)
         self.assertEqual(error, result.data)
 
     def test_add_rider_passes(self):
-        result = API().add_rider('bogus')
+        name = 'bogus'
+        result = API().add_rider(name)
         self.assertTrue(result.result)
+        self.assertEqual(name, result.data)
 
+    def test_change_rider_fails_when_rider_not_found(self):
+        error = 'Rider not found'
+        result = API().change_rider('bogus', 'none')
+        self.assertFalse(result.result)
+        self.assertEqual(error, result.data)
+
+    def test_change_rider_fails_when_new_rider_exists(self):
+        rider = Rider.objects.create(name='bogus')
+        # TODO: i18n
+        error = 'Rider already exists'
+        result = API().change_rider('none', rider.name)
+        self.assertFalse(result.result)
+        self.assertEqual(error, result.data)
+
+    def test_change_rider_passes(self):
+        first_name = 'bogus'
+        changed_name = 'betty'
+        API().add_rider(first_name)
+        result = API().change_rider(first_name, changed_name)
+        self.assertTrue(result.result)
+        self.assertEqual(changed_name, result.data)
