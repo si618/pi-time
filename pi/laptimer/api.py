@@ -30,7 +30,12 @@ class API:
     def add_rider(self, rider_name):
         '''Add a new rider. Rider name must be unique.'''
         '''Sends a broadcast message after rider has been added.'''
-        return APIResult('add_rider', result=True, data=rider_name)
+        if Rider.objects.filter(name=rider_name).exists():
+            # TODO: i18n
+            error = { 'error', 'Rider already exists' }
+            return APIResult('add_rider', result=False, data=error)
+        rider = Rider.objects.create(name=rider_name)
+        return APIResult('add_rider', result=True, data=rider.name)
 
     def change_rider(self, rider_name, new_rider_name):
         '''Changes the riders name. Rider name must be unique.'''

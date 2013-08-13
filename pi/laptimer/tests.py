@@ -2,6 +2,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from models import Track, Rider, Session, Lap
+from api import API
 import compute
 import datetime
 import django_settings
@@ -27,12 +28,14 @@ class DjangoSettingsTestCase(TestCase):
         self.assertTrue(django_settings.exists('gpio_sensor'))
         self.assertEqual(18, django_settings.get('gpio_sensor'))
 
+
 class TrackTestCase(TestCase):
 
     def test_timeout_defaults_to_twice_distance_when_none(self):
         Track.objects.create(name='Test Track', distance=10)
         track = Track.objects.get(id=1)
         self.assertEqual(20, track.timeout)
+
 
 class SessionTestCase(TestCase):
 
@@ -43,6 +46,7 @@ class SessionTestCase(TestCase):
         Session.objects.create(name='Test Session', track=track)
         session = Session.objects.get(id=1)
         self.assertTrue(session.start >= now)
+
 
 class LapTestCase(TestCase):
 
@@ -157,3 +161,19 @@ class ComputeTestCase(unittest.TestCase):
         self.assertEqual(6.8182,
             compute.average_speed_per_hour(start, finish, 50))
         django_settings.set('String', 'unit_of_measurement', settings.METRIC)
+
+
+class ApiTestCase(TestCase):
+
+    def test_add_rider_fails_when_rider_exists(self):
+        rider = Rider.objects.create(name='bogus')
+        # TODO: i18n
+        error = { 'error', 'Rider already exists' }
+        result = API().add_rider(rider.name)
+        self.assertFalse(result.result)
+        self.assertEqual(error, result.data)
+
+    def test_add_rider_passes(self):
+        result = API().add_rider('bogus')
+        self.assertTrue(result.result)
+
