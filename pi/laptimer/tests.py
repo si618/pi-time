@@ -165,38 +165,118 @@ class ComputeTestCase(unittest.TestCase):
 
 class ApiTestCase(TestCase):
 
+    # TODO:
+
+    # Rider tests
+
     def test_add_rider_fails_when_rider_exists(self):
         rider = Rider.objects.create(name='bogus')
-        # TODO: i18n
-        error = 'Rider already exists'
         result = API().add_rider(rider.name)
         self.assertFalse(result.result)
+        self.assertEqual('add_rider', result.call)
+        error = 'Rider already exists' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_add_rider_fails_when_name_invalid(self):
+        result = API().add_rider(rider_name=None)
+        self.assertFalse(result.result)
+        self.assertEqual('add_rider', result.call)
+        error = 'Integrity error' # TODO: i18n
         self.assertEqual(error, result.data)
 
     def test_add_rider_passes(self):
         name = 'bogus'
         result = API().add_rider(name)
+        self.assertTrue(Rider.objects.filter(name=name).exists())
         self.assertTrue(result.result)
-        self.assertEqual(name, result.data)
+        self.assertEqual('add_rider', result.call)
+        rider = Rider.objects.get(name=name)
+        self.assertEqual(rider, result.data)
 
     def test_change_rider_fails_when_rider_not_found(self):
-        error = 'Rider not found'
         result = API().change_rider('bogus', 'none')
         self.assertFalse(result.result)
+        self.assertEqual('change_rider', result.call)
+        error = 'Rider not found' # TODO: i18n
         self.assertEqual(error, result.data)
 
     def test_change_rider_fails_when_new_rider_exists(self):
         rider = Rider.objects.create(name='bogus')
-        # TODO: i18n
-        error = 'Rider already exists'
         result = API().change_rider('none', rider.name)
         self.assertFalse(result.result)
+        self.assertEqual('change_rider', result.call)
+        error = 'Rider already exists' # TODO: i18n
         self.assertEqual(error, result.data)
 
     def test_change_rider_passes(self):
         first_name = 'bogus'
         changed_name = 'betty'
-        API().add_rider(first_name)
+        Rider.objects.create(name=first_name)
         result = API().change_rider(first_name, changed_name)
+        self.assertTrue(Rider.objects.filter(name=changed_name).exists())
         self.assertTrue(result.result)
-        self.assertEqual(changed_name, result.data)
+        self.assertEqual('change_rider', result.call)
+        rider = Rider.objects.get(name=changed_name)
+        self.assertEqual(rider, result.data)
+
+    def test_remove_rider_fails_when_rider_not_found(self):
+        result = API().remove_rider('bogus')
+        self.assertFalse(result.result)
+        self.assertEqual('remove_rider', result.call)
+        error = 'Rider not found' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_remove_rider_passes(self):
+        name = 'bogus'
+        rider = Rider.objects.create(name=name)
+        result = API().remove_rider(name)
+        self.assertFalse(Rider.objects.filter(name=name).exists())
+        self.assertTrue(result.result)
+        self.assertEqual('remove_rider', result.call)
+        self.assertEqual(name, result.data)
+
+    # Track tests
+
+    def test_add_track_fails_when_track_exists(self):
+        track = Track.objects.create(name='bogus', distance=50, timeout=100,
+            unit_of_measurement=settings.METRIC)
+        result = API().add_track(track.name, track.distance, track.timeout,
+            track.unit_of_measurement)
+        self.assertFalse(result.result)
+        self.assertEqual('add_track', result.call)
+        error = 'Track already exists' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_add_track_fails_when_distance_invalid(self):
+        result = API().add_track('bogus', 'FUBAR', 100, settings.METRIC)
+        self.assertFalse(result.result)
+        self.assertEqual('add_track', result.call)
+        error = '' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_add_track_fails_when_timeout_invalid(self):
+        result = API().add_track('bogus', 50, 'FUBAR', settings.METRIC)
+        self.assertFalse(result.result)
+        self.assertEqual('add_track', result.call)
+        error = '' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_add_track_fails_when_unit_of_measurement_invalid(self):
+        result = API().add_track('bogus', 50, 100, 'FUBAR')
+        self.assertFalse(result.result)
+        self.assertEqual('add_track', result.call)
+        error = '' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_add_track_passes(self):
+        name = 'bogus'
+        result = API().add_track(name, 50, 100, settings.METRIC)
+        self.assertTrue(Track.objects.filter(name=name).exists())
+        self.assertTrue(result.result)
+        self.assertEqual('add_track', result.call)
+        track = Track.objects.get(name=name)
+        self.assertEqual(track, result.data)
+
+    # Session tests
+
+    # Lap tests

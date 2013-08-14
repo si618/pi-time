@@ -1,3 +1,4 @@
+from django.db import transaction
 from laptimer.models import APIResult, APIBroadcast, Track, Rider, Session, Lap
 import logging
 
@@ -21,8 +22,8 @@ class API:
         '''
         return APIResult('get_data', result=True, data='Data goes here...')
 
-    def get_unfinished_laps(self):
-        '''Gets unfinished laps for all tracks.'''
+    def get_unfinished_laps(self, track_name=None):
+        '''Gets unfinished laps.'''
         pass
 
     # Rider methods
@@ -30,30 +31,40 @@ class API:
     def add_rider(self, rider_name):
         '''Add a new rider. Rider name must be unique.'''
         '''Sends a broadcast message after rider has been added.'''
-        if Rider.objects.filter(name=rider_name).exists():
-            error = 'Rider already exists' # TODO: i18n
-            return APIResult('add_rider', result=False, data=error)
-        rider = Rider.objects.create(name=rider_name)
-        return APIResult('add_rider', result=True, data=rider.name)
+        #check = self._check_if_rider_exists('add_rider', rider_name)
+        #if check != True:
+        #    return check
+        try:
+            rider = Rider.objects.create(name=rider_name)
+            logger.info('Added rider: ' + rider.name)
+            return APIResult('add_rider', result=True, data=rider)
+        except Exception as e:
+            logger.error('Exception caught in add_rider: %s' % e)
+            return APIResult('add_rider', result=False, data=e)
 
     def change_rider(self, rider_name, new_rider_name):
         '''Changes the riders name. Rider name must be unique.'''
         '''Sends a broadcast message after rider has been changed.'''
-        if Rider.objects.filter(name=new_rider_name).exists():
-            error = 'Rider already exists' # TODO: i18n
-            return APIResult('change_rider', result=False, data=error)
-        if not Rider.objects.filter(name=rider_name).exists():
-            error = 'Rider not found' # TODO: i18n
-            return APIResult('change_rider', result=False, data=error)
+        check = self._check_if_rider_exists('change_rider', new_rider_name)
+        if check != True:
+            return check
+        check = self._check_if_rider_not_found('change_rider', rider_name)
+        if check != True:
+            return check
         rider = Rider.objects.get(name=rider_name)
         rider.name = new_rider_name
         rider.save()
-        return APIResult('change_rider', result=True, data=rider.name)
+        return APIResult('change_rider', result=True, data=rider)
 
     def remove_rider(self, rider_name):
         '''Removes a rider, including all track, session and lap data.'''
         '''Sends a broadcast message after rider has been removed.'''
         # TODO: Role enforcement - admins only
+        check = self._check_if_rider_not_found('remove_rider', rider_name)
+        if check != True:
+            return check
+        rider = Rider.objects.get(name=rider_name)
+        rider.delete()
         return APIResult('remove_rider', result=True, data=rider_name)
 
     def get_rider_laps(self, rider_name):
@@ -92,17 +103,33 @@ class API:
         '''Gets statistics on a riders previous lap.'''
         pass
 
+    def _check_if_rider_exists(self, calling_method, rider_name):
+        if Rider.objects.filter(name=rider_name).exists():
+            error = 'Rider already exists' # TODO: i18n
+            return APIResult(calling_method, result=False, data=error)
+        return True
 
-    # Track related methods
+    def _check_if_rider_not_found(self, calling_method, rider_name):
+        if not Rider.objects.filter(name=rider_name).exists():
+            error = 'Rider not found' # TODO: i18n
+            return APIResult(calling_method, result=False, data=error)
+        return True
 
-    def add_track(self, track_name, track_distance, lap_timeout_in_seconds,
+    # Track methods
+
+    def add_track(self, track_name, track_distance, lap_timeout,
         unit_of_measurement):
         '''Add a new track. Track name must be unique.'''
         '''Sends a broadcast message after track has been added.'''
         # TODO: Role enforcement - admins only
-        pass
+        check = self._check_if_track_exists('add_track', track_name)
+        if check != True:
+            return check
+        track = Track.objects.create(name=track_name, distance=track_distance,
+            timeout=lap_timeout, unit_of_measurement=unit_of_measurement)
+        return APIResult('add_track', result=True, data=track)
 
-    def change_track(self, track_name, track_distance, lap_timeout_in_seconds,
+    def change_track(self, track_name, track_distance, lap_timeout,
         unit_of_measurement):
         '''Changes the track details. Track name must be unique.'''
         '''Sends a broadcast message after track has been changed.'''
@@ -126,6 +153,18 @@ class API:
     def get_track_lap_average(self, track_name):
         '''Gets statistics on track lap average.'''
         pass
+
+    def _check_if_track_exists(self, calling_method, track_name):
+        if Track.objects.filter(name=track_name).exists():
+            error = 'Track already exists' # TODO: i18n
+            return APIResult(calling_method, result=False, data=error)
+        return True
+
+    def _check_if_track_not_found(self, calling_method, track_name):
+        if not Track.objects.filter(name=track_name).exists():
+            error = 'Track not found' # TODO: i18n
+            return APIResult(calling_method, result=False, data=error)
+        return True
 
 
     # Session methods
