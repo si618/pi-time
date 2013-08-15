@@ -1,25 +1,33 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+import copy
 import django_settings
-import json
+import jsonpickle
+import logging
 import utils
+
+
+logger = logging.getLogger('laptimer')
 
 
 # API models
 
 class APIBase:
+    data = object
 
     class Meta:
         abstract = True
 
     def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
+        clone = copy.deepcopy(self)
+        if getattr(clone.data, '_state', False):
+            del clone.data._state
+        return jsonpickle.encode(clone, unpicklable=False)
 
 class APIResult(APIBase):
     call = str
     result = bool
-    data = object
 
     def __init__(self, call, result=False, data=None):
         self.call = call
@@ -28,7 +36,6 @@ class APIResult(APIBase):
 
 class APIBroadcast(APIBase):
     event = str
-    data = object
 
     def __init__(self, event, data=None):
         self.event = event

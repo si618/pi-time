@@ -138,7 +138,7 @@ LOGGING = {
     'formatters': {
         'simple': {
             'format': '%(asctime)s %(message)s'
-        },
+        }
     },
     'filters': {
         'require_debug_false': {
@@ -154,7 +154,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
-        },
+        }
     },
     'loggers': {
         'laptimer': {
@@ -162,6 +162,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+        'twisted': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        }
     }
 }
 

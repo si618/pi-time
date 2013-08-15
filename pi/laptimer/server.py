@@ -1,6 +1,6 @@
 from autobahn.websocket import WebSocketServerProtocol, WebSocketServerFactory
+from laptimer import api
 from laptimer.models import APIResult, APIBroadcast
-from laptimer.api import API
 from twisted.python import log
 import django_settings
 import json
@@ -12,7 +12,6 @@ logger = logging.getLogger('laptimer')
 
 class APIMessageHandler:
     '''Handles processing of API calls.'''
-    _api = API()
     # Events broadcasted before they are invoked
     _broadcast_pre = ['server_poweroff']
     # Events broadcasted after they are invoked
@@ -40,7 +39,9 @@ class APIMessageHandler:
         if not self._verify_type(server, result, APIResult, call):
             return
         server.sendMessage(result.toJSON())
-        self._broadcast(server, call, self._broadcast_post, result.data)
+        # Only broadcast if result was successfull
+        if result.result:
+            self._broadcast(server, call, self._broadcast_post, result.data)
 
     def _load_data(self, server, msg):
         if 'call' not in msg:
@@ -55,7 +56,7 @@ class APIMessageHandler:
         return data
 
     def _get_api_method(self, server, call):
-        method = getattr(self._api, call)
+        method = getattr(api, call)
         if not method:
             error = "Method not implemented in API: %s" % call
             logger.error(error)
