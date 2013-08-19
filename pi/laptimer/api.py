@@ -15,7 +15,7 @@ def add_rider(rider_name):
     '''Sends a broadcast message after rider has been added.'''
     method = 'add_rider'
     try:
-        check = db_check_if_found(Rider, method, rider_name)
+        check = _check_if_found(Rider, method, rider_name)
         if check != True:
             return check
         rider = Rider.objects.create(name=rider_name)
@@ -31,10 +31,10 @@ def change_rider(rider_name, new_rider_name):
     '''Sends a broadcast message after rider has been changed.'''
     method = 'change_rider'
     try:
-        check = db_check_if_found(Rider, method, new_rider_name)
+        check = _check_if_found(Rider, method, new_rider_name)
         if check != True:
             return check
-        check = db_check_if_not_found(Rider, method, rider_name)
+        check = _check_if_not_found(Rider, method, rider_name)
         if check != True:
             return check
         rider = Rider.objects.get(name=rider_name)
@@ -53,7 +53,7 @@ def remove_rider(rider_name):
     # TODO: Role enforcement - admins only
     method = 'remove_rider'
     try:
-        check = db_check_if_not_found(Rider, method, rider_name)
+        check = _check_if_not_found(Rider, method, rider_name)
         if check != True:
             return check
         rider = Rider.objects.get(name=rider_name)
@@ -112,7 +112,7 @@ def add_track(track_name, track_distance, lap_timeout,
     # TODO: Role enforcement - admins only
     method = 'add_track'
     try:
-        check = db_check_if_found(Track, method, track_name)
+        check = _check_if_found(Track, method, track_name)
         if check != True:
             return check
         if unit_of_measurement not in dict(settings.UNIT_OF_MEASUREMENT):
@@ -156,10 +156,27 @@ def get_track_lap_average(track_name):
 
 # Session methods
 
-def add_session(track_name, session_name):
-    '''Adds a new session. Session name must be unique.'''
+def add_session(track_name, session_name, started=None):
+    '''Adds and optionally starts a new session. Session name must be unique.'''
     '''Sends a broadcast message after session has been added.'''
     # TODO: Role enforcement - admins only
+    method = 'add_session'
+    try:
+        trackCheck = _check_if_not_found(Track, method, track_name)
+        if trackCheck != True:
+            return trackCheck
+        sessionCheck = _check_if_found(Session, method, session_name)
+        if sessionCheck != True:
+            return sessionCheck
+        track = Track.objects.get(name=track_name)
+        session = Session.objects.create(track_id=track.id, name=session_name,
+            start=started)
+        logger.info('%s: %s' % (method, session.name))
+        return APIResult(method, result=True, data=session)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, result=False, data=error)
     pass
 
 def change_session(session_name, new_session_name=None,
@@ -251,16 +268,14 @@ def get_unfinished_laps(track_name=None):
 
 # Helper methods
 
-def db_check_if_found(calling_object, calling_method, name):
+def _check_if_found(calling_object, calling_method, name):
     if calling_object.objects.filter(name=name).exists():
-        # TODO: i18n
-        error = '%s already exists' % calling_object.__name__
+        error = '%s already exists' % calling_object.__name__ # TODO: i18n
         return APIResult(calling_method, result=False, data=error)
     return True
 
-def db_check_if_not_found(calling_object, calling_method, name):
+def _check_if_not_found(calling_object, calling_method, name):
     if not calling_object.objects.filter(name=name).exists():
-        # TODO: i18n
-        error = '%s not found' % calling_object.__name__
+        error = '%s not found' % calling_object.__name__ # TODO: i18n
         return APIResult(calling_method, result=False, data=error)
     return True
