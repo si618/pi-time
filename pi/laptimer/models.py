@@ -25,14 +25,16 @@ class APIBase:
             del clone.data._state
         return jsonpickle.encode(clone, unpicklable=False)
 
+
 class APIResult(APIBase):
     call = str
-    result = bool
+    successful = bool
 
-    def __init__(self, call, result=False, data=None):
+    def __init__(self, call, successful=False, data=None):
         self.call = call
-        self.result = result
+        self.successful = successful
         self.data = data
+
 
 class APIBroadcast(APIBase):
     event = str
@@ -50,12 +52,14 @@ class Boolean(django_settings.db.Model):
     class Meta:
         abstract = True
 
+
 class GPIOLayout(django_settings.db.Model):
     value = models.PositiveSmallIntegerField(max_length=2,
         choices=settings.GPIO_LAYOUT)
 
     class Meta:
         abstract = True
+
 
 class UnitOfMeasurement(django_settings.db.Model):
     value = models.CharField(max_length=2,
@@ -77,6 +81,7 @@ class CommonBase(models.Model):
     class Meta:
         abstract = True
 
+
 class Track(CommonBase):
     name = models.CharField(max_length=64, unique=True)
     distance = models.FloatField()
@@ -92,6 +97,7 @@ class Track(CommonBase):
     def __unicode__(self):
         return self.name
 
+
 class Session(CommonBase):
     name = models.CharField(max_length=64, unique=True)
     track = models.ForeignKey(Track)
@@ -106,11 +112,13 @@ class Session(CommonBase):
             self.start = timezone.now()
         super(Session, self).save(*args, **kwargs)
 
+
 class Rider(CommonBase):
     name = models.CharField(max_length=64, unique=True)
 
     def __unicode__(self):
         return self.name
+
 
 class Lap(CommonBase):
     session = models.ForeignKey(Session)
@@ -148,6 +156,7 @@ class Lap(CommonBase):
         return compute.average_speed_per_second(self.start, self.finish,
             self.session.track.distance)
 
+
 class RecordBase(CommonBase):
     rider = models.ForeignKey(Rider)
     lap = models.ForeignKey(Lap)
@@ -158,14 +167,18 @@ class RecordBase(CommonBase):
     def __unicode__(self):
         return '%s\n%s\n%s\n%s' % (track, session, rider, lap)
 
+
 class CurrentTrackRecord(CommonBase):
     pass
+
 
 class CurrentSessionRecord(CommonBase):
     pass
 
+
 class CurrentRiderTrackRecord(CommonBase):
     pass
+
 
 class CurrentRiderSessionRecord(CommonBase):
     pass

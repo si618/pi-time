@@ -39,15 +39,14 @@ class APIMessageHandler:
         if not self._verify_type(server, result, APIResult, call):
             return
         server.sendMessage(result.toJSON())
-        # Only broadcast if result was successfull
-        if result.result:
+        if result.successful:
             self._broadcast(server, call, self._broadcast_post, result.data)
 
     def _load_data(self, server, msg):
         if 'call' not in msg:
             error = "Message missing 'call': %s" % msg
             logger.error(error)
-            result = APIResult(call=None, result=False, data=error)
+            result = APIResult(call=None, successful=False, data=error)
             server.sendMessage(result.toJSON())
             return
         data = json.loads(msg)
@@ -60,7 +59,7 @@ class APIMessageHandler:
         if not method:
             error = "Method not implemented in API: %s" % call
             logger.error(error)
-            result = APIResult(call, result=False, data=error)
+            result = APIResult(call, successful=False, data=error)
             server.sendMessage(result.toJSON())
             return
         return method
@@ -76,7 +75,7 @@ class APIMessageHandler:
         if not match:
             error = "Method must return %s, error in: %s" % (expected.__name__, call)
             logger.error(error)
-            result = APIResult(call, result=False, data=error)
+            result = APIResult(call, successful=False, data=error)
             server.sendMessage(result.toJSON())
         return match
 
