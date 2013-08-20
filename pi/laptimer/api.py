@@ -325,6 +325,13 @@ def server_poweroff(reboot=False):
     # TODO: Role enforcement - admins only
     pass
 
+def backup_to_cloud(modified=None):
+    '''
+    If modified is specified, only data on or after this time is backed up.
+    '''
+    # TODO: Role enforcement - admins only
+    return APIResult('backup_to_cloud', result=True, data='Cloud info goes here...')
+
 def get_data(modified=None):
     '''
     Gets track, session, rider, lap data and settings. Useful for backup.
