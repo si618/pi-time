@@ -22,6 +22,9 @@ class APIMessageHandler:
         'remove_lap', 'start_lap', 'end_lap', 'cancel_lap'
     ]
 
+    # TODO: User authentication and API authorization
+    # Authorization groups: admin, rider, sensor, spectator
+
     def process(self, server, msg):
         '''Processes an API call.'''
         data = self._load_data(server, msg)
@@ -86,7 +89,15 @@ class APIServerProtocol(WebSocketServerProtocol):
         self.factory.register(self)
 
     def onMessage(self, msg, binary):
-        self._handler.process(self, msg)
+        if binary:
+            return
+        try:
+            self._handler.process(self, msg)
+        except Exception as e:
+            logger.error('Unhandled exception: %s' % e)
+            error = type(e).__name__ + ' from message: ' + msg
+            result = APIResult('Unknown', successful=False, data=error)
+            self.sendMessage(result.toJSON())
 
     def connectionLost(self, reason):
         logger.debug('Connection lost: %s' % reason)
