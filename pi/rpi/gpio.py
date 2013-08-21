@@ -43,7 +43,7 @@ class PiTimeGPIO:
         time = timezone.now()
         logging.debug('Sensor event')
         _strobe_led(self.gpio_lap, GPIO.LOW)
-        # TODO: Call API.end_lap
+        # TODO: Call api.end_lap
 
     def _strobe_led(self, channel, final_state):
         on = not GPIO.input(channel)

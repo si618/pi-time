@@ -179,13 +179,16 @@ UNIT_OF_MEASUREMENT = (
     (IMPERIAL, 'Imperial')
 )
 
-DJANGO_SETTINGS = {
-    'debug_app': ('Boolean', DEBUG),
-    'unit_of_measurement': ('UnitOfMeasurement', METRIC),
-    'gpio_app': ('GPIOLayout', 15),
-    'gpio_lap': ('GPIOLayout', 16),
-    'gpio_sensor': ('GPIOLayout', 18)
-}
+START = 'ST'
+FINISH = 'FI'
+START_FINISH = 'SF'
+CHECKPOINT = 'CP'
+SENSOR_FUNCTION = (
+    (START, 'Start'),
+    (FINISH, 'Finish'),
+    (START_FINISH, 'Start and finish'),
+    (CHECKPOINT, 'Checkpoint')
+)
 
 GPIO_LAYOUT = (
     (3, '3 = GPIO 2'),
@@ -206,3 +209,11 @@ GPIO_LAYOUT = (
     (24, '24 = GPIO 8 (SPI0_CE0_N)'),
     (26, '26 = GPIO 7 (SPI0_CE1_N)')
 )
+
+DJANGO_SETTINGS = {
+    'debug_app': ('Boolean', DEBUG),
+    'unit_of_measurement': ('UnitOfMeasurement', METRIC),
+    'gpio_app': ('GPIOLayout', 15),
+    'gpio_lap': ('GPIOLayout', 16),
+    'gpio_sensor': ('GPIOLayout', 18)
+}

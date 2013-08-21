@@ -14,7 +14,7 @@ class APIMessageHandler:
     '''Handles processing of API calls.'''
     # Events broadcasted before they are invoked
     _broadcast_pre = ['server_poweroff']
-    # Events broadcasted after they are invoked
+    # Events broadcasted after they are invoked TODO: Use django signals
     _broadcast_post = [
         'add_rider', 'change_rider', 'remove_rider',
         'add_track', 'change_track', 'remove_track',
@@ -23,7 +23,11 @@ class APIMessageHandler:
     ]
 
     # TODO: User authentication and API authorization
-    # Authorization groups: admin, rider, sensor, spectator
+    # Authorization groups:
+    #   admin     - full access
+    #   rider     - modify own rider details, modify session details
+    #   sensor    - trigger sensor related events
+    #   spectator - view all data
 
     def process(self, server, msg):
         '''Processes an API call.'''
@@ -103,6 +107,7 @@ class APIServerProtocol(WebSocketServerProtocol):
         logger.debug('Connection lost: %s' % reason)
         WebSocketServerProtocol.connectionLost(self, reason)
         self.factory.unregister(self)
+
 
 observer = log.PythonLoggingObserver()
 observer.start()

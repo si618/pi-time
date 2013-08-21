@@ -98,6 +98,17 @@ class Track(CommonBase):
         return self.name
 
 
+class Sensor(CommonBase):
+    name = models.CharField(max_length=64, unique=True)
+    track = models.ForeignKey(Track)
+    function = models.CharField(max_length=2,
+        choices=settings.SENSOR_FUNCTION, default=settings.START_FINISH)
+    # TODO: Optional foreign keys for previous/next Section (of Track)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Session(CommonBase):
     name = models.CharField(max_length=64, unique=True)
     track = models.ForeignKey(Track)
