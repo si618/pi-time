@@ -16,12 +16,12 @@
 	[
 		{
 			"name": "Run Django Tests",
-			"working_dir": "${project_path}/pi",
+			"working_dir": "${project_path}/pi_time",
 			"cmd": ["python", "manage.py", "test", "--noinput"]
 		},
 		{
 			"name": "Run LapTimer Tests",
-			"working_dir": "${project_path}/pi",
+			"working_dir": "${project_path}/pi_time",
 			"cmd": ["python", "manage.py", "test", "laptimer", "--noinput"]
 		}
 	]

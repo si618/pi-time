@@ -18,6 +18,7 @@ Data is stored on the RPi SD card with backup to an authenticated client or (TOD
 
 * [autobahn](http://autobahn.ws/python) (tested 0.5.14) - TODO: fallback for old browsers
 * [django](https://docs.djangoproject.com/en/1.5/intro/install/) (tested on 1.5)
+* [django-bootstrap-toolkit](https://github.com/dyve/django-bootstrap-toolkit/) (tested on 2.15.0)
 * [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup) (tested on 1.3-3 beta)
 * [jsonpickle](https://github.com/jsonpickle/jsonpickle) (tested on 0.4)
 * [python](http://python.org/download/) (tested on 2.7)

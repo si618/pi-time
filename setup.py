@@ -1,17 +1,17 @@
 from setuptools import setup, find_packages
 
-import pi
+import pi_time
 
 
 setup(
 	name='pi-time',
-	version=pi.__version__,
+	version=pi_time.__version__,
 	description='Pump track lap timer running on a solar powered Raspberry Pi.',
-	author='Simon McKenna',
+	author=pi_time.__author__,
 	author_email='sshnug.si+pi-time@gmail.com',
 	url='http://github.com/si618/pi-time',
 	packages=find_packages(),
-	license='LICENSE.txt'
+	license='GNU General Public License v3 or later (GPLv3+)',
 	include_package_data=True,
 	classifiers=[
 		'Development Status :: 4 - Beta',
@@ -21,13 +21,15 @@ setup(
 		'Operating System :: OS Independent',
 		'Programming Language :: Python',
 		'Programming Language :: Python :: 2.7',
-		'Framework :: Autobahn',
 		'Framework :: Django',
 	],
 	install_requires=[
 		"autobahn == 0.5.14",
-		"Django >= 1.5",
-		"Django-settings >= 1.3",
+		"django == 1.5.2",
+		"django-bootstrap-toolkit == 2.15.0",
+		"django-settings == 1.3-3-beta",
+		"jsonpickle == 0.4.0",
+	],
 	zip_safe=False,
 )
 
