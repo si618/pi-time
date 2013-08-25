@@ -46,7 +46,7 @@ TODO: Detail setup of both hardware and software (pypi setup).
 ## Diagnostics
 
 LEDs mounted to the enclosure are used to show:
-* When the PV is charging (Green via PV Panel)
+* When the PV is charging batteries (Green via PV Panel)
 * When the RPi is on (Red via GPIO 3.3V to 0V)
 * When the app is running (Blue via GPIO port))
 * When a rider is on an active lap (White via GPIO port)
@@ -60,10 +60,10 @@ _Issue_:  Only one rider can be on the track at any one time.
 _Fix_: Use radio tags on bikes passing a receiver instead of using an infrared sensor.
 
 _Issue_:  Possible to shortcut tracks which cross over.  
-_Fix_: Add beacons at key points in the track which have to be triggered before the lap counts as finished.
+_Fix_: Add beacons at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.
 
-_Issue_ : Start and stop must be from the same location.  
-_Fix_: Add beacons to allow different sensors for start and stop locations.
+_Issue_ : Start and finish must be from the same sensor location.  
+_Fix_: Add beacons to allow different sensors for start and finish locations. 
 
 ## Improvements
 
