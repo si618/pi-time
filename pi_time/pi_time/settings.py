@@ -1,4 +1,4 @@
-# Django settings for pi project.
+# Django settings for pi_time project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
