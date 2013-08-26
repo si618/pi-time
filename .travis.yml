@@ -8,4 +8,4 @@ install:
     - pip install -r requirements.txt --use-mirrors
 script:
     - python pi_time/manage.py test laptimer
-    - python pi_time/manage.py test rpi
+    #- python pi_time/manage.py test rpi
