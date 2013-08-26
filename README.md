@@ -2,8 +2,7 @@
 
 Pump track lap timer running on a solar powered Raspberry Pi.
 
-.. image:: https://api.travis-ci.org/si618/pi-time.png?branch=master
-   :target: https://travis-ci.org/si618/pi-time
+[<img src="https://api.travis-ci.org/si618/pi-time.png?branch=master">](https://travis-ci.org/si618/pi-time)
 
 ## Overview
 
