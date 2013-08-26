@@ -162,6 +162,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+        'gpio': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
         'twisted': {
             'handlers': ['console'],
             'level': 'ERROR',
