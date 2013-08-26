@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 import time
 
 
-logger = logging.getLogger('laptimer')
+logger = logging.getLogger('gpio')
 
 class PiTimeGPIO:
     gpio_app = django_settings.get('gpio_app')
@@ -24,12 +24,12 @@ class PiTimeGPIO:
         logging.debug('GPIO channels configured as app: %i lap: %i sensor: %i'
             % (self.gpio_app, self.gpio_lap, self.gpio_sensor))
 
-    def strobeAppOpen(self):
-        logging.debug('Strobe app open')
+    def appOpen(self):
+        logging.debug('App open')
         _strobe_led(self.gpio_app, GPIO.HIGH)
 
-    def strobeAppClose(self):
-        logging.debug('Strobe app close')
+    def appClose(self):
+        logging.debug('App close')
         _strobe_led(self.gpio_app, GPIO.LOW)
 
     def cleanup(self):
@@ -43,12 +43,14 @@ class PiTimeGPIO:
         time = timezone.now()
         logging.debug('Sensor event')
         _strobe_led(self.gpio_lap, GPIO.LOW)
-        # TODO: Call api.end_lap
+        # TODO: trigger event to call api.end_lap
 
     def _strobe_led(self, channel, final_state):
         on = not GPIO.input(channel)
-        for index in xrange(1, 10):
+        strobe_count = 10 # TODO: settings?
+        strobe_sleep = 0.1 #
+        for index in xrange(1, strobe_count):
             GPIO.output(channel, on)
-            time.sleep(0.1)
+            time.sleep(strobe_sleep)
             on = not on
         GPIO.output(channel, final_state)
