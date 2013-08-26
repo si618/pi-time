@@ -14,7 +14,7 @@ class APIMessageHandler:
     '''Handles processing of API calls.'''
     # Events broadcasted before they are invoked
     _broadcast_pre = ['server_poweroff']
-    # Events broadcasted after they are invoked TODO: Use django signals
+    # Events broadcasted after they are invoked TODO: Use django signals?
     _broadcast_post = [
         'add_rider', 'change_rider', 'remove_rider',
         'add_track', 'change_track', 'remove_track',
@@ -22,12 +22,14 @@ class APIMessageHandler:
         'remove_lap', 'start_lap', 'end_lap', 'cancel_lap'
     ]
 
-    # TODO: User authentication and API authorization
+    # TODO: User authentication and API authorization using WAMP RPC instead of WebSocket,
+    # which replaces this manual message handling with autobahn code, see:
+    # http://autobahn.ws/static/reference/python/wampserver.html#autobahn.wamp.WampCraServerProtocol
     # Authorization groups:
     #   admin     - full access
-    #   rider     - modify own rider details, modify session details
+    #   rider     - modify own rider details, modify some session details
     #   sensor    - trigger sensor related events
-    #   spectator - view all data
+    #   spectator - view all data (get_...)
 
     def process(self, server, msg):
         '''Processes an API call.'''
