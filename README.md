@@ -16,20 +16,27 @@ Data is stored on the RPi SD card with backup to an authenticated client or (TOD
 
 ## Software
 
+#### Design
+
+Client/server push notification model for laptimer server using WebSockets and WAMP subprotocol. Sensor events also use websockets and are separated from the server to allow multiple sensors on different platforms (Arduino, Beagleboard, etc.), and because RPi.GPIO code needs to run as root, whilst the laptimer server does not.
+
 #### Required
 
-* [autobahn](http://autobahn.ws/python) (tested 0.5.14) - TODO: fallback for old browsers
-* [django](https://docs.djangoproject.com/en/1.5/intro/install/) (tested on 1.5)
-* [django-bootstrap-toolkit](https://github.com/dyve/django-bootstrap-toolkit/) (tested on 2.15.0)
-* [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup) (tested on 1.3-3 beta)
-* [jsonpickle](https://github.com/jsonpickle/jsonpickle) (tested on 0.4)
-* [python](http://python.org/download/) (tested on 2.7)
+* [autobahn](http://autobahn.ws/python) TODO: fallback for old browsers
+* [django](https://docs.djangoproject.com/en/1.5/intro/install/)
+* [django-bootstrap-toolkit](https://github.com/dyve/django-bootstrap-toolkit/)
+* [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup)
+* [jsonpickle](https://github.com/jsonpickle/jsonpickle)
+* [python](http://python.org/download/)
+
+See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt) for specific versions, and [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
+
 
 #### Recommended
 
-* [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540)) (tested on 1.5)
+* [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540))
 * [python-dev](http://packages.debian.org/wheezy/python-dev)
-* [raspbian](http://www.raspberrypi.org/downloads) (tested on wheezy)
+* [raspbian](http://www.raspberrypi.org/downloads)
 
 
 ## Hardware
@@ -43,7 +50,7 @@ Data is stored on the RPi SD card with backup to an authenticated client or (TOD
 
 ## Installation
 
-TODO: Detail setup of both hardware and software (pypi setup). 
+TODO: Detail setup of both hardware and software (pypi setup).
 
 ## Diagnostics
 
@@ -58,14 +65,14 @@ TODO: Add ability to query app log
 
 ## Issues
 
-_Issue_:  Only one rider can be on the track at any one time.  
+_Issue_:  Only one rider can be on the track at any one time.
 _Fix_: Use radio tags on bikes passing a receiver instead of using an infrared sensor.
 
-_Issue_:  Possible to shortcut tracks which cross over.  
+_Issue_:  Possible to shortcut tracks which cross over.
 _Fix_: Add beacons at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.
 
-_Issue_ : Start and finish must be from the same sensor location.  
-_Fix_: Add beacons to allow different sensors for start and finish locations. 
+_Issue_ : Start and finish must be from the same sensor location.
+_Fix_: Similar to shortcut issue, add beacons to allow different sensors for start and finish locations.
 
 ## Improvements
 
