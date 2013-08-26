@@ -1,0 +1,4 @@
+django==1.5.2
+django-bootstrap-toolkit==2.15.0
+django-settings==1.3-3-beta
+jsonpickle==0.4
