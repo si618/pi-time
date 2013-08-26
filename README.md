@@ -18,7 +18,7 @@ Data is stored on the RPi SD card with backup to an authenticated client or (TOD
 
 #### Design
 
-Client/server push notification model for laptimer server using WebSockets and WAMP subprotocol. Sensor events also use websockets and are separated from the server to allow multiple sensors on different platforms (Arduino, Beagleboard, etc.), and because RPi.GPIO code needs to run as root, whilst the laptimer server does not.
+Client/server push notification for laptimer server using WebSockets and WAMP subprotocol. Sensor events use websockets and are separated from the server to allow multiple sensors on different platforms (Arduino, ...), and because RPi.GPIO code needs to run as root, whilst the laptimer server does not.
 
 #### Required
 
@@ -31,13 +31,11 @@ Client/server push notification model for laptimer server using WebSockets and W
 
 See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt) for specific versions, and [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
 
-
 #### Recommended
 
 * [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540))
 * [python-dev](http://packages.debian.org/wheezy/python-dev)
 * [raspbian](http://www.raspberrypi.org/downloads)
-
 
 ## Hardware
 
@@ -61,7 +59,6 @@ LEDs mounted to the enclosure are used to show:
 * When a rider is on an active lap (White via GPIO port)
 
 TODO: Add ability to query app log
-
 
 ## Issues
 
