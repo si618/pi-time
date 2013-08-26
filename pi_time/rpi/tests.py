@@ -1,4 +1,4 @@
-from django.test import TestCase
+rom django.test import TestCase
 
 
 class GpioTest(TestCase):
