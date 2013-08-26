@@ -2,6 +2,9 @@
 
 Pump track lap timer running on a solar powered Raspberry Pi.
 
+.. image:: https://api.travis-ci.org/si618/pi-time.png?branch=master
+   :target: https://travis-ci.org/si618/pi-time
+
 ## Overview
 
 An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
