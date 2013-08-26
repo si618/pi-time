@@ -18,7 +18,7 @@ Data is stored on the RPi SD card with backup to an authenticated client or (TOD
 
 #### Design
 
-Client/server push notification for laptimer server using WebSockets and WAMP subprotocol. Sensor events use websockets and are separated from the server to allow multiple sensors on different platforms (Arduino, ...), and because RPi.GPIO code needs to run as root, whilst the laptimer server does not.
+Client/server push notification model for laptimer server using [WebSockets](http://tools.ietf.org/html/rfc6455) and [WAMP](http://wamp.ws). Sensor events also use websockets and are separated from the server to allow multiple sensors on different platforms (Arduino, Beagleboard, etc.), and because RPi.GPIO code needs to run as root, whilst the laptimer server does not.
 
 #### Required
 
