@@ -76,7 +76,7 @@ _Fix_: Similar to shortcut issue, add beacons to allow different sensors for sta
 * Cheaper to use 12v lead acid battery instead of AA or D batteries. No converter required for 12v sensor.
 * PV panels should be optional (possible with prototype but fairly tightly coupled)
 * Cheaper enclosure by using metal or plastic box and appropriate use of silicon.
-* Wifi, wireless mesh, 3/4G, satellite etc. could be used to send sensor events back to the laptimer server. TLS or similar encryption required and sensors needing authentication.
+* Wifi, wireless mesh, 3/4G, satellite etc. could be used to send sensor events back to the laptimer server. TLS or similar encryption required as well as sensor authentication.
 
 ### Software Improvements
 
