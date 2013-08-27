@@ -23,7 +23,6 @@ setup(
 		'Programming Language :: Python :: 2.7',
 		'Framework :: Django',
 	],
-	install_requires=open('requirements.txt').read(),
 	zip_safe=False,
 )
 
