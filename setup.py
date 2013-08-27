@@ -23,13 +23,7 @@ setup(
 		'Programming Language :: Python :: 2.7',
 		'Framework :: Django',
 	],
-	install_requires=[
-		"autobahn == 0.5.14",
-		"django == 1.5.2",
-		"django-bootstrap-toolkit == 2.15.0",
-		"django-settings == 1.3-3-beta",
-		"jsonpickle == 0.4.0",
-	],
+	install_requires=open('requirements.txt').read(),
 	zip_safe=False,
 )
 
