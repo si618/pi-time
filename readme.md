@@ -71,9 +71,15 @@ _Fix_: Add beacons at key points in the track which have to be triggered before 
 _Issue_ : Start and finish must be from the same sensor location.  
 _Fix_: Similar to shortcut issue, add beacons to allow different sensors for start and finish locations.
 
-## Improvements
+## Hardware Improvements
 
 * Cheaper to use 12v lead acid battery instead of AA or D batteries. No converter required for 12v sensor.
 * PV panels should be optional (possible with prototype but fairly tightly coupled)
 * Cheaper enclosure by using metal or plastic box and appropriate use of silicon.
+* Wifi, wireless mesh, 3/4G, satellite etc. could be used to send sensor events back to the laptimer server. TLS or similar encryption required and sensors needing authentication.
+
+## Software Improvements
+
 * Provide option to connect to existing WiFi access point instead, use RPi access point as fallback.
+* Add track checkpoints and sensor types (checkpoint,start,finish,start&finish) to model. This would fix several issues and enable longer events for different mtb races: downhill, enduro, cross country, etc.
+* AAdd chat for riders, spectators and admin. Could be useful for event or emergency broadcast near sensors.
