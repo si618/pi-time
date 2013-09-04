@@ -35,7 +35,6 @@ See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt
 
 * [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540))
 * [python-dev](http://packages.debian.org/wheezy/python-dev)
-* [raspbian](http://www.raspberrypi.org/downloads)
 
 ## Hardware
 
@@ -48,12 +47,18 @@ See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt
 
 ## Installation
 
-TODO: Detail setup of both hardware and software (pypi setup).
+[Setup operating system](http://www.raspberrypi.org/downloads)
+[Expand file system](http://elinux.org/RPi_raspi-config#expand_rootfs_-_Expand_root_partition_to_fill_SD_card)
+[Config memory split](http://elinux.org/RPi_raspi-config#memory_split_-_Change_memory_split)
+[Setup wifi access point](http://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/overview) 
+[Setup captive portal](http://sirlagz.net/2013/08/23/how-to-captive-portal-on-the-raspberry-pi/)
+[Setup web server](http://www.clemesha.org/blog/Django-on-Twisted-using-latest-twisted-web-wsgi/)
+[Install pi-time](https://pypi.python.org/pypi/pi-time)
 
 ## Diagnostics
 
 LEDs mounted to the enclosure are used to show:
-* When the PV is charging batteries (Green via PV Panel)
+* When the PV is charging batteries (Green via PV panel)
 * When the RPi is on (Red via GPIO 3.3V to 0V)
 * When the app is running (Blue via GPIO port))
 * When a rider is on an active lap (White via GPIO port)
