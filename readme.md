@@ -81,7 +81,7 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
   */etc/dnsmasq.conf*
 
     interface=wlan0
-    dhcp-range=10.0.0.10,10.0.0.100,255.255.255.0,12h
+    dhcp-range=10.0.0.10,10.0.0.210,255.255.255.0,12h
     address=/#/10.0.0.1
 
   */etc/default/ifplugd*
