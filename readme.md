@@ -61,6 +61,7 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
 
   */etc/network/interfaces*
   
+    ...
     auto wlan0
     iface wlan0 inet static
       address 10.0.0.1
@@ -88,6 +89,7 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
   
     INTERFACES="eth0"
     HOTPLUG_INTERFACES="eth0"
+    ...
 
 ## Diagnostics
 
