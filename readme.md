@@ -48,11 +48,17 @@ See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt
 ## Installation
 
 [Setup operating system](http://www.raspberrypi.org/downloads)
+
 [Expand file system](http://elinux.org/RPi_raspi-config#expand_rootfs_-_Expand_root_partition_to_fill_SD_card)
+
 [Config memory split](http://elinux.org/RPi_raspi-config#memory_split_-_Change_memory_split)
+
 [Setup wifi access point](http://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/overview) 
+
 [Setup captive portal](http://sirlagz.net/2013/08/23/how-to-captive-portal-on-the-raspberry-pi/)
+
 [Setup web server](http://www.clemesha.org/blog/Django-on-Twisted-using-latest-twisted-web-wsgi/)
+
 [Install pi-time](https://pypi.python.org/pypi/pi-time)
 
 ## Diagnostics
