@@ -78,7 +78,8 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
     channel=8
     beacon_int=100
     auth_algs=1
-
+    wmm_enabled=1
+    
   */etc/dnsmasq.conf*
 
     interface=wlan0
