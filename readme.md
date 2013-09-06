@@ -55,6 +55,40 @@ See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt
 [Setup web server](http://www.clemesha.org/blog/Django-on-Twisted-using-latest-twisted-web-wsgi/)  
 [Install pi-time](https://pypi.python.org/pypi/pi-time)  
 
+Example setup for RT5370 wifi adapter running as wifi access point with captive portal 
+
+    sudo apt-get install hostapd dnsmasq
+
+  */etc/network/interfaces*
+  
+    auto wlan0
+    iface wlan0 inet static
+      address 10.0.0.1
+      netmask 255.255.255.0
+
+  */etc/hostapd/hostapd.conf*
+
+    interface=wlan0
+    driver=nl80211
+    ctrl_interface=/var/run/hostapd
+    ctrl_interface_group=0
+    ssid=pi-time
+    hw_mode=g
+    channel=8
+    beacon_int=100
+    auth_algs=1
+
+  */etc/dnsmasq.conf*
+
+    interface=wlan0
+    dhcp-range=10.0.0.10,10.0.0.100,255.255.255.0,12h
+    address=/#/10.0.0.1
+
+  */etc/default/ifplugd*
+  
+    INTERFACES="eth0"
+    HOTPLUG_INTERFACES="eth0"
+
 ## Diagnostics
 
 LEDs mounted to the enclosure are used to show:
