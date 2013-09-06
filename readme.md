@@ -92,6 +92,7 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
     HOTPLUG_INTERFACES="eth0"
     ...
 
+
     sudo /etc/init.d/hostapd restart
     sudo /etc/init.d/dnsmasq restart
     
