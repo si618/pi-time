@@ -101,9 +101,9 @@ class Track(CommonBase):
 class Sensor(CommonBase):
     name = models.CharField(max_length=64, unique=True)
     track = models.ForeignKey(Track)
-    function = models.CharField(max_length=2,
-        choices=settings.SENSOR_FUNCTION, default=settings.START_FINISH)
-    # TODO: Optional foreign keys for previous/next Section (of Track)
+    sensor_type = models.CharField(max_length=2,
+        choices=settings.SENSOR, default=settings.SENSOR_START_FINISH)
+    # TODO: Optional foreign keys for previous/next TrackSector.
 
     def __unicode__(self):
         return self.name
@@ -131,41 +131,58 @@ class Rider(CommonBase):
         return self.name
 
 
+class LapTime(CommonBase):
+    lap = models.ForeignKey('Lap')
+    sensor = models.ForeignKey(Sensor)
+    time = models.DateTimeField()
+
+    def __unicode__(self):
+        return '%s %s' % (self.sensor.name, 
+            datetime.datetime.strptime(self.time, "%Y-%m-%d %H:%M:%S.%f"))
+
 class Lap(CommonBase):
     session = models.ForeignKey(Session)
     rider = models.ForeignKey(Rider)
-    start = models.DateTimeField()
-    finish =  models.DateTimeField(null=True, blank=True)
+    start = models.ForeignKey(LapTime, related_name='lap_start')
+    finish =  models.ForeignKey(LapTime, related_name='lap_finish', null=True, blank=True)
 
     def __unicode__(self):
-        if (self.finish is None):
+        if (self.finish.time is None):
             elapsed = timezone.now()
-            return utils.time_to_str(self.start, elapsed) + ' (Incomplete)'
+            return utils.time_to_str(self.start.time, elapsed) + ' (Incomplete)'
         else:
-            return utils.time_to_str(self.start, self.finish)
+            return utils.time_to_str(self.start.time, self.finish.time)
 
     def save(self, *args, **kwargs):
-        if (self.start is None):
-            self.start = timezone.now()
-        if (self.finish is not None and self.finish <= self.start):
+        if (self.finish is not None and self.finish.time <= self.start.time):
             raise ValueError('Start time must be before finish time!')
         super(Lap, self).save(*args, **kwargs)
 
     def lap_time_in_seconds(self):
-        if (self.finish is None):
+        if (self.finish.time is None):
             finish = timezone.now()
         else:
             finish = self.finish
-        delta = finish - self.start
+        delta = finish - self.start.time
         return delta.total_seconds()
 
     def average_speed_per_hour(self):
-        return compute.average_speed_per_hour(self.start, self.finish,
+        return compute.average_speed_per_hour(self.start.time, self.finish.time,
             self.session.track.distance)
 
     def average_speed_per_second(self):
-        return compute.average_speed_per_second(self.start, self.finish,
+        return compute.average_speed_per_second(self.start.time, self.finish.time,
             self.session.track.distance)
+
+
+#class TrackSector(CommonBase):
+#    track = models.ForeignKey(Track)
+#    sensor = models.ForeignKey(Sensor)
+#    position = models.PositiveSmallIntegerField()
+#    distance = models.FloatField()
+#
+#class LapSector(CommonBase):
+#    lap_time = models.ForeignKey(LapTime)
 
 
 class RecordBase(CommonBase):

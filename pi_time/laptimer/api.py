@@ -289,22 +289,15 @@ def get_session_lap_average(session_name):
 
 # Lap methods
 
-def start_lap(session_name, rider_name, start_time):
-    '''Starts a new lap.'''
-    '''Sends a broadcast message after lap has started.'''
+def add_lap_time(session_name, rider_name, sensor, time):
+    '''Adds a new lap time.'''
+    '''Depends on sensor type to determine if start, sector or finish time.'''
+    '''Sends a broadcast message describing the lap time.'''
     # TODO: Role enforcement - sensor only
     pass
 
-def end_lap(session_name, rider_name, end_time):
-    '''
-    Ends the lap, starting a new lap using the end time as new start time.
-    Sends a broadcast message after lap has ended.
-    '''
-    # TODO: Role enforcement - sensor only
-    pass
-
-def cancel_lap(session_name, rider_name, start_time):
-    '''Cancels the current lap.'''
+def cancel_lap(session_name, rider_name):
+    '''Cancels the rider's current lap.'''
     '''Sends a broadcast message after lap has been cancelled.'''
     # TODO: Role enforcement - only admin or current rider
     pass
@@ -315,6 +308,11 @@ def remove_lap(session_name, rider_name, start_time):
     # TODO: Role enforcement - admins only
     pass
 
+def restore_lap(session_name, rider_name, start_time):
+    '''Restores a previously removed lap.'''
+    '''Sends a broadcast message after lap has been restored.'''
+    # TODO: Role enforcement - admins only
+    pass
 
 # General methods
 
@@ -326,17 +324,13 @@ def server_poweroff(reboot=False):
     pass
 
 def backup_to_cloud(modified=None):
-    '''
-    If modified is specified, only data on or after this time is backed up.
-    '''
+    '''If modified specified, only data on or after this time is backed up.'''
     # TODO: Role enforcement - admins only
     return APIResult('backup_to_cloud', successful=True, data='Cloud info goes here...')
 
 def get_data(modified=None):
-    '''
-    Gets track, session, rider, lap data and settings. Useful for backup.
-    If modified is specified, only data on or after this time is returned.
-    '''
+    '''Gets track, session, rider, lap data and settings. Useful for backup.'''
+    '''If modified is specified, only data on or after this time is returned.'''
     return APIResult('get_data', successful=True, data='Data goes here...')
 
 def get_unfinished_laps(track_name=None):

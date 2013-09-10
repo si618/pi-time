@@ -177,22 +177,24 @@ LOGGING = {
 
 # LapTimer settings
 
-METRIC = 'SI'
-IMPERIAL = 'IM'
+METRIC = 'SI' # Report speed in km/h|m/s, distance in metres.
+IMPERIAL = 'IM' # Report speed in m/h|y/s, distance in yards.
 UNIT_OF_MEASUREMENT = (
     (METRIC, 'Metric'),
     (IMPERIAL, 'Imperial')
 )
 
-START = 'ST'
-FINISH = 'FI'
-START_FINISH = 'SF'
-CHECKPOINT = 'CP'
-SENSOR_FUNCTION = (
-    (START, 'Start'),
-    (FINISH, 'Finish'),
-    (START_FINISH, 'Start and finish'),
-    (CHECKPOINT, 'Checkpoint')
+SENSOR_START = 'ST'
+SENSOR_FINISH = 'FI'
+SENSOR_START_FINISH = 'SF'
+SENSOR_START_FINISH_BISECTOR = 'BS'
+SENSOR_SECTOR = 'SE'
+SENSOR = (
+    (SENSOR_START, 'Start'),
+    (SENSOR_FINISH, 'Finish'),
+    (SENSOR_START_FINISH, 'Start and finish'),
+    (SENSOR_START_FINISH_BISECTOR, 'Start, middle and finish (sensor triggered 3 times)'),
+    (SENSOR_SECTOR, 'Sector checkpoint (split times)'),
 )
 
 RPI_GPIO_LAYOUT = (

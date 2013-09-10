@@ -113,10 +113,10 @@ _Issue_:  Only one rider can be on the track at any one time.
 _Fix_: Use radio tags on bikes passing a receiver instead of using an infrared sensor.
 
 _Issue_:  Possible to shortcut tracks which cross over.  
-_Fix_: Add beacons at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.
+_Fix_: Add sensors at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.
 
 _Issue_ : Start and finish must be from the same sensor location.  
-_Fix_: Similar to shortcut issue, add beacons to allow different sensors for start and finish locations.
+_Fix_: Similar to shortcut issue, add sensors to allow different start and finish locations.
 
 ### Hardware Improvements
 
