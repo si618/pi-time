@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
-from laptimer.models import APIResult, APIBroadcast, Track, Rider, Session, Lap
+from laptimer.models import APIResult, APIBroadcast, Lap, LapTime, Rider, Session, Sensor, Track
+import datetime
 import logging
 
 
@@ -289,30 +290,144 @@ def get_session_lap_average(session_name):
 
 # Lap methods
 
-def add_lap_time(session_name, rider_name, sensor, time):
+def add_lap_time(session_name, rider_name, sensor_name, time):
     '''Adds a new lap time.'''
     '''Depends on sensor type to determine if start, sector or finish time.'''
     '''Sends a broadcast message describing the lap time.'''
-    # TODO: Role enforcement - sensor only
-    pass
+    # TODO: Role enforcement - sensor and admin only
+    method = 'add_lap_time'
+    try:
+        check = _check_if_not_found(Session, method, session_name)
+        if check != True:
+            return check
+        check = _check_if_not_found(Rider, method, rider_name)
+        if check != True:
+            return check
+        check = _check_if_not_found(Sensor, method, sensor_name)
+        if check != True:
+            return check
+        if time is None or type(time) is not datetime.datetime:
+            error = 'Time must be valid datetime' # TODO: i18n
+            return APIResult(method, successful=False, data=error)
+        session = Session.objects.get(name=session_name)
+        rider = Rider.objects.get(name=rider_name)
+        sensor = Sensor.objects.get(name=sensor_name)
+        if sensor.sensor_type == settings.SENSOR_START:
+            return _add_lap_time_start(method, session, rider, sensor, time)
+        elif sensor.sensor_type == settings.SENSOR_FINISH:
+            return _add_lap_time_finish(method, session, rider, sensor, time)
+        elif sensor.sensor_type == settings.SENSOR_START_FINISH:
+            return _add_lap_time_start_finish(method, session, rider, sensor, time)
+        elif sensor.sensor_type == settings.SENSOR_SECTOR:
+            return _add_lap_time_sector(method, session, rider, sensor, time)
+        else:
+            error = 'Unknown sensor type: %s' % sensor_type # TODO: i18n
+            return APIResult(method, successful=False, data=error)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, successful=False, data=error)
 
-def cancel_lap(session_name, rider_name):
-    '''Cancels the rider's current lap.'''
-    '''Sends a broadcast message after lap has been cancelled.'''
-    # TODO: Role enforcement - only admin or current rider
-    pass
+def _add_lap_time_start(method, session, rider, sensor, time):
+    if Lap.objects.filter(session=session, rider=rider, \
+        finish__isnull=True).exists():
+        error = 'Unable to start lap as an incomplete lap for rider %s in ' \
+                'session %s already exists' % (rider.name, session.name) # TODO: i18n
+        return APIResult(method, successful=False, data=error)
+    lap = Lap.objects.create(session=session, rider=rider)
+    lap.save()
+    lapTime = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
+    lapTime.save()
+    lap.start = lapTime
+    lap.save()
+    logger.info('Lap started: %s rider: %s' % (timezone.localtime(time),
+        rider.name))
+    return APIResult(method, successful=True, data=lap)
+
+def _add_lap_time_finish(method, session, rider, sensor, time):
+    if not Lap.objects.filter(session=session, rider=rider, \
+        finish__isnull=True).exists():
+        error = 'Unable to finish lap as no incomplete lap was found for ' \
+                'rider %s in session %s' % (rider.name, session.name) # TODO: i18n
+        return APIResult(method, successful=False, data=error)
+    laps = Lap.objects.filter(session=session, rider=rider, \
+        finish__isnull=True)
+    if laps.count() > 1:
+        error = 'Unable to finish lap as more than one incomplete lap was ' \
+                'found for rider %s in session %s' % (rider.name, session.name) # TODO: i18n
+        return APIResult(method, successful=False, data=error)
+    lap = laps[0]
+    lapTime = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
+    lapTime.save()
+    lap.finish = lapTime
+    lap.save()
+    logger.info('Lap finished: %s rider: %s time: %s'
+        % (timezone.localtime(time), rider.name, lap))
+    return APIResult(method, successful=True, data=lap)
+
+def _add_lap_time_start_finish(method, session, rider, sensor, time):
+    if Lap.objects.filter(session=session, rider=rider, \
+        finish__isnull=True).exists():
+        return _add_lap_time_finish(method, session, rider, sensor, time)
+    else:
+        return _add_lap_time_start(method, session, rider, sensor, time)
+
+def _add_lap_time_sector(method, session, rider, sensor, time):
+    error = 'Sector based sensors not currently supported'
+    return APIResult(method, successful=False, data=error)
+
+def cancel_incomplete_laps(session_name, rider_name):
+    '''Deletes all incomplete laps for the specified rider and session.'''
+    '''Sends a broadcast message after laps have been cancelled.'''
+    # TODO: Role enforcement - admin or current rider only
+    method = 'cancel_incomplete_laps'
+    try:
+        check = _check_if_not_found(Session, method, session_name)
+        if check != True:
+            return check
+        check = _check_if_not_found(Rider, method, rider_name)
+        if check != True:
+            return check
+        session = Session.objects.get(name=session_name)
+        rider = Rider.objects.get(name=rider_name)
+        laps = Lap.objects.filter(session=session, rider=rider, \
+            finish__isnull=True)
+        count = laps.count()
+        laps.delete()
+        logger.info('Cancelled %s incomplete laps for rider: %s in session %s:' \
+            % (count, rider_name, session_name))
+        return APIResult(method, successful=True, data=laps)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, successful=False, data=error)
 
 def remove_lap(session_name, rider_name, start_time):
-    '''Removes the lap. This is a soft delete and can be undone.'''
+    '''Deletes the lap. This is a soft delete and can be undone.'''
     '''Sends a broadcast message after lap has been removed.'''
     # TODO: Role enforcement - admins only
-    pass
+    method = 'remove_lap'
+    try:
+        check = _check_if_not_found(Session, method, session_name)
+        if check != True:
+            return check
+        check = _check_if_not_found(Rider, method, rider_name)
+        if check != True:
+            return check
+        session = Session.objects.get(name=session_name)
+        rider = Rider.objects.get(name=rider_name)
+        laps = Lap.objects.filter(session=session, rider=rider, \
+            laptime__lap_start__eq=start_time)
+        count = laps.count()
+        laps.delete()
+        logger.info('Removed laps for rider: %s in session %s:' \
+            % (count, rider_name, session_name))
+        return APIResult(method, successful=True, data=laps)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, successful=False, data=error)
 
-def restore_lap(session_name, rider_name, start_time):
-    '''Restores a previously removed lap.'''
-    '''Sends a broadcast message after lap has been restored.'''
-    # TODO: Role enforcement - admins only
-    pass
 
 # General methods
 

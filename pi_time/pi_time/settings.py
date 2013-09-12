@@ -187,13 +187,11 @@ UNIT_OF_MEASUREMENT = (
 SENSOR_START = 'ST'
 SENSOR_FINISH = 'FI'
 SENSOR_START_FINISH = 'SF'
-SENSOR_START_FINISH_BISECTOR = 'BS'
 SENSOR_SECTOR = 'SE'
 SENSOR = (
     (SENSOR_START, 'Start'),
     (SENSOR_FINISH, 'Finish'),
     (SENSOR_START_FINISH, 'Start and finish'),
-    (SENSOR_START_FINISH_BISECTOR, 'Start, middle and finish (sensor triggered 3 times)'),
     (SENSOR_SECTOR, 'Sector checkpoint (split times)'),
 )
 

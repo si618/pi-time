@@ -137,21 +137,20 @@ class LapTime(CommonBase):
     time = models.DateTimeField()
 
     def __unicode__(self):
-        return '%s %s' % (self.sensor.name, 
-            datetime.datetime.strptime(self.time, "%Y-%m-%d %H:%M:%S.%f"))
+        return '%s %s' % (self.sensor.name, timezone.localtime(self.time))
 
 class Lap(CommonBase):
     session = models.ForeignKey(Session)
     rider = models.ForeignKey(Rider)
-    start = models.ForeignKey(LapTime, related_name='lap_start')
-    finish =  models.ForeignKey(LapTime, related_name='lap_finish', null=True, blank=True)
+    start = models.ForeignKey(LapTime, related_name='lap_start', null=True, blank=True)
+    finish = models.ForeignKey(LapTime, related_name='lap_finish', null=True, blank=True)
 
     def __unicode__(self):
         if (self.finish.time is None):
             elapsed = timezone.now()
-            return utils.time_to_str(self.start.time, elapsed) + ' (Incomplete)'
+            return utils.time_to_string(self.start.time, elapsed) + ' (Incomplete)'
         else:
-            return utils.time_to_str(self.start.time, self.finish.time)
+            return utils.time_to_string(self.start.time, self.finish.time)
 
     def save(self, *args, **kwargs):
         if (self.finish is not None and self.finish.time <= self.start.time):
