@@ -336,9 +336,9 @@ def _add_lap_time_start(method, session, rider, sensor, time):
         return APIResult(method, successful=False, data=error)
     lap = Lap.objects.create(session=session, rider=rider)
     lap.save()
-    lapTime = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
-    lapTime.save()
-    lap.start = lapTime
+    lap_time = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
+    lap_time.save()
+    lap.start = lap_time
     lap.save()
     logger.info('Lap started: %s rider: %s' % (timezone.localtime(time),
         rider.name))
@@ -357,9 +357,10 @@ def _add_lap_time_finish(method, session, rider, sensor, time):
                 'found for rider %s in session %s' % (rider.name, session.name) # TODO: i18n
         return APIResult(method, successful=False, data=error)
     lap = laps[0]
-    lapTime = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
-    lapTime.save()
-    lap.finish = lapTime
+    lap_time = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
+    lap_time.save()
+    lap.finish = lap_time
+    lap.modified = timezone.now()
     lap.save()
     logger.info('Lap finished: %s rider: %s time: %s'
         % (timezone.localtime(time), rider.name, lap))
