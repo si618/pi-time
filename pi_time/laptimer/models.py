@@ -83,7 +83,7 @@ class CommonBase(models.Model):
 
 
 class Track(CommonBase):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, db_index=True)
     distance = models.FloatField()
     timeout = models.PositiveSmallIntegerField()
     unit_of_measurement = models.CharField(max_length=2,
@@ -99,7 +99,7 @@ class Track(CommonBase):
 
 
 class Sensor(CommonBase):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, db_index=True)
     track = models.ForeignKey(Track)
     sensor_type = models.CharField(max_length=2,
         choices=settings.SENSOR, default=settings.SENSOR_START_FINISH)
@@ -110,7 +110,7 @@ class Sensor(CommonBase):
 
 
 class Session(CommonBase):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, db_index=True)
     track = models.ForeignKey(Track)
     start = models.DateTimeField()
     finish = models.DateTimeField(null=True, blank=True)
@@ -125,7 +125,7 @@ class Session(CommonBase):
 
 
 class Rider(CommonBase):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, db_index=True)
 
     def __unicode__(self):
         return self.name
@@ -173,39 +173,14 @@ class Lap(CommonBase):
         return compute.average_speed_per_second(self.start.time, self.finish.time,
             self.session.track.distance)
 
+'''
+TODO: Implement if/when sector times are wanted
+class TrackSector(CommonBase):
+    track = models.ForeignKey(Track)
+    sensor = models.ForeignKey(Sensor)
+    position = models.PositiveSmallIntegerField()
+    distance = models.FloatField()
 
-#class TrackSector(CommonBase):
-#    track = models.ForeignKey(Track)
-#    sensor = models.ForeignKey(Sensor)
-#    position = models.PositiveSmallIntegerField()
-#    distance = models.FloatField()
-#
-#class LapSector(CommonBase):
-#    lap_time = models.ForeignKey(LapTime)
-
-
-class RecordBase(CommonBase):
-    rider = models.ForeignKey(Rider)
-    lap = models.ForeignKey(Lap)
-
-    class Meta:
-        abstract = True
-
-    def __unicode__(self):
-        return '%s\n%s\n%s\n%s' % (track, session, rider, lap)
-
-
-class CurrentTrackRecord(CommonBase):
-    pass
-
-
-class CurrentSessionRecord(CommonBase):
-    pass
-
-
-class CurrentRiderTrackRecord(CommonBase):
-    pass
-
-
-class CurrentRiderSessionRecord(CommonBase):
-    pass
+class LapSector(CommonBase):
+    lap_time = models.ForeignKey(LapTime)
+'''
