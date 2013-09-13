@@ -28,13 +28,16 @@ Client/server push notification for laptimer server using [WebSockets](http://to
 * [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup)
 * [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 * [python](http://python.org/download/)
+* [python-win32api](http://sourceforge.net/projects/pywin32/) (if testing on windows)
 
 See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt) for specific versions, and [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
+
 
 #### Recommended
 
 * [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540))
 * [python-dev](http://packages.debian.org/wheezy/python-dev)
+
 
 ## Hardware
 
@@ -47,20 +50,19 @@ See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt
 
 ## Installation
 
-[Setup operating system](http://www.raspberrypi.org/downloads)  
-[Expand file system](http://elinux.org/RPi_raspi-config#expand_rootfs_-_Expand_root_partition_to_fill_SD_card)  
-[Config memory split](http://elinux.org/RPi_raspi-config#memory_split_-_Change_memory_split)  
-[Setup wifi access point](http://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/overview)  
-[Setup captive portal](http://sirlagz.net/2013/08/23/how-to-captive-portal-on-the-raspberry-pi/)  
-[Setup web server](http://www.clemesha.org/blog/Django-on-Twisted-using-latest-twisted-web-wsgi/)  
-[Install pi-time](https://pypi.python.org/pypi/pi-time)  
+[Setup operating system](http://www.raspberrypi.org/downloads)
+[Expand file system](http://elinux.org/RPi_raspi-config#expand_rootfs_-_Expand_root_partition_to_fill_SD_card)
+[Config memory split](http://elinux.org/RPi_raspi-config#memory_split_-_Change_memory_split)
+[Setup wifi access point](http://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/overview)
+[Setup captive portal](http://sirlagz.net/2013/08/23/how-to-captive-portal-on-the-raspberry-pi/)
+[Install pi-time](https://pypi.python.org/pypi/pi-time)
 
-Example setup for RT5370 wifi adapter running as wifi access point with captive portal 
+Example setup for RT5370 wifi adapter running as wifi access point with captive portal
 
     sudo apt-get install hostapd dnsmasq
 
   */etc/network/interfaces*
-  
+
     ...
     auto wlan0
     iface wlan0 inet static
@@ -79,7 +81,7 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
     beacon_int=100
     auth_algs=1
     wmm_enabled=1
-    
+
   */etc/dnsmasq.conf*
 
     interface=wlan0
@@ -87,7 +89,7 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
     address=/#/10.0.0.1
 
   */etc/default/ifplugd*
-  
+
     INTERFACES="eth0"
     HOTPLUG_INTERFACES="eth0"
     ...
@@ -96,7 +98,7 @@ Example setup for RT5370 wifi adapter running as wifi access point with captive 
 
     sudo /etc/init.d/hostapd restart
     sudo /etc/init.d/dnsmasq restart
-    
+
 ## Diagnostics
 
 LEDs mounted to the enclosure are used to show:
@@ -109,13 +111,13 @@ TODO: Add ability to query app log
 
 ## Issues
 
-_Issue_:  Only one rider can be on the track at any one time.  
+_Issue_:  Only one rider can be on the track at any one time.
 _Fix_: Use radio tags on bikes passing a receiver instead of using an infrared sensor.
 
-_Issue_:  Possible to shortcut tracks which cross over.  
+_Issue_:  Possible to shortcut tracks which cross over.
 _Fix_: Add sensors at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.
 
-_Issue_ : Start and finish must be from the same sensor location.  
+_Issue_ : Start and finish must be from the same sensor location.
 _Fix_: Similar to shortcut issue, add sensors to allow different start and finish locations.
 
 ### Hardware Improvements
