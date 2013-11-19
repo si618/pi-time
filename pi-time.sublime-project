@@ -15,14 +15,9 @@
 	"build_systems":
 	[
 		{
-			"name": "Run Django Tests",
+			"name": "Run Tests",
 			"working_dir": "${project_path}/pi_time",
 			"cmd": ["python", "manage.py", "test", "--noinput"]
-		},
-		{
-			"name": "Run LapTimer Tests",
-			"working_dir": "${project_path}/pi_time",
-			"cmd": ["python", "manage.py", "test", "laptimer", "--noinput"]
 		}
 	]
 }

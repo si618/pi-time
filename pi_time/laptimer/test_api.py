@@ -3,18 +3,9 @@ from django.test import TestCase
 from django.utils import timezone
 from laptimer import api
 from laptimer.models import Lap, LapTime, Rider, Session, Sensor, Track
-import compute
-import datetime
-import django_settings
-import unittest
 
 
-# TODO: Once Django 1.6 is released, split tests into related files
-# e.g. api_tests.py for ApiTestCase, and use --pattern=*_tests.py
-
-class ApiTestCase(TestCase):
-
-    # Rider tests
+class RiderTestCase(TestCase):
 
     def test_add_rider_fails_when_rider_found(self):
         # Arrange
@@ -102,7 +93,8 @@ class ApiTestCase(TestCase):
         self.assertEqual('remove_rider', result.call)
         self.assertEqual(name, result.data)
 
-    # Track tests
+
+class TrackTestCase(TestCase):
 
     def test_add_track_fails_when_track_found(self):
         # Arrange
@@ -264,7 +256,8 @@ class ApiTestCase(TestCase):
         self.assertEqual('remove_track', result.call)
         self.assertEqual(name, result.data)
 
-    # Session tests
+
+class SessionTestCase(TestCase):
 
     def test_add_session_fails_when_session_found(self):
         # Arrange
@@ -400,7 +393,8 @@ class ApiTestCase(TestCase):
         self.assertEqual('remove_session', result.call)
         self.assertEqual(name, result.data)
 
-    # Lap tests
+
+class LapTestCase(TestCase):
 
     def test_add_lap_time_fails_when_session_not_found(self):
         # Arrange
@@ -720,217 +714,3 @@ class ApiTestCase(TestCase):
         self.assertEqual('add_lap_time', result.call)
         error = 'Sector based sensors not currently supported'
         self.assertEqual(error, result.data)
-
-
-class ServerTestCase(TestCase):
-    # TODO: APIMessageHandler et. al.
-    pass
-
-
-class ComputeTestCase(unittest.TestCase):
-
-    def test_average_kilometres_per_hour_returns_none_when_no_start(self):
-        # Arrange
-        finish = timezone.now()
-        # Act
-        avg_kph = compute.average_kilometres_per_hour(None, finish, 10)
-        # Assert
-        self.assertEqual(None, avg_kph)
-
-    def test_average_miles_per_hour_returns_none_when_no_start(self):
-        # Arrange
-        finish = timezone.now()
-        # Act
-        avg_mph = compute.average_miles_per_hour(None, finish, 10)
-        # Assert
-        self.assertEqual(None, avg_mph)
-
-    def test_average_speed_per_hour_returns_none_when_no_start(self):
-        # Arrange
-        finish = timezone.now()
-        # Act
-        avg_sph = compute.average_speed_per_hour(None, finish, 10)
-        # Assert
-        self.assertEqual(None, avg_sph)
-
-    def test_average_speed_per_second_returns_none_when_no_start(self):
-        # Arrange
-        finish = timezone.now()
-        # Act
-        avg_sps = compute.average_speed_per_second(None, finish, 10)
-        # Assert
-        self.assertEqual(None, avg_sps)
-
-    def test_average_kilometres_per_hour_returns_none_when_no_finish(self):
-        # Arrange
-        start = timezone.now()
-        # Act
-        avg_kph = compute.average_kilometres_per_hour(start, None, 10)
-        # Assert
-        self.assertEqual(None, avg_kph)
-
-    def test_average_miles_per_hour_returns_none_when_no_finish(self):
-        # Arrange
-        start = timezone.now()
-        # Act
-        avg_mph = compute.average_miles_per_hour(start, None, 10)
-        # Assert
-        self.assertEqual(None, avg_mph)
-
-    def test_average_speed_per_hour_returns_none_when_no_finish(self):
-        # Arrange
-        start = timezone.now()
-        # Act
-        avg_sph = compute.average_speed_per_hour(start, None, 10)
-        # Assert
-        self.assertEqual(None, avg_sph)
-
-    def test_average_speed_per_second_returns_none_when_no_finish(self):
-        # Arrange
-        start = timezone.now()
-        # Act
-        avg_sps = compute.average_speed_per_second(start, None, 10)
-        # Assert
-        self.assertEqual(None, avg_sps)
-
-    def test_average_speed_per_second_raises_exception_when_finish_equals_start(self):
-        # Arrange
-        start = timezone.now()
-        finish = start
-        # Act & Assert
-        with self.assertRaises(ValueError):
-            compute.average_speed_per_second(start, finish, 10)
-
-    def test_average_speed_per_second_raises_exception_when_finish_less_than_start(self):
-        # Arrange
-        finish = timezone.now()
-        start = finish + datetime.timedelta(seconds=1)
-        # Act & Assert
-        with self.assertRaises(ValueError):
-            compute.average_speed_per_second(start, finish, 10)
-
-    def test_average_speed_per_second_raises_exception_when_distance_equals_zero(self):
-        # Arrange
-        start = timezone.now()
-        finish = start + datetime.timedelta(seconds=1)
-        # Act & assert
-        with self.assertRaises(ValueError):
-            compute.average_speed_per_second(start, finish, 0)
-
-    def test_average_speed_per_second_raises_exception_when_distance_less_than_zero(self):
-        # Arrange
-        start = timezone.now()
-        finish = start + datetime.timedelta(seconds=1)
-        # Act & Assert
-        with self.assertRaises(ValueError):
-            compute.average_speed_per_second(start, finish, -0.1)
-
-    def test_average_speed_per_second_returns_5mps_50m_in_10s(self):
-        # Arrange
-        start = timezone.now()
-        finish = start + datetime.timedelta(seconds=10)
-        # Act
-        avg_sps = compute.average_speed_per_second(start, finish, 50)
-        # Assert
-        self.assertEqual(5, avg_sps)
-
-    def test_average_kilometres_per_hour_returns_12kph_50m_in_15s(self):
-        # Arrange
-        start = timezone.now()
-        finish = start + datetime.timedelta(seconds=15)
-        # Act
-        avg_kph = compute.average_kilometres_per_hour(start, finish, 50)
-        # Assert
-        self.assertEqual(12, avg_kph)
-
-    def test_average_miles_per_hour_returns_expected_6_8182mph_50y_in_15s(self):
-        # Arrange
-        start = timezone.now()
-        finish = start + datetime.timedelta(seconds=15)
-        # Act
-        avg_mph = compute.average_miles_per_hour(start, finish, 50)
-        # Assert
-        self.assertEqual(6.8182, avg_mph)
-
-    def test_average_speed_per_hour_returns_metric_result(self):
-        # Arrange
-        django_settings.set('String', 'unit_of_measurement', settings.METRIC)
-        start = timezone.now()
-        finish = start + datetime.timedelta(seconds=15)
-        # Act
-        avg_sph = compute.average_speed_per_hour(start, finish, 50)
-        # Assert
-        self.assertEqual(12, avg_sph)
-
-    def test_average_speed_per_hour_returns_imperial_result(self):
-        # Arrange
-        django_settings.set('String', 'unit_of_measurement', settings.IMPERIAL)
-        start = timezone.now()
-        finish = start + datetime.timedelta(seconds=15)
-        # Act
-        avg_sph = compute.average_speed_per_hour(start, finish, 50)
-        # Assert
-        self.assertEqual(6.8182, avg_sph)
-        django_settings.set('String', 'unit_of_measurement', settings.METRIC)
-
-
-class TrackTestCase(TestCase):
-
-    def test_timeout_defaults_to_twice_distance_when_none(self):
-        # Arrange
-        Track.objects.create(name='Test Track', distance=10)
-        track = Track.objects.get(id=1)
-        # Act
-        timeout = track.timeout
-        # Assert
-        self.assertEqual(20, timeout)
-
-
-class SessionTestCase(TestCase):
-
-    def test_start_defaults_to_now_when_none(self):
-        # Arrange
-        now = timezone.now()
-        Track.objects.create(name='Test Track', distance=10)
-        track = Track.objects.get(id=1)
-        Session.objects.create(name='Test Session', track=track)
-        session = Session.objects.get(id=1)
-        # Act & Assert
-        self.assertTrue(session.start >= now)
-
-
-class LapTestCase(TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.start = timezone.now()
-
-    def setUp(self):
-        Track.objects.create(name='Test Track', distance=50, timeout=100)
-        Rider.objects.create(name='Test Rider')
-        Session.objects.create(name='Test Session',
-            track=Track.objects.get(name='Test Track'), start=self.start)
-        Lap.objects.create(session=Session.objects.get(name='Test Session'),
-            rider=Rider.objects.get(name='Test Rider'), start=self.start)
-        #TODO: LapTime + tests
-
-
-class DjangoSettingsTestCase(TestCase):
-
-    def test_unit_of_measurement_defaults_to_metric(self):
-        self.assertTrue(django_settings.exists('unit_of_measurement'))
-        self.assertEqual(settings.METRIC,
-            django_settings.get('unit_of_measurement'))
-
-    def test_gpio_app_defaults_to_11(self):
-        self.assertTrue(django_settings.exists('gpio_app'))
-        self.assertEqual(15, django_settings.get('gpio_app'))
-
-    def test_gpio_lap_defaults_to_13(self):
-        self.assertTrue(django_settings.exists('gpio_lap'))
-        self.assertEqual(16, django_settings.get('gpio_lap'))
-
-    def test_gpio_sensor_defaults_to_18(self):
-        self.assertTrue(django_settings.exists('gpio_sensor'))
-        self.assertEqual(18, django_settings.get('gpio_sensor'))
-
