@@ -5,4 +5,5 @@ install:
     - pip install -r requirements.txt --use-mirrors
 script:
     - python pi_time/manage.py validate
-    - python pi_time/manage.py test
+    - python pi_time/manage.py test pi_time 
+    - python pi_time/manage.py test laptimer 
