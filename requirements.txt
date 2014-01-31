@@ -1,4 +1,4 @@
-autobahn==0.7.4
+autobahn==0.8.0
 django==1.6.1
 django-bootstrap-toolkit==2.15.0
 django-settings==1.3-11
