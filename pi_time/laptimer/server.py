@@ -1,4 +1,4 @@
-from autobahn.websocket import WebSocketServerProtocol, WebSocketServerFactory
+from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
 from laptimer import api
 from laptimer.models import APIResult, APIBroadcast
 from twisted.python import log
@@ -94,6 +94,9 @@ class APIServerProtocol(WebSocketServerProtocol):
     def onOpen(self):
         self.factory.register(self)
 
+    def onClose(self, wasClean, code, reason):
+        self.factory.unregister(self)
+
     def onMessage(self, msg, binary):
         if binary:
             return
@@ -118,24 +121,24 @@ log.startLogging(sys.stdout)
 class APIServerFactory(WebSocketServerFactory):
     protocol = APIServerProtocol
 
-    def __init__(self, url, debug):
-        WebSocketServerFactory.__init__(self, url, debug)
+    def __init__(self, url, debug, debugCodePaths):
+        WebSocketServerFactory.__init__(self, url, debug, debugCodePaths)
         self.clients = []
 
     def register(self, client):
         if not client in self.clients:
-            log.msg('Registered client: ' + client.peerstr,
+            log.msg('Registered client: '.format(client.peer),
                 logLevel=logging.DEBUG)
             self.clients.append(client)
 
     def unregister(self, client):
         if client in self.clients:
-            log.msg('Unregistered client: ' + client.peerstr,
+            log.msg('Unregistered client: '.format(client.peer),
                 logLevel=logging.DEBUG)
             self.clients.remove(client)
 
     def broadcast(self, msg):
         log.msg('Broadcasting message: %s' % msg, logLevel=logging.DEBUG)
         for client in self.clients:
-            logging.debug('Sending to: ' + client.peerstr)
+            logging.debug('Sending to: '.format(client.peer))
             client.sendMessage(msg)
