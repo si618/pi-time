@@ -1,6 +1,11 @@
 from django.test import TestCase
 from django.utils import timezone
-from laptimer.models import Lap, Rider, Session, Sensor, SensorEvent, Track
+from laptimer.models import Lap, \
+                            Rider, \
+                            Session, \
+                            Sensor, \
+                            SensorEvent, \
+                            Track
 
 
 class TrackTestCase(TestCase):

@@ -1,6 +1,8 @@
 from django.contrib import admin
-from laptimer.models import Track, Rider, Session, Lap
-
+from laptimer.models import Track, \
+							Rider, \
+							Session, \
+							Lap
 
 admin.site.register(Track)
 admin.site.register(Rider)

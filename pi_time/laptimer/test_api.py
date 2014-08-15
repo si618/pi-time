@@ -2,7 +2,12 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from laptimer import api
-from laptimer.models import Lap, Rider, Session, Sensor, SensorEvent, Track
+from laptimer.models import Lap, \
+                            Rider, \
+                            Session, \
+                            Sensor, \
+                            SensorEvent, \
+                            Track
 
 
 class RiderTestCase(TestCase):

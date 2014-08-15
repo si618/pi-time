@@ -1,6 +1,8 @@
-from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
+from autobahn.twisted.websocket import WebSocketServerProtocol, \
+                                       WebSocketServerFactory
 from laptimer import api
-from laptimer.models import APIResult, APIBroadcast
+from laptimer.models import APIResult, \
+                            APIBroadcast
 from twisted.python import log
 import django_settings
 import json

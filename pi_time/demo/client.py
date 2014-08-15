@@ -1,4 +1,5 @@
-from autobahn.twisted.websocket import WebSocketClientFactory, WebSocketClientProtocol
+from autobahn.twisted.websocket import WebSocketClientFactory, \
+                                       WebSocketClientProtocol
 from autobahn.twisted.websocket import connectWS
 from twisted.internet import reactor
 import django_settings
