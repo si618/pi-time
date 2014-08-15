@@ -1,17 +1,25 @@
+from autobahn.wamp1.protocol import exportRpc
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
-from laptimer.models import APIResult, APIBroadcast, Lap, LapTime, Rider, Session, Sensor, Track
+from laptimer.models import APIResult, \
+                            APIBroadcast, \
+                            Lap, \
+                            Rider, \
+                            Session, \
+                            Sensor, \
+                            SensorEvent, \
+                            Track
 import datetime
 import logging
 
-
 logger = logging.getLogger('laptimer')
 
-'''Interface for client communication with a lap timer server.'''
+'''Handles all communication with a lap time server.'''
 
 # Rider methods
 
+@exportRpc('add_rider')
 def add_rider(rider_name):
     '''Add a new rider. Rider name must be unique.'''
     '''Sends a broadcast message after rider has been added.'''
@@ -28,6 +36,7 @@ def add_rider(rider_name):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('change_rider')
 def change_rider(rider_name, new_rider_name):
     '''Changes the riders name. Rider name must be unique.'''
     '''Sends a broadcast message after rider has been changed.'''
@@ -50,6 +59,7 @@ def change_rider(rider_name, new_rider_name):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('remove_rider')
 def remove_rider(rider_name):
     '''Removes a rider, including all track, session and lap data.'''
     '''Sends a broadcast message after rider has been removed.'''
@@ -68,38 +78,47 @@ def remove_rider(rider_name):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('get_rider_laps')
 def get_rider_laps(rider_name):
     '''Gets statistics on a riders completed laps for all tracks.'''
     pass
 
-def get_rider_track_laps(rider_name, track_name):
+@exportRpc('get_rider_laps_for_track')
+def get_rider_laps_for_track(rider_name, track_name):
     '''Gets statistics on a riders completed laps for a track.'''
     pass
 
+@exportRpc('get_rider_track_record')
 def get_rider_track_record(rider_name, track_name):
     '''Gets statistics on a riders lap record for a track.'''
     pass
 
+@exportRpc('get_rider_track_average')
 def get_rider_track_average(rider_name, track_name):
     '''Gets statistics on a riders lap average for a track.'''
     pass
 
+@exportRpc('get_rider_session_laps')
 def get_rider_session_laps(rider_name, session_name):
     '''Gets statistics on a riders completed laps for a session.'''
     pass
 
+@exportRpc('get_rider_session_record')
 def get_rider_session_record(rider_name, session_name):
     '''Gets statistics on a riders lap record for a session.'''
     pass
 
+@exportRpc('get_rider_session_average')
 def get_rider_session_average(rider_name, session_name):
     '''Gets statistics on a riders lap average for a session.'''
     pass
 
+@exportRpc('get_rider_lap_current')
 def get_rider_lap_current(rider_name, session_name):
     '''Gets statistics on a riders current lap.'''
     pass
 
+@exportRpc('get_rider_lap_previous')
 def get_rider_lap_previous(rider_name, session_name):
     '''Gets statistics on a riders previous lap.'''
     pass
@@ -107,6 +126,7 @@ def get_rider_lap_previous(rider_name, session_name):
 
 # Track methods
 
+@exportRpc('add_track')
 def add_track(track_name, track_distance, lap_timeout,
     unit_of_measurement):
     '''Add a new track. Track name must be unique.'''
@@ -130,6 +150,7 @@ def add_track(track_name, track_distance, lap_timeout,
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('change_track')
 def change_track(track_name, new_track_name=None, new_track_distance=None,
     new_lap_timeout=None, new_unit_of_measurement=None):
     '''Changes track details. Track name must be unique.'''
@@ -170,6 +191,7 @@ def change_track(track_name, new_track_name=None, new_track_distance=None,
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('remove_track')
 def remove_track(track_name):
     '''Removes a track, including all session and lap data.'''
     '''Sends a broadcast message after track has been removed.'''
@@ -188,14 +210,17 @@ def remove_track(track_name):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('get_track_statistics')
 def get_track_statistics(track_name):
     '''Gets all track statistics.'''
     pass
 
+@exportRpc('get_track_lap_record')
 def get_track_lap_record(track_name):
     '''Gets statistics on track lap record.'''
     pass
 
+@exportRpc('get_track_lap_average')
 def get_track_lap_average(track_name):
     '''Gets statistics on track lap average.'''
     pass
@@ -203,6 +228,7 @@ def get_track_lap_average(track_name):
 
 # Session methods
 
+@exportRpc('add_session')
 def add_session(track_name, session_name):
     '''Adds a new session. Session name must be unique for all tracks.'''
     '''Sends a broadcast message after session has been added.'''
@@ -224,6 +250,7 @@ def add_session(track_name, session_name):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('change_session')
 def change_session(session_name, new_session_name=None, new_track_name=None):
     '''Changes the session.'''
     '''Sends a broadcast message after session has been changed.'''
@@ -258,6 +285,7 @@ def change_session(session_name, new_session_name=None, new_track_name=None):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('remove_session')
 def remove_session(session_name):
     '''Removes a session, including all lap data.'''
     '''Sends a broadcast message after session has been removed.'''
@@ -276,13 +304,16 @@ def remove_session(session_name):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('get_session_statistics')
 def get_session_statistics(session_name):
     '''Gets all session statistics.'''
 
+@exportRpc('get_session_lap_record')
 def get_session_lap_record(session_name):
     '''Gets statistics on session lap record.'''
     pass
 
+@exportRpc('get_session_lap_average')
 def get_session_lap_average(session_name):
     '''Gets statistics on session lap average.'''
     pass
@@ -290,6 +321,7 @@ def get_session_lap_average(session_name):
 
 # Lap methods
 
+@exportRpc('add_lap_time')
 def add_lap_time(session_name, rider_name, sensor_name, time):
     '''Adds a new lap time.'''
     '''Depends on sensor type to determine if start, sector or finish time.'''
@@ -336,7 +368,7 @@ def _add_lap_time_start(method, session, rider, sensor, time):
         return APIResult(method, successful=False, data=error)
     lap = Lap.objects.create(session=session, rider=rider)
     lap.save()
-    lap_time = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
+    lap_time = SensorEvent.objects.create(lap=lap, sensor=sensor, time=time)
     lap_time.save()
     lap.start = lap_time
     lap.save()
@@ -357,7 +389,7 @@ def _add_lap_time_finish(method, session, rider, sensor, time):
                 'found for rider %s in session %s' % (rider.name, session.name) # TODO: i18n
         return APIResult(method, successful=False, data=error)
     lap = laps[0]
-    lap_time = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
+    lap_time = SensorEvent.objects.create(lap=lap, sensor=sensor, time=time)
     lap_time.save()
     lap.finish = lap_time
     lap.modified = timezone.now()
@@ -377,6 +409,7 @@ def _add_lap_time_sector(method, session, rider, sensor, time):
     error = 'Sector based sensors not currently supported'
     return APIResult(method, successful=False, data=error)
 
+@exportRpc('cancel_incomplete_laps')
 def cancel_incomplete_laps(session_name, rider_name):
     '''Deletes all incomplete laps for the specified rider and session.'''
     '''Sends a broadcast message after laps have been cancelled.'''
@@ -403,6 +436,7 @@ def cancel_incomplete_laps(session_name, rider_name):
         error = type(e).__name__
         return APIResult(method, successful=False, data=error)
 
+@exportRpc('remove_lap')
 def remove_lap(session_name, rider_name, start_time):
     '''Deletes the lap. This is a soft delete and can be undone.'''
     '''Sends a broadcast message after lap has been removed.'''
@@ -432,6 +466,7 @@ def remove_lap(session_name, rider_name, start_time):
 
 # General methods
 
+@exportRpc('server_poweroff')
 def server_poweroff(reboot=False):
     '''Powers off the server after cancelling any unfinished laps.'''
     '''Invokes method: get_unfinished_laps and then cancel_lap.'''
@@ -439,16 +474,19 @@ def server_poweroff(reboot=False):
     # TODO: Role enforcement - admins only
     pass
 
+@exportRpc('backup_to_cloud')
 def backup_to_cloud(modified=None):
     '''If modified specified, only data on or after this time is backed up.'''
     # TODO: Role enforcement - admins only
     return APIResult('backup_to_cloud', successful=True, data='Cloud info goes here...')
 
+@exportRpc('get_data')
 def get_data(modified=None):
     '''Gets track, session, rider, lap data and settings. Useful for backup.'''
     '''If modified is specified, only data on or after this time is returned.'''
     return APIResult('get_data', successful=True, data='Data goes here...')
 
+@exportRpc('get_unfinished_laps')
 def get_unfinished_laps(track_name=None):
     '''Gets unfinished laps.'''
     pass

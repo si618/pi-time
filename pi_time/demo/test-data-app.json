@@ -79,7 +79,7 @@
         }
     },
     {
-        "model": "laptimer.LapTime",
+        "model": "laptimer.SensorEvent",
         "pk": 1,
         "fields":
         {
@@ -89,7 +89,7 @@
         }
     },
     {
-        "model": "laptimer.LapTime",
+        "model": "laptimer.SensorEvent",
         "pk": 2,
         "fields":
         {

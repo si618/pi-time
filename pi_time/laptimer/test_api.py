@@ -2,7 +2,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from laptimer import api
-from laptimer.models import Lap, LapTime, Rider, Session, Sensor, Track
+from laptimer.models import Lap, Rider, Session, Sensor, SensorEvent, Track
 
 
 class RiderTestCase(TestCase):
@@ -524,7 +524,7 @@ class LapTestCase(TestCase):
         time = timezone.now()
         lap = Lap.objects.create(session=session, rider=rider)
         lap.save()
-        lapTime = LapTime.objects.create(lap=lap, sensor=sensor, time=time)
+        lapTime = SensorEvent.objects.create(lap=lap, sensor=sensor, time=time)
         lapTime.save()
         lap.start = lapTime
         lap.save()
@@ -555,7 +555,7 @@ class LapTestCase(TestCase):
         time_start = timezone.now()
         lap_start = Lap.objects.create(session=session, rider=rider)
         lap_start.save()
-        lapTime_start = LapTime.objects.create(lap=lap_start,
+        lapTime_start = SensorEvent.objects.create(lap=lap_start,
             sensor=sensor_start, time=time_start)
         lapTime_start.save()
         lap_start.start = lapTime_start
@@ -616,7 +616,7 @@ class LapTestCase(TestCase):
         time_1 = timezone.now()
         lap_1 = Lap.objects.create(session=session, rider=rider)
         lap_1.save()
-        lapTime_1 = LapTime.objects.create(lap=lap_1, sensor=sensor_start,
+        lapTime_1 = SensorEvent.objects.create(lap=lap_1, sensor=sensor_start,
             time=time_1)
         lapTime_1.save()
         lap_1.start = lapTime_1
@@ -624,7 +624,7 @@ class LapTestCase(TestCase):
         time_2 = timezone.now()
         lap_2 = Lap.objects.create(session=session, rider=rider)
         lap_2.save()
-        lapTime_2 = LapTime.objects.create(lap=lap_2, sensor=sensor_start,
+        lapTime_2 = SensorEvent.objects.create(lap=lap_2, sensor=sensor_start,
             time=time_2)
         lapTime_2.save()
         lap_2.start = lapTime_2
@@ -677,7 +677,7 @@ class LapTestCase(TestCase):
         time_start = timezone.now()
         lap_start = Lap.objects.create(session=session, rider=rider)
         lap_start.save()
-        lapTime_start = LapTime.objects.create(lap=lap_start, sensor=sensor,
+        lapTime_start = SensorEvent.objects.create(lap=lap_start, sensor=sensor,
             time=time_start)
         lapTime_start.save()
         lap_start.start = lapTime_start

@@ -26,6 +26,8 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
+# Add 1.6 test runner to avoid check warning, just have to wait for 1.7
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Application definition
 

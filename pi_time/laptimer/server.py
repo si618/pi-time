@@ -24,7 +24,7 @@ class APIMessageHandler:
 
     # TODO: User authentication and API authorization using WAMP RPC instead of WebSocket,
     # which replaces this manual message handling with autobahn code, see:
-    # http://autobahn.ws/static/reference/python/wampserver.html#autobahn.wamp.WampCraServerProtocol
+    # https://github.com/tavendo/AutobahnPython/blob/master/examples/twisted/wamp1/authentication/server.py
     # Authorization groups:
     #   admin     - full access
     #   rider     - modify own rider details, modify some session details
@@ -42,7 +42,8 @@ class APIMessageHandler:
         if not method:
             return
         self._broadcast(server, call, self._broadcast_pre, kwargs)
-        logger.debug('Invoking method: %s(%s)' % (call, ', '.join(['%s=%s' % (key, value)
+        logger.debug('Invoking method: %s(%s)' % (call, 
+            ', '.join(['%s=%s' % (key, value)
             for key, value in kwargs.iteritems()])))
         result = method(**kwargs)
         if not self._verify_type(server, result, APIResult, call):
@@ -82,7 +83,8 @@ class APIMessageHandler:
     def _verify_type(self, server, actual, expected, call):
         match = isinstance(actual, expected)
         if not match:
-            error = "Method must return %s, error in: %s" % (expected.__name__, call)
+            error = "Method must return %s, error in: %s" % (expected.__name__,
+                call)
             logger.error(error)
             result = APIResult(call, successful=False, data=error)
             server.sendMessage(result.toJSON())
@@ -127,18 +129,18 @@ class APIServerFactory(WebSocketServerFactory):
 
     def register(self, client):
         if not client in self.clients:
-            log.msg('Registered client: '.format(client.peer),
+            log.msg('Registering client: ' + client.peer,
                 logLevel=logging.DEBUG)
             self.clients.append(client)
 
     def unregister(self, client):
         if client in self.clients:
-            log.msg('Unregistered client: '.format(client.peer),
+            log.msg('Unregistering client: ' + client.peer,
                 logLevel=logging.DEBUG)
             self.clients.remove(client)
 
     def broadcast(self, msg):
         log.msg('Broadcasting message: %s' % msg, logLevel=logging.DEBUG)
         for client in self.clients:
-            logging.debug('Sending to: '.format(client.peer))
+            log.msg('Sending to: ' + client.peer, logLevel=logging.DEBUG)
             client.sendMessage(msg)

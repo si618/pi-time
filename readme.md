@@ -129,6 +129,6 @@ _Fix_: Similar to shortcut issue, add sensors to allow different start and finis
 
 ### Software Improvements
 
-* Provide option to connect to existing WiFi access point instead, use RPi access point as fallback.
-* Add track checkpoints and sensor types (checkpoint,start,finish,start&finish) to model. This would fix several issues and enable longer events for different mtb races: downhill, enduro, cross country, etc. Consider [flutter](http://www.flutterwireless.com/) instead of wifi.
-* Add chat for riders, spectators and admin. Could be useful for event or emergency broadcast near sensors.
+* Provide option to connect to existing WiFi access point instead of RPi, use RPi access point as fallback.
+* Add chat for riders, spectators and admin (different permissions, broadcast ability, etc.). Could be useful for event or emergency broadcast near sensors?
+* Instead of just timing laps, include optional score system (slopestyle, whipoff, speed and style, etc.) which is broadcast like lap times.

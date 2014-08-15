@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
-from laptimer.models import Lap, LapTime, Rider, Session, Sensor, Track
+from laptimer.models import Lap, Rider, Session, Sensor, SensorEvent, Track
 
 
 class TrackTestCase(TestCase):
@@ -41,4 +41,4 @@ class LapTestCase(TestCase):
             track=Track.objects.get(name='Test Track'), start=self.start)
         Lap.objects.create(session=Session.objects.get(name='Test Session'),
             rider=Rider.objects.get(name='Test Rider'), start=self.start)
-        #TODO: LapTime + tests
+        #TODO: SensorEvent + tests
