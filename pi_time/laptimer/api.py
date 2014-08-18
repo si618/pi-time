@@ -13,13 +13,17 @@ from laptimer.models import APIResult, \
 import datetime
 import logging
 
+
 logger = logging.getLogger('laptimer')
+
 
 '''Handles all communication with a lap time server.'''
 
+
 # Rider methods
 
-@exportRpc('add_rider')
+
+@exportRpc
 def add_rider(rider_name):
     '''Add a new rider. Rider name must be unique.'''
     '''Sends a broadcast message after rider has been added.'''
@@ -30,13 +34,13 @@ def add_rider(rider_name):
             return check
         rider = Rider.objects.create(name=rider_name)
         logger.info('%s: %s' % (method, rider.name))
-        return APIResult(method, successful=True, data=rider)
+        return APIResult(method, ok=True, data=rider)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('change_rider')
+@exportRpc
 def change_rider(rider_name, new_rider_name):
     '''Changes the riders name. Rider name must be unique.'''
     '''Sends a broadcast message after rider has been changed.'''
@@ -53,13 +57,13 @@ def change_rider(rider_name, new_rider_name):
         rider.modified = timezone.now()
         rider.save()
         logger.info('%s: %s' % (method, rider.name))
-        return APIResult(method, successful=True, data=rider)
+        return APIResult(method, ok=True, data=rider)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('remove_rider')
+@exportRpc
 def remove_rider(rider_name):
     '''Removes a rider, including all track, session and lap data.'''
     '''Sends a broadcast message after rider has been removed.'''
@@ -72,53 +76,84 @@ def remove_rider(rider_name):
         rider = Rider.objects.get(name=rider_name)
         rider.delete()
         logger.info('%s: %s' % (method, rider_name))
-        return APIResult(method, successful=True, data=rider_name)
+        return APIResult(method, ok=True, data=rider_name)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('get_rider_laps')
+@exportRpc
+def get_rider(rider_name):
+    '''Gets specified rider.'''
+    # TODO: Role enforcement?
+    method = 'get_rider'
+    try:
+        check = _check_if_not_found(Rider, method, rider_name)
+        if check != True:
+            return check
+        rider = Rider.objects.get(name=rider_name)
+        logger.info('%s: %s' % (method, rider_name))
+        return APIResult(method, ok=True, data=rider)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, ok=False, data=error)
+
+@exportRpc
+def get_riders():
+    '''Gets all riders.'''
+    # TODO: Role enforcement?
+    method = 'get_riders'
+    try:
+        riders = Rider.objects.all()
+        logger.info('%s: %s' % (method, riders))
+        return APIResult(method, ok=True, data=riders)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, ok=False, data=error)
+
+@exportRpc
 def get_rider_laps(rider_name):
     '''Gets statistics on a riders completed laps for all tracks.'''
     pass
 
-@exportRpc('get_rider_laps_for_track')
+@exportRpc
 def get_rider_laps_for_track(rider_name, track_name):
     '''Gets statistics on a riders completed laps for a track.'''
     pass
 
-@exportRpc('get_rider_track_record')
+@exportRpc
 def get_rider_track_record(rider_name, track_name):
     '''Gets statistics on a riders lap record for a track.'''
     pass
 
-@exportRpc('get_rider_track_average')
+@exportRpc
 def get_rider_track_average(rider_name, track_name):
     '''Gets statistics on a riders lap average for a track.'''
     pass
 
-@exportRpc('get_rider_session_laps')
+@exportRpc
 def get_rider_session_laps(rider_name, session_name):
     '''Gets statistics on a riders completed laps for a session.'''
     pass
 
-@exportRpc('get_rider_session_record')
+@exportRpc
 def get_rider_session_record(rider_name, session_name):
     '''Gets statistics on a riders lap record for a session.'''
     pass
 
-@exportRpc('get_rider_session_average')
+@exportRpc
 def get_rider_session_average(rider_name, session_name):
     '''Gets statistics on a riders lap average for a session.'''
     pass
 
-@exportRpc('get_rider_lap_current')
+@exportRpc
 def get_rider_lap_current(rider_name, session_name):
     '''Gets statistics on a riders current lap.'''
     pass
 
-@exportRpc('get_rider_lap_previous')
+@exportRpc
 def get_rider_lap_previous(rider_name, session_name):
     '''Gets statistics on a riders previous lap.'''
     pass
@@ -126,7 +161,7 @@ def get_rider_lap_previous(rider_name, session_name):
 
 # Track methods
 
-@exportRpc('add_track')
+@exportRpc
 def add_track(track_name, track_distance, lap_timeout,
     unit_of_measurement):
     '''Add a new track. Track name must be unique.'''
@@ -139,18 +174,18 @@ def add_track(track_name, track_distance, lap_timeout,
             return check
         if unit_of_measurement not in dict(settings.UNIT_OF_MEASUREMENT):
             error = 'Invalid unit of measurement' # TODO: i18n
-            return APIResult(method, successful=False, data=error)
+            return APIResult(method, ok=False, data=error)
         track = Track.objects.create(name=track_name,
             distance=track_distance, timeout=lap_timeout,
             unit_of_measurement=unit_of_measurement)
         logger.info('%s: %s' % (method, track.name))
-        return APIResult(method, successful=True, data=track)
+        return APIResult(method, ok=True, data=track)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('change_track')
+@exportRpc
 def change_track(track_name, new_track_name=None, new_track_distance=None,
     new_lap_timeout=None, new_unit_of_measurement=None):
     '''Changes track details. Track name must be unique.'''
@@ -164,11 +199,11 @@ def change_track(track_name, new_track_name=None, new_track_distance=None,
         if new_track_name == None and new_track_distance == None \
         and new_lap_timeout == None and new_unit_of_measurement == None:
             error = 'At least one new track detail is required' # TODO: i18n
-            return APIResult(method, successful=False, data=error)
+            return APIResult(method, ok=False, data=error)
         if new_unit_of_measurement != None \
         and new_unit_of_measurement not in dict(settings.UNIT_OF_MEASUREMENT):
             error = 'Invalid unit of measurement' # TODO: i18n
-            return APIResult(method, successful=False, data=error)
+            return APIResult(method, ok=False, data=error)
         if new_track_name != None:
             check = _check_if_found(Track, method, new_track_name)
             if check != True:
@@ -185,13 +220,13 @@ def change_track(track_name, new_track_name=None, new_track_distance=None,
         track.modified = timezone.now()
         track.save()
         logger.info('%s: %s' % (method, track.name))
-        return APIResult(method, successful=True, data=track)
+        return APIResult(method, ok=True, data=track)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('remove_track')
+@exportRpc
 def remove_track(track_name):
     '''Removes a track, including all session and lap data.'''
     '''Sends a broadcast message after track has been removed.'''
@@ -204,23 +239,54 @@ def remove_track(track_name):
         track = Track.objects.get(name=track_name)
         track.delete()
         logger.info('%s: %s' % (method, track_name))
-        return APIResult(method, successful=True, data=track_name)
+        return APIResult(method, ok=True, data=track_name)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('get_track_statistics')
+@exportRpc
+def get_track(track_name):
+    '''Gets specified track.'''
+    # TODO: Role enforcement?
+    method = 'get_track'
+    try:
+        check = _check_if_not_found(Track, method, track_name)
+        if check != True:
+            return check
+        track = Track.objects.get(name=track_name)
+        logger.info('%s: %s' % (method, track_name))
+        return APIResult(method, ok=True, data=track)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, ok=False, data=error)
+
+@exportRpc
+def get_tracks():
+    '''Gets all tracks.'''
+    # TODO: Role enforcement?
+    method = 'get_tracks'
+    try:
+        tracks = Track.objects.all()
+        logger.info('%s: %s' % (method, tracks))
+        return APIResult(method, ok=True, data=tracks)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, ok=False, data=error)
+
+@exportRpc
 def get_track_statistics(track_name):
     '''Gets all track statistics.'''
     pass
 
-@exportRpc('get_track_lap_record')
+@exportRpc
 def get_track_lap_record(track_name):
     '''Gets statistics on track lap record.'''
     pass
 
-@exportRpc('get_track_lap_average')
+@exportRpc
 def get_track_lap_average(track_name):
     '''Gets statistics on track lap average.'''
     pass
@@ -228,7 +294,7 @@ def get_track_lap_average(track_name):
 
 # Session methods
 
-@exportRpc('add_session')
+@exportRpc
 def add_session(track_name, session_name):
     '''Adds a new session. Session name must be unique for all tracks.'''
     '''Sends a broadcast message after session has been added.'''
@@ -244,13 +310,13 @@ def add_session(track_name, session_name):
         track = Track.objects.get(name=track_name)
         session = Session.objects.create(track_id=track.id, name=session_name)
         logger.info('%s: %s' % (method, session.name))
-        return APIResult(method, successful=True, data=session)
+        return APIResult(method, ok=True, data=session)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('change_session')
+@exportRpc
 def change_session(session_name, new_session_name=None, new_track_name=None):
     '''Changes the session.'''
     '''Sends a broadcast message after session has been changed.'''
@@ -262,7 +328,7 @@ def change_session(session_name, new_session_name=None, new_track_name=None):
             return check
         if new_session_name == None and new_track_name == None:
             error = 'New session or track name is required' # TODO: i18n
-            return APIResult(method, successful=False, data=error)
+            return APIResult(method, ok=False, data=error)
         if new_session_name != None:
             check = _check_if_found(Session, method, new_session_name)
             if check != True:
@@ -279,13 +345,13 @@ def change_session(session_name, new_session_name=None, new_track_name=None):
         session.modified = timezone.now()
         session.save()
         logger.info('%s: %s' % (method, session.name))
-        return APIResult(method, successful=True, data=session)
+        return APIResult(method, ok=True, data=session)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('remove_session')
+@exportRpc
 def remove_session(session_name):
     '''Removes a session, including all lap data.'''
     '''Sends a broadcast message after session has been removed.'''
@@ -298,22 +364,71 @@ def remove_session(session_name):
         session = Session.objects.get(name=session_name)
         session.delete()
         logger.info('%s: %s' % (method, session_name))
-        return APIResult(method, successful=True, data=session_name)
+        return APIResult(method, ok=True, data=session_name)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('get_session_statistics')
+@exportRpc
+def get_session(session_name):
+    '''Gets specified session.'''
+    # TODO: Role enforcement?
+    method = 'get_session'
+    try:
+        check = _check_if_not_found(Session, method, session_name)
+        if check != True:
+            return check
+        session = Session.objects.get(name=session_name)
+        logger.info('%s: %s' % (method, session_name))
+        return APIResult(method, ok=True, data=session)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, ok=False, data=error)
+
+@exportRpc
+def get_sessions():
+    '''Gets all sessions for all tracks.'''
+    # TODO: Role enforcement?
+    method = 'get_sessions'
+    try:
+        sessions = Session.objects.all()
+        logger.info('%s: %s' % (method, sessions))
+        return APIResult(method, ok=True, data=sessions)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, ok=False, data=error)
+
+@exportRpc
+def get_sessions_for_track(track_name):
+    '''Gets all sessions for specified track.'''
+    # TODO: Role enforcement?
+    method = 'get_sessions_for_track'
+    try:
+        check = _check_if_not_found(Track, method, track_name)
+        if check != True:
+            return check
+        track = Track.objects.get(name=track_name)
+        sessions = Session.objects.filter(track=track)
+        logger.info('%s: %s' % (method, sessions))
+        return APIResult(method, ok=True, data=sessions)
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return APIResult(method, ok=False, data=error)
+
+@exportRpc
 def get_session_statistics(session_name):
     '''Gets all session statistics.'''
 
-@exportRpc('get_session_lap_record')
+@exportRpc
 def get_session_lap_record(session_name):
     '''Gets statistics on session lap record.'''
     pass
 
-@exportRpc('get_session_lap_average')
+@exportRpc
 def get_session_lap_average(session_name):
     '''Gets statistics on session lap average.'''
     pass
@@ -321,7 +436,7 @@ def get_session_lap_average(session_name):
 
 # Lap methods
 
-@exportRpc('add_lap_time')
+@exportRpc
 def add_lap_time(session_name, rider_name, sensor_name, time):
     '''Adds a new lap time.'''
     '''Depends on sensor type to determine if start, sector or finish time.'''
@@ -340,7 +455,7 @@ def add_lap_time(session_name, rider_name, sensor_name, time):
             return check
         if time is None or type(time) is not datetime.datetime:
             error = 'Time must be valid datetime' # TODO: i18n
-            return APIResult(method, successful=False, data=error)
+            return APIResult(method, ok=False, data=error)
         session = Session.objects.get(name=session_name)
         rider = Rider.objects.get(name=rider_name)
         sensor = Sensor.objects.get(name=sensor_name)
@@ -354,18 +469,18 @@ def add_lap_time(session_name, rider_name, sensor_name, time):
             return _add_lap_time_sector(method, session, rider, sensor, time)
         else:
             error = 'Unknown sensor type: %s' % sensor_type # TODO: i18n
-            return APIResult(method, successful=False, data=error)
+            return APIResult(method, ok=False, data=error)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
 def _add_lap_time_start(method, session, rider, sensor, time):
     if Lap.objects.filter(session=session, rider=rider, \
         finish__isnull=True).exists():
         error = 'Unable to start lap as an incomplete lap for rider %s in ' \
                 'session %s already exists' % (rider.name, session.name) # TODO: i18n
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
     lap = Lap.objects.create(session=session, rider=rider)
     lap.save()
     lap_time = SensorEvent.objects.create(lap=lap, sensor=sensor, time=time)
@@ -374,20 +489,20 @@ def _add_lap_time_start(method, session, rider, sensor, time):
     lap.save()
     logger.info('Lap started: %s rider: %s' % (timezone.localtime(time),
         rider.name))
-    return APIResult(method, successful=True, data=lap)
+    return APIResult(method, ok=True, data=lap)
 
 def _add_lap_time_finish(method, session, rider, sensor, time):
     if not Lap.objects.filter(session=session, rider=rider, \
         finish__isnull=True).exists():
         error = 'Unable to finish lap as no incomplete lap was found for ' \
                 'rider %s in session %s' % (rider.name, session.name) # TODO: i18n
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
     laps = Lap.objects.filter(session=session, rider=rider, \
         finish__isnull=True)
     if laps.count() > 1:
         error = 'Unable to finish lap as more than one incomplete lap was ' \
                 'found for rider %s in session %s' % (rider.name, session.name) # TODO: i18n
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
     lap = laps[0]
     lap_time = SensorEvent.objects.create(lap=lap, sensor=sensor, time=time)
     lap_time.save()
@@ -396,7 +511,7 @@ def _add_lap_time_finish(method, session, rider, sensor, time):
     lap.save()
     logger.info('Lap finished: %s rider: %s time: %s'
         % (timezone.localtime(time), rider.name, lap))
-    return APIResult(method, successful=True, data=lap)
+    return APIResult(method, ok=True, data=lap)
 
 def _add_lap_time_start_finish(method, session, rider, sensor, time):
     if Lap.objects.filter(session=session, rider=rider, \
@@ -407,9 +522,9 @@ def _add_lap_time_start_finish(method, session, rider, sensor, time):
 
 def _add_lap_time_sector(method, session, rider, sensor, time):
     error = 'Sector based sensors not currently supported'
-    return APIResult(method, successful=False, data=error)
+    return APIResult(method, ok=False, data=error)
 
-@exportRpc('cancel_incomplete_laps')
+@exportRpc
 def cancel_incomplete_laps(session_name, rider_name):
     '''Deletes all incomplete laps for the specified rider and session.'''
     '''Sends a broadcast message after laps have been cancelled.'''
@@ -430,13 +545,13 @@ def cancel_incomplete_laps(session_name, rider_name):
         laps.delete()
         logger.info('Cancelled %s incomplete laps for rider: %s in session %s:' \
             % (count, rider_name, session_name))
-        return APIResult(method, successful=True, data=laps)
+        return APIResult(method, ok=True, data=laps)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
-@exportRpc('remove_lap')
+@exportRpc
 def remove_lap(session_name, rider_name, start_time):
     '''Deletes the lap. This is a soft delete and can be undone.'''
     '''Sends a broadcast message after lap has been removed.'''
@@ -457,16 +572,16 @@ def remove_lap(session_name, rider_name, start_time):
         laps.delete()
         logger.info('Removed laps for rider: %s in session %s:' \
             % (count, rider_name, session_name))
-        return APIResult(method, successful=True, data=laps)
+        return APIResult(method, ok=True, data=laps)
     except Exception as e:
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
-        return APIResult(method, successful=False, data=error)
+        return APIResult(method, ok=False, data=error)
 
 
 # General methods
 
-@exportRpc('server_poweroff')
+@exportRpc
 def server_poweroff(reboot=False):
     '''Powers off the server after cancelling any unfinished laps.'''
     '''Invokes method: get_unfinished_laps and then cancel_lap.'''
@@ -474,19 +589,19 @@ def server_poweroff(reboot=False):
     # TODO: Role enforcement - admins only
     pass
 
-@exportRpc('backup_to_cloud')
+@exportRpc
 def backup_to_cloud(modified=None):
     '''If modified specified, only data on or after this time is backed up.'''
     # TODO: Role enforcement - admins only
-    return APIResult('backup_to_cloud', successful=True, data='Cloud info goes here...')
+    return APIResult('backup_to_cloud', ok=True, data='Cloud info goes here...')
 
-@exportRpc('get_data')
+@exportRpc
 def get_data(modified=None):
     '''Gets track, session, rider, lap data and settings. Useful for backup.'''
     '''If modified is specified, only data on or after this time is returned.'''
-    return APIResult('get_data', successful=True, data='Data goes here...')
+    return APIResult('get_data', ok=True, data='Data goes here...')
 
-@exportRpc('get_unfinished_laps')
+@exportRpc
 def get_unfinished_laps(track_name=None):
     '''Gets unfinished laps.'''
     pass
@@ -497,11 +612,11 @@ def get_unfinished_laps(track_name=None):
 def _check_if_found(calling_object, calling_method, name):
     if calling_object.objects.filter(name=name).exists():
         error = '%s already exists' % calling_object.__name__ # TODO: i18n
-        return APIResult(calling_method, successful=False, data=error)
+        return APIResult(calling_method, ok=False, data=error)
     return True
 
 def _check_if_not_found(calling_object, calling_method, name):
     if not calling_object.objects.filter(name=name).exists():
         error = '%s not found' % calling_object.__name__ # TODO: i18n
-        return APIResult(calling_method, successful=False, data=error)
+        return APIResult(calling_method, ok=False, data=error)
     return True

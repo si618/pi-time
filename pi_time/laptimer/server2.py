@@ -1,12 +1,13 @@
-from twisted.python import log
-from twisted.internet import reactor, defer
-from twisted.web.server import Site
-from twisted.web.static import File
 from autobahn.twisted.websocket import listenWS
 from autobahn.wamp1.protocol import exportRpc, \
                                     WampCraProtocol, \
                                     WampCraServerProtocol, \
                                     WampServerFactory 
+from twisted.internet import reactor, defer
+from twisted.python import log
+from twisted.web.server import Site
+from twisted.web.static import File
+from laptimer import api
 import sys
 
 class APIServerProtocol(WampCraServerProtocol):
@@ -16,18 +17,15 @@ class APIServerProtocol(WampCraServerProtocol):
    ## our pseudo user/permissions database
 
    ## auth extra sent by server
-   ##
-   if True:
-      ## when using salted WAMP-CRA, we send salt info ..
-      AUTHEXTRA = {'salt': "RANDOM SALT", 'keylen': 32, 'iterations': 1000}
-   else:
-      AUTHEXTRA = None
-
+   ## when using salted WAMP-CRA, we send salt info ..
+   AUTHEXTRA = {'salt': "RANDOM SALT", 'keylen': 32, 'iterations': 1000}
    SECRETS = {'foobar': WampCraProtocol.deriveKey('secret', AUTHEXTRA)}
 
    print "Auth Extra/Secrets"
    print AUTHEXTRA
    print SECRETS
+
+   URI = 'http://si618.github.io/pi-time/'
 
    PERMISSIONS = {'foobar': {'pubsub': [{'uri': 'http://example.com/topics/',
                                          'prefix': True,

@@ -29,6 +29,7 @@ Client/server push notification for laptimer server using [WebSockets](http://to
 * [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 * [python](http://python.org/download/)
 * [python-win32api](http://sourceforge.net/projects/pywin32/) (if testing on windows)
+* [twisted](https://twistedmatrix.com/trac/)
 
 See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt) for specific versions, and [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
 

@@ -51,14 +51,14 @@ class APIMessageHandler:
         if not self._verify_type(server, result, APIResult, call):
             return
         server.sendMessage(result.toJSON())
-        if result.successful:
+        if result.ok:
             self._broadcast(server, call, self._broadcast_post, result.data)
 
     def _load_data(self, server, msg):
         if 'call' not in msg:
             error = "Message missing 'call': %s" % msg
             logger.error(error)
-            result = APIResult(call=None, successful=False, data=error)
+            result = APIResult(call=None, ok=False, data=error)
             server.sendMessage(result.toJSON())
             return
         data = json.loads(msg)
@@ -71,7 +71,7 @@ class APIMessageHandler:
         if not method:
             error = "Method not implemented in API: %s" % call
             logger.error(error)
-            result = APIResult(call, successful=False, data=error)
+            result = APIResult(call, ok=False, data=error)
             server.sendMessage(result.toJSON())
             return
         return method
@@ -88,7 +88,7 @@ class APIMessageHandler:
             error = "Method must return %s, error in: %s" % (expected.__name__,
                 call)
             logger.error(error)
-            result = APIResult(call, successful=False, data=error)
+            result = APIResult(call, ok=False, data=error)
             server.sendMessage(result.toJSON())
         return match
 
@@ -109,7 +109,7 @@ class APIServerProtocol(WebSocketServerProtocol):
         except Exception as e:
             logger.error('Unhandled exception: %s' % e)
             error = type(e).__name__ + ' from message: ' + msg
-            result = APIResult('Unknown', successful=False, data=error)
+            result = APIResult('Unknown', ok=False, data=error)
             self.sendMessage(result.toJSON())
 
     def connectionLost(self, reason):

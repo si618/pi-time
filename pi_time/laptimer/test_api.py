@@ -8,6 +8,10 @@ from laptimer.models import Lap, \
                             Sensor, \
                             SensorEvent, \
                             Track
+import logging
+
+
+logger = logging.getLogger('laptimer')
 
 
 class RiderTestCase(TestCase):
@@ -18,7 +22,7 @@ class RiderTestCase(TestCase):
         # Act
         result = api.add_rider(rider.name)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_rider', result.call)
         error = 'Rider already exists' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -27,7 +31,7 @@ class RiderTestCase(TestCase):
         # Arrange & Act
         result = api.add_rider(rider_name=None)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_rider', result.call)
         self.assertEqual('IntegrityError', result.data)
 
@@ -38,7 +42,7 @@ class RiderTestCase(TestCase):
         result = api.add_rider(name)
         # Assert
         self.assertTrue(Rider.objects.filter(name=name).exists())
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('add_rider', result.call)
         rider = Rider.objects.get(name=name)
         self.assertEqual(rider, result.data)
@@ -47,7 +51,7 @@ class RiderTestCase(TestCase):
         # Arrange & Act
         result = api.change_rider('bogus rider', 'none')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_rider', result.call)
         error = 'Rider not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -58,7 +62,7 @@ class RiderTestCase(TestCase):
         # Act
         result = api.change_rider('none', rider.name)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_rider', result.call)
         error = 'Rider already exists' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -72,7 +76,7 @@ class RiderTestCase(TestCase):
         result = api.change_rider(first_name, changed_name)
         # Assert
         self.assertTrue(Rider.objects.filter(name=changed_name).exists())
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('change_rider', result.call)
         rider = Rider.objects.get(name=changed_name)
         self.assertEqual(rider, result.data)
@@ -81,7 +85,7 @@ class RiderTestCase(TestCase):
         # Arrange & Act
         result = api.remove_rider('bogus rider')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('remove_rider', result.call)
         error = 'Rider not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -94,9 +98,43 @@ class RiderTestCase(TestCase):
         result = api.remove_rider(name)
         # Assert
         self.assertFalse(Rider.objects.filter(name=name).exists())
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('remove_rider', result.call)
         self.assertEqual(name, result.data)
+
+    def test_get_rider_passes(self):
+        # Arrange
+        rider = Rider.objects.create(name='bogus')
+        # Act
+        result = api.get_rider(rider.name)
+        # Assert
+        self.assertTrue(result.ok)
+        self.assertEqual('get_rider', result.call)
+        self.assertEqual(rider, result.data)
+
+    def test_get_rider_fails_when_rider_not_found(self):
+        # Arrange
+        rider = Rider.objects.create(name='bogus rider')
+        # Act
+        result = api.get_rider('nope')
+        # Assert
+        self.assertFalse(result.ok)
+        self.assertEqual('get_rider', result.call)
+        error = 'Rider not found' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_get_riders_passes(self):
+        # Arrange
+        rider1 = Rider.objects.create(name='bogus rider 1')
+        rider2 = Rider.objects.create(name='bogus rider 2')
+        # Act
+        result = api.get_riders()
+        # Assert
+        self.assertTrue(result.ok)
+        self.assertEqual('get_riders', result.call)
+        self.assertEqual(2, result.data.count())
+        self.assertEqual(rider1, result.data[0])
+        self.assertEqual(rider2, result.data[1])
 
 
 class TrackTestCase(TestCase):
@@ -109,7 +147,7 @@ class TrackTestCase(TestCase):
         result = api.add_track(track.name, track.distance, track.timeout,
             track.unit_of_measurement)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_track', result.call)
         error = 'Track already exists' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -118,7 +156,7 @@ class TrackTestCase(TestCase):
         # Arrange & Act
         result = api.add_track('bogus track', 'FUBAR', 100, settings.METRIC)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_track', result.call)
         self.assertEqual('ValueError', result.data)
 
@@ -126,7 +164,7 @@ class TrackTestCase(TestCase):
         # Arrange & Act
         result = api.add_track('bogus track', 50, 'FUBAR', settings.METRIC)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_track', result.call)
         self.assertEqual('ValueError', result.data)
 
@@ -134,7 +172,7 @@ class TrackTestCase(TestCase):
         # Arrange & Act
         result = api.add_track('bogus track', 50, 100, 'FUBAR')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_track', result.call)
         self.assertEqual('Invalid unit of measurement', result.data)
 
@@ -145,7 +183,7 @@ class TrackTestCase(TestCase):
         result = api.add_track(name, 50, 100, settings.METRIC)
         # Assert
         self.assertTrue(Track.objects.filter(name=name).exists())
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('add_track', result.call)
         track = Track.objects.get(name=name)
         self.assertEqual(track, result.data)
@@ -154,7 +192,7 @@ class TrackTestCase(TestCase):
         # Arrange & Act
         result = api.change_track('bogus track')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_track', result.call)
         error = 'Track not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -168,7 +206,7 @@ class TrackTestCase(TestCase):
         # Act
         result = api.change_track('bogus track 1', 'bogus track 2')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_track', result.call)
         error = 'Track already exists' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -180,7 +218,7 @@ class TrackTestCase(TestCase):
         # Act
         result = api.change_track('bogus track')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_track', result.call)
         error = 'At least one new track detail is required' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -193,7 +231,7 @@ class TrackTestCase(TestCase):
         result = api.change_track(track_name='bogus track',
             new_track_distance='bogus')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_track', result.call)
         self.assertEqual('ValueError', result.data)
 
@@ -205,7 +243,7 @@ class TrackTestCase(TestCase):
         result = api.change_track(track_name='bogus track',
             new_lap_timeout='bogus')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_track', result.call)
         self.assertEqual('ValueError', result.data)
 
@@ -217,7 +255,7 @@ class TrackTestCase(TestCase):
         result = api.change_track(track_name='bogus track',
             new_unit_of_measurement='bogus')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_track', result.call)
         error = 'Invalid unit of measurement' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -231,7 +269,7 @@ class TrackTestCase(TestCase):
             new_track_name='bogus track 2', new_track_distance=51,
             new_lap_timeout=101, new_unit_of_measurement=settings.IMPERIAL)
         # Assert
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('change_track', result.call)
         track = Track.objects.get(name='bogus track 2')
         self.assertEqual(track, result.data)
@@ -243,7 +281,7 @@ class TrackTestCase(TestCase):
         # Arrange & Act
         result = api.remove_track('bogus track')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('remove_track', result.call)
         error = 'Track not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -251,15 +289,53 @@ class TrackTestCase(TestCase):
     def test_remove_track_passes(self):
         # Arrange
         name = 'bogus track'
-        track = Track.objects.create(name='bogus track', distance=50,
+        track = Track.objects.create(name=name, distance=50,
             timeout=100, unit_of_measurement=settings.METRIC)
         # Act
         result = api.remove_track(name)
         # Assert
         self.assertFalse(Track.objects.filter(name=name).exists())
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('remove_track', result.call)
         self.assertEqual(name, result.data)
+
+    def test_get_track_passes(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        # Act
+        result = api.get_track(track.name)
+        # Assert
+        self.assertTrue(result.ok)
+        self.assertEqual('get_track', result.call)
+        self.assertEqual(track, result.data)
+
+    def test_get_track_fails_when_rider_not_found(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        # Act
+        result = api.get_track('nope')
+        # Assert
+        self.assertFalse(result.ok)
+        self.assertEqual('get_track', result.call)
+        error = 'Track not found' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_get_tracks_passes(self):
+        # Arrange
+        track1 = Track.objects.create(name='bogus track 1', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        track2 = Track.objects.create(name='bogus track 2', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        # Act
+        result = api.get_tracks()
+        # Assert
+        self.assertTrue(result.ok)
+        self.assertEqual('get_tracks', result.call)
+        self.assertEqual(2, result.data.count())
+        self.assertEqual(track1, result.data[0])
+        self.assertEqual(track2, result.data[1])
 
 
 class SessionTestCase(TestCase):
@@ -272,7 +348,7 @@ class SessionTestCase(TestCase):
         # Act
         result = api.add_session(track.name, session.name)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_session', result.call)
         error = 'Session already exists' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -284,7 +360,7 @@ class SessionTestCase(TestCase):
         # Act
         result = api.add_session(track_name=track.name, session_name=None)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_session', result.call)
         self.assertEqual('IntegrityError', result.data)
 
@@ -292,7 +368,7 @@ class SessionTestCase(TestCase):
         # Arrange & Act
         result = api.add_session('bogus track', 'bogus session')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_session', result.call)
         error = 'Track not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -306,7 +382,7 @@ class SessionTestCase(TestCase):
         result = api.add_session(track.name, name)
         # Assert
         self.assertTrue(Session.objects.filter(name=name).exists())
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('add_session', result.call)
         session = Session.objects.get(name=name)
         self.assertEqual(session, result.data)
@@ -315,7 +391,7 @@ class SessionTestCase(TestCase):
         # Arrange & Act
         result = api.change_session('bogus session')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
         error = 'Session not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -329,7 +405,7 @@ class SessionTestCase(TestCase):
         # Act
         result = api.change_session(session.name, session2.name, track.name)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
         error = 'Session already exists' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -342,7 +418,7 @@ class SessionTestCase(TestCase):
         # Act
         result = api.change_session(session.name, 'bogus session 2', 'bogus track 2')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
         error = 'Track not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -355,7 +431,7 @@ class SessionTestCase(TestCase):
         # Act
         result = api.change_session(session.name)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
         error = 'New session or track name is required' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -370,7 +446,7 @@ class SessionTestCase(TestCase):
         # Act
         result = api.change_session(session.name, 'bogus session 2', track2.name)
         # Assert
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('change_session', result.call)
         session = Session.objects.get(name='bogus session 2')
         self.assertEqual(session, result.data)
@@ -379,7 +455,7 @@ class SessionTestCase(TestCase):
         # Arrange & Act
         result = api.remove_session('bogus session')
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('remove_session', result.call)
         error = 'Session not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -394,9 +470,72 @@ class SessionTestCase(TestCase):
         result = api.remove_session(name)
         # Assert
         self.assertFalse(Session.objects.filter(name=name).exists())
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('remove_session', result.call)
         self.assertEqual(name, result.data)
+
+    def test_get_session_passes(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        name = 'bogus session'
+        session = Session.objects.create(name=name, track=track)
+        # Act
+        result = api.get_session(name)
+        # Assert
+        self.assertTrue(result.ok)
+        self.assertEqual('get_session', result.call)
+        self.assertEqual(session, result.data)
+
+    def test_get_session_fails_when_session_not_found(self):
+        # Arrange
+        # Act
+        result = api.get_session('nope')
+        # Assert
+        self.assertFalse(result.ok)
+        self.assertEqual('get_session', result.call)
+        error = 'Session not found' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_get_sessions_for_track_passes(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        session1 = Session.objects.create(name='bogus session 1', track=track)
+        session2 = Session.objects.create(name='bogus session 2', track=track)
+        # Act
+        result = api.get_sessions_for_track(track.name)
+        # Assert
+        self.assertTrue(result.ok)
+        self.assertEqual('get_sessions_for_track', result.call)
+        self.assertEqual(2, result.data.count())
+        self.assertEqual(session1, result.data[0])
+        self.assertEqual(session2, result.data[1])
+
+    def test_get_sessions_for_track_fails_when_track_not_found(self):
+        # Arrange
+        # Act
+        result = api.get_sessions_for_track('nope')
+        # Assert
+        self.assertFalse(result.ok)
+        self.assertEqual('get_sessions_for_track', result.call)
+        error = 'Track not found' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_get_sessions_passes(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        session1 = Session.objects.create(name='bogus session 1', track=track)
+        session2 = Session.objects.create(name='bogus session 2', track=track)
+        # Act
+        result = api.get_sessions()
+        # Assert
+        self.assertTrue(result.ok)
+        self.assertEqual('get_sessions', result.call)
+        self.assertEqual(2, result.data.count())
+        self.assertEqual(session1, result.data[0])
+        self.assertEqual(session2, result.data[1])
 
 
 class LapTestCase(TestCase):
@@ -410,7 +549,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Session not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -427,7 +566,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Rider not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -445,7 +584,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Sensor not found' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -466,7 +605,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Time must be valid datetime' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -487,7 +626,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Time must be valid datetime' # TODO: i18n
         self.assertEqual(error, result.data)
@@ -508,7 +647,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('add_lap_time', result.call)
         lap = Lap.objects.get(id=1)
         self.assertEqual(lap, result.data)
@@ -536,7 +675,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Unable to start lap as an incomplete lap for rider %s in ' \
                 'session %s already exists' % (rider_name, session_name) # TODO: i18n
@@ -570,7 +709,7 @@ class LapTestCase(TestCase):
         result = api.add_lap_time(session_name, rider_name,
             sensor_finish_name, time_finish)
         # Assert
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('add_lap_time', result.call)
         lap = Lap.objects.get(id=1)
         self.assertEqual(lap, result.data)
@@ -597,7 +736,7 @@ class LapTestCase(TestCase):
         result = api.add_lap_time(session_name, rider_name,
             sensor_finish_name, time_finish)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Unable to finish lap as no incomplete lap was found for ' \
                 'rider %s in session %s' % (rider.name, session.name) # TODO: i18n
@@ -639,7 +778,7 @@ class LapTestCase(TestCase):
         result = api.add_lap_time(session_name, rider_name,
             sensor_finish_name, time_finish)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Unable to finish lap as more than one incomplete lap was ' \
                 'found for rider %s in session %s' % (rider.name, session.name) # TODO: i18n
@@ -661,7 +800,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('add_lap_time', result.call)
         lap = Lap.objects.get(id=1)
         self.assertEqual(lap, result.data)
@@ -692,7 +831,7 @@ class LapTestCase(TestCase):
         result = api.add_lap_time(session_name, rider_name,
             sensor_name, time_finish)
         # Assert
-        self.assertTrue(result.successful)
+        self.assertTrue(result.ok)
         self.assertEqual('add_lap_time', result.call)
         lap = Lap.objects.get(id=1)
         self.assertEqual(lap, result.data)
@@ -715,7 +854,7 @@ class LapTestCase(TestCase):
         # Act
         result = api.add_lap_time(session_name, rider_name, sensor_name, time)
         # Assert
-        self.assertFalse(result.successful)
+        self.assertFalse(result.ok)
         self.assertEqual('add_lap_time', result.call)
         error = 'Sector based sensors not currently supported'
         self.assertEqual(error, result.data)

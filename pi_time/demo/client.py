@@ -34,8 +34,8 @@ class APIClientProtocol(WebSocketClientProtocol):
             data = jsonMsg['data']
         else:
             data = '<empty>'
-        if 'successful' in msg:
-            if jsonMsg['successful']:
+        if 'ok' in msg:
+            if jsonMsg['ok']:
                 ok = 'Successful'
             else:
                 ok = 'Failed'

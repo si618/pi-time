@@ -36,12 +36,12 @@ class APIResult(APIBase):
     call = str
     '''Name of API method called.'''   
 
-    successful = bool
+    ok = bool
     '''Whether the API call was successful.'''   
 
-    def __init__(self, call, successful=False, data=None):
+    def __init__(self, call, ok=False, data=None):
         self.call = call
-        self.successful = successful
+        self.ok = ok
         self.data = data
 
 
