@@ -16,5 +16,5 @@ logger = logging.getLogger('laptimer')
 betty = api.add_rider(rider_name='Bodacious Betty').data
 bob = api.add_rider(rider_name='Bogus Bob').data
 track = api.add_track(track_name='Test Track', track_distance=50, 
-	lap_timeout=100, unit_of_measurement=settings.METRIC)
-session = api.add_session(track, 'Test Session').data
+	lap_timeout=100, unit_of_measurement=settings.METRIC).data
+session = api.add_session(track.name, 'Test Session').data
