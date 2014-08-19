@@ -1,8 +1,12 @@
 from autobahn.twisted.websocket import WebSocketServerProtocol, \
                                        WebSocketServerFactory
-from laptimer import api
-from laptimer.models import APIResult, \
-                            APIBroadcast
+from laptimer import api, \
+                     api_lap, \
+                     api_rider, \
+                     api_session, \
+                     api_track
+from laptimer.models import ApiResult, \
+                            ApiBroadcast
 from twisted.python import log
 import django_settings
 import json
@@ -48,7 +52,7 @@ class APIMessageHandler:
             ', '.join(['%s=%s' % (key, value)
             for key, value in kwargs.iteritems()])))
         result = method(**kwargs)
-        if not self._verify_type(server, result, APIResult, call):
+        if not self._verify_type(server, result, ApiResult, call):
             return
         server.sendMessage(result.toJSON())
         if result.ok:
@@ -58,7 +62,7 @@ class APIMessageHandler:
         if 'call' not in msg:
             error = "Message missing 'call': %s" % msg
             logger.error(error)
-            result = APIResult(call=None, ok=False, data=error)
+            result = ApiResult(call=None, ok=False, data=error)
             server.sendMessage(result.toJSON())
             return
         data = json.loads(msg)
@@ -67,11 +71,20 @@ class APIMessageHandler:
         return data
 
     def _get_api_method(self, server, call):
-        method = getattr(api, call)
+        if 'lap' in call:
+            method = getattr(api_lap, call)
+        elif 'rider' in call:
+            method = getattr(api_rider, call)
+        elif 'session' in call:
+            method = getattr(api_session, call)
+        elif 'track' in call:
+            method = getattr(api_track, call)
+        else:
+            method = getattr(api, call)
         if not method:
             error = "Method not implemented in API: %s" % call
             logger.error(error)
-            result = APIResult(call, ok=False, data=error)
+            result = ApiResult(call, ok=False, data=error)
             server.sendMessage(result.toJSON())
             return
         return method
@@ -79,7 +92,7 @@ class APIMessageHandler:
     def _broadcast(self, server, call, broadcast_events, data):
         if call not in broadcast_events:
             return
-        broadcast = APIBroadcast(call, data)
+        broadcast = ApiBroadcast(call, data)
         server.factory.broadcast(broadcast.toJSON())
 
     def _verify_type(self, server, actual, expected, call):
@@ -88,7 +101,7 @@ class APIMessageHandler:
             error = "Method must return %s, error in: %s" % (expected.__name__,
                 call)
             logger.error(error)
-            result = APIResult(call, ok=False, data=error)
+            result = ApiResult(call, ok=False, data=error)
             server.sendMessage(result.toJSON())
         return match
 
@@ -109,7 +122,7 @@ class APIServerProtocol(WebSocketServerProtocol):
         except Exception as e:
             logger.error('Unhandled exception: %s' % e)
             error = type(e).__name__ + ' from message: ' + msg
-            result = APIResult('Unknown', ok=False, data=error)
+            result = ApiResult('Unknown', ok=False, data=error)
             self.sendMessage(result.toJSON())
 
     def connectionLost(self, reason):

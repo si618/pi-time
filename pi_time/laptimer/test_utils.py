@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
+from laptimer import utils
 import datetime
-import utils
 
 
 class UtilsTestCase(TestCase):

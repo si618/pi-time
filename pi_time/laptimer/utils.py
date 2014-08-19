@@ -1,5 +1,6 @@
 
 def time_to_string(start, finish):
+    '''Converts a start and finish time to timespan string.'''
     if (start is None or finish is None):
         return None
     if (finish <= start):

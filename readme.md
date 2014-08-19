@@ -113,7 +113,7 @@ TODO: Add ability to query app log
 ## Issues
 
 _Issue_:  Only one rider can be on the track at any one time.  
-_Fix_: Use radio tags on bikes passing a receiver instead of using an infrared sensor.
+_Fix_: Use [radio tags](https://en.wikipedia.org/wiki/Transponder_timing) on bikes passing a decoder instead of using an infrared sensor.
 
 _Issue_:  Possible to shortcut tracks which cross over.  
 _Fix_: Add sensors at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.

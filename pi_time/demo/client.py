@@ -15,7 +15,7 @@ class APIClientProtocol(WebSocketClientProtocol):
         self.sendMessage('{"call":"add_rider","args":{"rider_name":"Test API Rider"}}')
         self.sendMessage('{"call":"change_rider","args":{"rider_name":"Test API Rider","new_rider_name":"API Rider"}}')
         self.sendMessage('{"call":"remove_rider","args":{"rider_name":"API Rider"}}')
-        self.sendMessage('{"call":"get_data"}')
+        self.sendMessage('{"call":"get_all_data"}')
 
     def onOpen(self):
         logger.debug('Connection open')

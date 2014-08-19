@@ -10,7 +10,7 @@ from twisted.web.static import File
 from laptimer import api
 import sys
 
-class APIServerProtocol(WampCraServerProtocol):
+class ApiServerProtocol(WampCraServerProtocol):
    """
    Authenticating WAMP server using WAMP-Challenge-Response-Authentication ("WAMP-CRA").
    """
@@ -99,7 +99,7 @@ if __name__ == '__main__':
       debug = False
 
    factory = WampServerFactory("ws://localhost:9000", debugWamp = debug)
-   factory.protocol = MyServerProtocol
+   factory.protocol = ApiServerProtocol
    listenWS(factory)
 
    webdir = File(".")

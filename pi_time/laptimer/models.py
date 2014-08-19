@@ -1,19 +1,18 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from laptimer import utils
 import copy
 import django_settings
 import jsonpickle
 import logging
-import utils
 
 
 logger = logging.getLogger('laptimer')
 
-
 # API models
 
-class APIBase:
+class ApiBase:
     '''Abstract base class for API classes.'''   
 
     data = object
@@ -30,7 +29,7 @@ class APIBase:
         return jsonpickle.encode(clone, unpicklable=False)
 
 
-class APIResult(APIBase):
+class ApiResult(ApiBase):
     '''Represents the result from an API call.'''   
     
     call = str
@@ -45,7 +44,7 @@ class APIResult(APIBase):
         self.data = data
 
 
-class APIBroadcast(APIBase):
+class ApiBroadcast(ApiBase):
     '''Represents an API broadcast.'''
 
     event = str
