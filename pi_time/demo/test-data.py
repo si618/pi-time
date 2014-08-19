@@ -2,8 +2,8 @@ from django.conf import settings
 from laptimer import api_lap, \
 					 api_rider, \
 					 api_session, \
-					 #api_sensor, \
 					 api_track
+					 #api_sensor, \
 from laptimer.models import Lap, \
                             Rider, \
                             Session, \
