@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 from laptimer.models import Lap, \
@@ -31,6 +33,27 @@ class SessionTestCase(TestCase):
         session = Session.objects.get(id=1)
         # Act & Assert
         self.assertTrue(session.start >= now)
+
+    def test_session_create_fails_when_session_not_unique_for_track(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        session_name = 'bogus session'
+        Session.objects.create(name=session_name, track=track)
+        # Act & assert
+        with self.assertRaises(IntegrityError):
+            Session.objects.create(name=session_name, track=track)
+
+    def test_session_create_passes_when_session_not_unique_for_different_tracks(self):
+        # Arrange
+        track1 = Track.objects.create(name='bogus track 1', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        track2 = Track.objects.create(name='bogus track 2', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        session_name = 'bogus session'
+        Session.objects.create(name=session_name, track=track1)
+        # Act & assert
+        Session.objects.create(name=session_name, track=track2)
 
 
 class LapTestCase(TestCase):

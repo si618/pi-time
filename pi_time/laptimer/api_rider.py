@@ -16,14 +16,24 @@ logger = logging.getLogger('laptimer')
 
 @exportRpc
 def add_rider(rider_name):
-    '''Add a new rider. Rider name must be unique.'''
-    '''Sends a broadcast message after rider has been added.'''
+    '''
+    Adds a new rider.
+
+    :param rider_name: Unique name of rider to be added.
+    :type rider_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of added rider.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'add_rider'
     try:
         check = api_utils.check_if_found(Rider, method, rider_name)
         if check != True:
             return check
         rider = Rider.objects.create(name=rider_name)
+        # TODO: Add rider as Django user in rider group
         logger.info('%s: %s' % (method, rider.name))
         result = ApiResult(method, ok=True, data=rider)
         # TODO: Broadcast result
@@ -35,8 +45,19 @@ def add_rider(rider_name):
 
 @exportRpc
 def change_rider(rider_name, new_rider_name):
-    '''Changes the riders name. Rider name must be unique.'''
-    '''Sends a broadcast message after rider has been changed.'''
+    '''
+    Changes the riders name.
+
+    :param rider_name: Current name of rider.
+    :type rider_name: str
+    :param new_rider_name: New unique name of rider.
+    :type new_rider_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of changed rider.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'change_rider'
     try:
         check = api_utils.check_if_found(Rider, method, new_rider_name)
@@ -47,7 +68,6 @@ def change_rider(rider_name, new_rider_name):
             return check
         rider = Rider.objects.get(name=rider_name)
         rider.name = new_rider_name
-        rider.modified = timezone.now()
         rider.save()
         logger.info('%s: %s' % (method, rider.name))
         result = ApiResult(method, ok=True, data=rider)
@@ -60,9 +80,17 @@ def change_rider(rider_name, new_rider_name):
 
 @exportRpc
 def remove_rider(rider_name):
-    '''Removes a rider, including all track, session and lap data.'''
-    '''Sends a broadcast message after rider has been removed.'''
-    # TODO: Role enforcement - admins only or current user matches rider_name
+    '''
+    Removes a rider, including all track, session and lap data.
+
+    :param rider_name: Name of rider to be removed.
+    :type rider_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of removed rider.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'remove_rider'
     try:
         check = api_utils.check_if_not_found(Rider, method, rider_name)
@@ -81,8 +109,16 @@ def remove_rider(rider_name):
 
 @exportRpc
 def get_rider(rider_name):
-    '''Gets specified rider.'''
-    # TODO: Role enforcement - admins, riders or spectators
+    '''
+    Gets a rider.
+
+    :param rider_name: Name of rider.
+    :type rider_name: str
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Details of rider.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'get_rider'
     try:
         check = api_utils.check_if_not_found(Rider, method, rider_name)
@@ -98,8 +134,13 @@ def get_rider(rider_name):
 
 @exportRpc
 def get_riders():
-    '''Gets all riders.'''
-    # TODO: Role enforcement - admins, riders or spectators
+    '''
+    Gets all riders.
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Details of riders.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'get_riders'
     try:
         riders = Rider.objects.all()
@@ -111,55 +152,71 @@ def get_riders():
         return ApiResult(method, ok=False, data=error)
 
 @exportRpc
-def get_rider_laps(rider_name):
-    '''Gets statistics on a riders completed laps for all tracks.'''
-    # TODO: Role enforcement - admins, riders or spectators
+def get_rider_statistics(track_name, rider_name):
+    '''
+    Gets statistics on a rider's completed laps for a track.
+
+    :param track_name: Name of track.
+    :type track_name: str
+    :param rider_name: Name of rider.
+    :type rider_name: str
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Rider's statistics.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     pass
 
 @exportRpc
-def get_rider_laps_for_track(rider_name, track_name):
-    '''Gets statistics on a riders completed laps for a track.'''
-    # TODO: Role enforcement - admins, riders or spectators
+def get_rider_session_statistics(track_name, session_name, rider_name):
+    '''
+    Gets statistics on a rider's completed laps for a session.
+
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Name of session. Must exist for track.
+    :type session_name: str
+    :param rider_name: Name of rider.
+    :type rider_name: str
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Rider's session statistics.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     pass
 
 @exportRpc
-def get_rider_track_record(rider_name, track_name):
-    '''Gets statistics on a riders lap record for a track.'''
-    # TODO: Role enforcement - admins, riders or spectators
+def get_rider_lap_current(track_name, session_name, rider_name):
+    '''
+    Gets statistics on a rider's current lap.
+
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Name of session. Must exist for track.
+    :type session_name: str
+    :param rider_name: Name of rider.
+    :type rider_name: str
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Rider's current lap.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     pass
 
 @exportRpc
-def get_rider_track_average(rider_name, track_name):
-    '''Gets statistics on a riders lap average for a track.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    pass
+def get_rider_lap_previous(track_name, session_name, rider_name):
+    '''
+    Gets statistics on a riders previous lap.
 
-@exportRpc
-def get_rider_session_laps(rider_name, session_name):
-    '''Gets statistics on a riders completed laps for a session.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    pass
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Name of session. Must exist for track.
+    :type session_name: str
+    :param rider_name: Name of rider.
+    :type rider_name: str
 
-@exportRpc
-def get_rider_session_record(rider_name, session_name):
-    '''Gets statistics on a riders lap record for a session.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    pass
-
-@exportRpc
-def get_rider_session_average(rider_name, session_name):
-    '''Gets statistics on a riders lap average for a session.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    pass
-
-@exportRpc
-def get_rider_lap_current(rider_name, session_name):
-    '''Gets statistics on a riders current lap.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    pass
-
-@exportRpc
-def get_rider_lap_previous(rider_name, session_name):
-    '''Gets statistics on a riders previous lap.'''
-    # TODO: Role enforcement - admins, riders or spectators
+    :authorization: Administrators, riders and spectators.
+    :returns: Rider's previous lap.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     pass

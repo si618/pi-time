@@ -9,9 +9,27 @@ import time
 logger = logging.getLogger('gpio')
 
 class PiTimeGPIO:
+    ''''
+    Class used to work with Raspberry Pi GPIO when triggering sensor events,
+    as well as displaying information relating to application and lap status.
+    '''
+    # TODO: Decouple gpio pins from django settings, instead add properties
+    # for track and sensor. When these are not initialised, use the laptimer
+    # API to define the track, sensor and gpio pins (in a separate class).
+    # Needs some sort of registration process, since as soon as you have more
+    # than one sensor (RPi), or if the sensor is on separate hardware from the
+    # laptimer server, configuration can't be shared from django settings, so
+    # it probably requires a separate db for the rpi app, and some client code
+    # to talk to the laptimer app server.
+    
     gpio_app = django_settings.get('gpio_app')
+    '''GPIO pin which indicates whether application server is active.'''
+    
     gpio_lap = django_settings.get('gpio_lap')
+    '''GPIO pin which indicates whether a lap is currently active.'''
+    
     gpio_sensor = django_settings.get('gpio_sensor')
+    '''GPIO pin which indicates when a sensor event has been triggered.'''
 
     def __init__(self):
         GPIO.setmode(GPIO.BOARD)

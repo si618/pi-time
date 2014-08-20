@@ -16,8 +16,23 @@ logger = logging.getLogger('laptimer')
 @exportRpc
 def add_track(track_name, track_distance, lap_timeout,
     unit_of_measurement):
-    '''Add a new track. Track name must be unique.'''
-    '''Sends a broadcast message after track has been added.'''
+    '''
+    Add a new track.
+
+    :param track_name: Unique name of track.
+    :type track_name: str
+    :param track_distance: Total track distance.
+    :type track_distance: float
+    :param lap_timeout: Maximum number of seconds before a lap times out.
+    :type lap_timeout: integer
+    :param unit_of_measurement: Unit of measurement, either Metric or Imperial.
+    :type unit_of_measurement: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of new track.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     # TODO: Role enforcement - admins only
     method = 'add_track'
     try:
@@ -42,9 +57,26 @@ def add_track(track_name, track_distance, lap_timeout,
 @exportRpc
 def change_track(track_name, new_track_name=None, new_track_distance=None,
     new_lap_timeout=None, new_unit_of_measurement=None):
-    '''Changes track details. Track name must be unique.'''
-    '''Sends a broadcast message after track has been changed.'''
-    # TODO: Role enforcement - admins only
+    '''
+    Changes track details.
+
+    :param track_name: Current name of track.
+    :type track_name: str
+    :param new_track_name: New unique name of track.
+    :type new_track_name: str
+    :param new_track_distance: Total track distance.
+    :type new_track_distance: float
+    :param new_lap_timeout: Maximum number of seconds before a lap times out..
+    :type new_lap_timeout: integer
+    :param new_unit_of_measurement: Unit of measurement, either Metric or
+    Imperial.
+    :type new_unit_of_measurement: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of changed track.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'change_track'
     try:
         check = api_utils.check_if_not_found(Track, method, track_name)
@@ -71,7 +103,6 @@ def change_track(track_name, new_track_name=None, new_track_distance=None,
             track.timeout = new_lap_timeout
         if new_unit_of_measurement != None:
             track.unit_of_measurement = new_unit_of_measurement
-        track.modified = timezone.now()
         track.save()
         logger.info('%s: %s' % (method, track.name))
         result = ApiResult(method, ok=True, data=track)
@@ -84,9 +115,17 @@ def change_track(track_name, new_track_name=None, new_track_distance=None,
 
 @exportRpc
 def remove_track(track_name):
-    '''Removes a track, including all session and lap data.'''
-    '''Sends a broadcast message after track has been removed.'''
-    # TODO: Role enforcement - admins only
+    '''
+    Removes a track, including all session and lap data.
+
+    :param track_name: Name of track.
+    :type track_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of removed track.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'remove_track'
     try:
         check = api_utils.check_if_not_found(Track, method, track_name)
@@ -105,8 +144,16 @@ def remove_track(track_name):
 
 @exportRpc
 def get_track(track_name):
-    '''Gets specified track.'''
-    # TODO: Role enforcement - admins, riders or spectators
+    '''
+    Gets a track.
+
+    :param track_name: Name of track.
+    :type track_name: str
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Details of track.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'get_track'
     try:
         check = api_utils.check_if_not_found(Track, method, track_name)
@@ -122,8 +169,13 @@ def get_track(track_name):
 
 @exportRpc
 def get_tracks():
-    '''Gets all tracks.'''
-    # TODO: Role enforcement - admins, riders or spectators
+    '''
+    Gets all tracks.
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Details of all tracks.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'get_tracks'
     try:
         tracks = Track.objects.all()
@@ -136,18 +188,14 @@ def get_tracks():
 
 @exportRpc
 def get_track_statistics(track_name):
-    '''Gets all track statistics.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    pass
+    '''
+    Gets statistics for a track.
 
-@exportRpc
-def get_track_lap_record(track_name):
-    '''Gets statistics on track lap record.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    pass
+    :param track_name: Name of track.
+    :type track_name: str
 
-@exportRpc
-def get_track_lap_average(track_name):
-    '''Gets statistics on track lap average.'''
-    # TODO: Role enforcement - admins, riders or spectators
+    :authorization: Administrators, riders and spectators.
+    :returns: Track statistics.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     pass

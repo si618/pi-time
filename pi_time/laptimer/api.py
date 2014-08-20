@@ -8,11 +8,20 @@ logger = logging.getLogger('laptimer')
 # General API functions
 
 @exportRpc
-def server_poweroff(reboot=False):
-    '''Powers off the server after cancelling any unfinished laps.'''
-    '''Invokes method: get_unfinished_laps and then cancel_lap.'''
-    '''Sends a broadcast message to everyone before server is powered off.'''
-    # TODO: Role enforcement - admins only
+def server_poweroff(cancel_unfinished_laps, reboot):
+    '''
+    Powers off the server.
+
+    :param cancel_unfinished_laps: Cancel any unfinished laps before shutdown.
+    :type cancel_unfinished_laps: Boolean
+    :param reboot: Denoting whether server should be rebooted after shutdown.
+    :type reboot: Boolean
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders, spectators and sensors.
+    :returns: Details of impending shutdown.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'server_poweroff'
     try:
         data = 'TODO: Shutting down server...'
@@ -25,11 +34,19 @@ def server_poweroff(reboot=False):
         error = type(e).__name__
         return ApiResult(method, ok=False, data=error)
 
-
 @exportRpc
 def backup_to_cloud(modified=None):
-    '''If modified specified, only data on or after this time is backed up.'''
-    '''Sends a broadcast message to admins once backup is complete.'''
+    '''
+    Backup data to cloud.
+
+    :param modified: Only data modified on or after this time is backed up.
+    :type modified: datetime
+
+    :authorization: Administrators.
+    :broadcast: Administrators.
+    :returns: Details of backup result.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     # TODO: Role enforcement - admins only
     method = 'backup_to_cloud'
     try:
@@ -45,8 +62,16 @@ def backup_to_cloud(modified=None):
 
 @exportRpc
 def get_all_data(modified=None):
-    '''Gets track, session, rider, lap data and settings. Useful for backup.'''
-    '''If modified is specified, only data on or after this time is returned.'''
+    '''
+    Gets all data and settings.
+
+    :param modified: Only data modified on or after this time is returned.
+    :type modified: datetime
+
+    :authorization: Administrators.
+    :returns: Relevant data.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'get_all_data'
     try:
         data='TODO: Data goes here...'

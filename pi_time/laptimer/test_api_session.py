@@ -55,19 +55,31 @@ class ApiSessionTestCase(TestCase):
         # Arrange
         track = Track.objects.create(name='bogus track', distance=50,
             timeout=100, unit_of_measurement=settings.METRIC)
-        name = 'bogus session'
+        session_name = 'bogus session'
         # Act
-        result = api_session.add_session(track.name, name)
+        result = api_session.add_session(track.name, session_name)
         # Assert
-        self.assertTrue(Session.objects.filter(name=name).exists())
+        self.assertTrue(Session.objects.filter(name=session_name).exists())
         self.assertTrue(result.ok)
         self.assertEqual('add_session', result.call)
-        session = Session.objects.get(name=name)
+        session = Session.objects.get(name=session_name)
         self.assertEqual(session, result.data)
 
-    def test_change_session_fails_when_session_not_found(self):
+    def test_change_session_fails_when_track_not_found(self):
         # Arrange & Act
-        result = api_session.change_session('bogus session')
+        result = api_session.change_session('bogus track', 'bogus session')
+        # Assert
+        self.assertFalse(result.ok)
+        self.assertEqual('change_session', result.call)
+        error = 'Track not found' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_change_session_fails_when_session_not_found(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        # Act
+        result = api_session.change_session(track.name, 'bogus session')
         # Assert
         self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
@@ -83,8 +95,8 @@ class ApiSessionTestCase(TestCase):
         session2 = Session.objects.create(name='bogus session 2', 
             track_id=track.id)
         # Act
-        result = api_session.change_session(session.name, session2.name, 
-            track.name)
+        result = api_session.change_session(track.name, session.name, 
+            session2.name, track.name)
         # Assert
         self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
@@ -98,8 +110,8 @@ class ApiSessionTestCase(TestCase):
         session = Session.objects.create(name='bogus session', 
             track_id=track.id)
         # Act
-        result = api_session.change_session(session.name, 'bogus session 2', 
-            'bogus track 2')
+        result = api_session.change_session(track.name, session.name, 
+            'bogus session 2', 'bogus track 2')
         # Assert
         self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
@@ -113,7 +125,7 @@ class ApiSessionTestCase(TestCase):
         session = Session.objects.create(name='bogus session', 
             track_id=track.id)
         # Act
-        result = api_session.change_session(session.name)
+        result = api_session.change_session(track.name, session.name)
         # Assert
         self.assertFalse(result.ok)
         self.assertEqual('change_session', result.call)
@@ -129,17 +141,29 @@ class ApiSessionTestCase(TestCase):
         session = Session.objects.create(name='bogus session', 
             track_id=track.id)
         # Act
-        result = api_session.change_session(session.name, 'bogus session 2', 
-            track2.name)
+        result = api_session.change_session(track.name, session.name, 
+            'bogus session 2', track2.name)
         # Assert
         self.assertTrue(result.ok)
         self.assertEqual('change_session', result.call)
         session = Session.objects.get(name='bogus session 2')
         self.assertEqual(session, result.data)
 
-    def test_remove_session_fails_when_session_not_found(self):
+    def test_remove_session_fails_when_track_not_found(self):
         # Arrange & Act
-        result = api_session.remove_session('bogus session')
+        result = api_session.remove_session('bogus track', 'bogus session')
+        # Assert
+        self.assertFalse(result.ok)
+        self.assertEqual('remove_session', result.call)
+        error = 'Track not found' # TODO: i18n
+        self.assertEqual(error, result.data)
+
+    def test_remove_session_fails_when_session_not_found(self):
+        # Arrange
+        track = Track.objects.create(name='bogus track', distance=50,
+            timeout=100, unit_of_measurement=settings.METRIC)
+        # Act
+        result = api_session.remove_session(track.name, 'bogus session')
         # Assert
         self.assertFalse(result.ok)
         self.assertEqual('remove_session', result.call)
@@ -150,63 +174,15 @@ class ApiSessionTestCase(TestCase):
         # Arrange
         track = Track.objects.create(name='bogus track', distance=50,
             timeout=100, unit_of_measurement=settings.METRIC)
-        name = 'bogus session'
-        session = Session.objects.create(name=name, track=track)
+        session_name = 'bogus session'
+        session = Session.objects.create(name=session_name, track=track)
         # Act
-        result = api_session.remove_session(name)
+        result = api_session.remove_session(track.name, session_name)
         # Assert
-        self.assertFalse(Session.objects.filter(name=name).exists())
+        self.assertFalse(Session.objects.filter(name=session_name).exists())
         self.assertTrue(result.ok)
         self.assertEqual('remove_session', result.call)
-        self.assertEqual(name, result.data)
-
-    def test_get_session_passes(self):
-        # Arrange
-        track = Track.objects.create(name='bogus track', distance=50,
-            timeout=100, unit_of_measurement=settings.METRIC)
-        name = 'bogus session'
-        session = Session.objects.create(name=name, track=track)
-        # Act
-        result = api_session.get_session(name)
-        # Assert
-        self.assertTrue(result.ok)
-        self.assertEqual('get_session', result.call)
-        self.assertEqual(session, result.data)
-
-    def test_get_session_fails_when_session_not_found(self):
-        # Arrange
-        # Act
-        result = api_session.get_session('nope')
-        # Assert
-        self.assertFalse(result.ok)
-        self.assertEqual('get_session', result.call)
-        error = 'Session not found' # TODO: i18n
-        self.assertEqual(error, result.data)
-
-    def test_get_sessions_for_track_passes(self):
-        # Arrange
-        track = Track.objects.create(name='bogus track', distance=50,
-            timeout=100, unit_of_measurement=settings.METRIC)
-        session1 = Session.objects.create(name='bogus session 1', track=track)
-        session2 = Session.objects.create(name='bogus session 2', track=track)
-        # Act
-        result = api_session.get_sessions_for_track(track.name)
-        # Assert
-        self.assertTrue(result.ok)
-        self.assertEqual('get_sessions_for_track', result.call)
-        self.assertEqual(2, result.data.count())
-        self.assertEqual(session1, result.data[0])
-        self.assertEqual(session2, result.data[1])
-
-    def test_get_sessions_for_track_fails_when_track_not_found(self):
-        # Arrange
-        # Act
-        result = api_session.get_sessions_for_track('nope')
-        # Assert
-        self.assertFalse(result.ok)
-        self.assertEqual('get_sessions_for_track', result.call)
-        error = 'Track not found' # TODO: i18n
-        self.assertEqual(error, result.data)
+        self.assertEqual(session_name, result.data)
 
     def test_get_sessions_passes(self):
         # Arrange
@@ -215,10 +191,20 @@ class ApiSessionTestCase(TestCase):
         session1 = Session.objects.create(name='bogus session 1', track=track)
         session2 = Session.objects.create(name='bogus session 2', track=track)
         # Act
-        result = api_session.get_sessions()
+        result = api_session.get_sessions(track.name)
         # Assert
         self.assertTrue(result.ok)
         self.assertEqual('get_sessions', result.call)
         self.assertEqual(2, result.data.count())
         self.assertEqual(session1, result.data[0])
         self.assertEqual(session2, result.data[1])
+
+    def test_get_sessions_fails_when_track_not_found(self):
+        # Arrange
+        # Act
+        result = api_session.get_sessions('nope')
+        # Assert
+        self.assertFalse(result.ok)
+        self.assertEqual('get_sessions', result.call)
+        error = 'Track not found' # TODO: i18n
+        self.assertEqual(error, result.data)

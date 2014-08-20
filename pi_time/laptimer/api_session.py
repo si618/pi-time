@@ -14,18 +14,28 @@ logger = logging.getLogger('laptimer')
 
 @exportRpc
 def add_session(track_name, session_name):
-    '''Adds a new session. Session name must be unique for all tracks.'''
-    '''Sends a broadcast message after session has been added.'''
-    # TODO: Role enforcement - admins only
+    '''
+    Adds a new session. Session name must be unique for track.
+
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Name of session. Must exist for track.
+    :type session_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of new session.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'add_session'
     try:
-        trackCheck = api_utils.check_if_not_found(Track, method, track_name)
-        if trackCheck != True:
-            return trackCheck
-        sessionCheck = api_utils.check_if_found(Session, method, session_name)
-        if sessionCheck != True:
-            return sessionCheck
+        check = api_utils.check_if_not_found(Track, method, track_name)
+        if check != True:
+            return check
         track = Track.objects.get(name=track_name)
+        if Session.objects.filter(track=track, name=session_name).exists():
+            error = 'Session already exists'
+            return ApiResult(method, ok=False, data=error)
         session = Session.objects.create(track_id=track.id, name=session_name)
         logger.info('%s: %s' % (method, session.name))
         result = ApiResult(method, ok=True, data=session)
@@ -37,32 +47,48 @@ def add_session(track_name, session_name):
         return ApiResult(method, ok=False, data=error)
 
 @exportRpc
-def change_session(session_name, new_session_name=None, new_track_name=None):
-    '''Changes the session.'''
-    '''Sends a broadcast message after session has been changed.'''
-    # TODO: Role enforcement - admins only
+def change_session(track_name, session_name, new_session_name=None, 
+    new_track_name=None):
+    '''
+    Changes the session or track name.
+
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Current session name. Must exist for track.
+    :type session_name: str
+    :param session_name: New unique session name.
+    :type session_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of changed session.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''    
     method = 'change_session'
     try:
-        check = api_utils.check_if_not_found(Session, method, session_name)
+        check = api_utils.check_if_not_found(Track, method, track_name)
         if check != True:
             return check
+        if not Session.objects.filter(track__name=track_name, 
+            name=session_name).exists():
+            error = 'Session not found'
+            return ApiResult(method, ok=False, data=error)
         if new_session_name == None and new_track_name == None:
             error = 'New session or track name is required' # TODO: i18n
             return ApiResult(method, ok=False, data=error)
-        if new_session_name != None:
-            check = api_utils.check_if_found(Session, method, new_session_name)
-            if check != True:
-                return check
         if new_track_name != None:
             check = api_utils.check_if_not_found(Track, method, new_track_name)
             if check != True:
                 return check
         session = Session.objects.get(name=session_name)
         if new_session_name != None:
+            if Session.objects.filter(track=session.track, 
+                name=new_session_name).exists():
+                error = 'Session already exists'
+                return ApiResult(method, ok=False, data=error)
             session.name = new_session_name
         if new_track_name != None:
             session.track = Track.objects.get(name=new_track_name)
-        session.modified = timezone.now()
         session.save()
         logger.info('%s: %s' % (method, session.name))
         result = ApiResult(method, ok=True, data=session)
@@ -72,18 +98,70 @@ def change_session(session_name, new_session_name=None, new_track_name=None):
         logger.error('Exception caught in %s: %s' % (method, e))
         error = type(e).__name__
         return ApiResult(method, ok=False, data=error)
-
+ 
 @exportRpc
-def remove_session(session_name):
-    '''Removes a session, including all lap data.'''
-    '''Sends a broadcast message after session has been removed.'''
-    # TODO: Role enforcement - admins only
-    method = 'remove_session'
+def finish_session(track_name, session_name):
+    '''
+    Finishes a session.
+
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Name of session. Must exist for track.
+    :type session_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of finished session.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
+    method = 'finish_session'
     try:
-        check = api_utils.check_if_not_found(Session, method, session_name)
+        check = api_utils.check_if_not_found(Track, method, track_name)
         if check != True:
             return check
-        session = Session.objects.get(name=session_name)
+        if not Session.objects.filter(track__name=track_name, 
+            name=session_name).exists():
+            error = 'Session not found'
+            return ApiResult(method, ok=False, data=error)
+        session = Session.objects.get(name=session_name, 
+            track__name=track_name)
+        session.finish = timezone.now()
+        session.save()
+        logger.info('%s: %s' % (method, session_name))
+        result = ApiResult(method, ok=True, data=session_name)
+        # TODO: Broadcast
+        return result
+    except Exception as e:
+        logger.error('Exception caught in %s: %s' % (method, e))
+        error = type(e).__name__
+        return ApiResult(method, ok=False, data=error)
+
+@exportRpc
+def remove_session(track_name, session_name):
+    '''
+    Removes a session, including all lap data.
+
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Name of session. Must exist for track.
+    :type session_name: str
+
+    :authorization: Administrators.
+    :broadcast: Administrators, riders and spectators.
+    :returns: Details of removed session.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
+    method = 'remove_session'
+    try:
+        check = api_utils.check_if_not_found(Track, method, track_name)
+        if check != True:
+            return check
+        if not Session.objects.filter(name=session_name, 
+            track__name=track_name).exists():
+            error = 'Session not found'
+            return ApiResult(method, ok=False, data=error)
+        session = Session.objects.get(name=session_name, 
+            track__name=track_name)
         session.delete()
         logger.info('%s: %s' % (method, session_name))
         result = ApiResult(method, ok=True, data=session_name)
@@ -95,47 +173,23 @@ def remove_session(session_name):
         return ApiResult(method, ok=False, data=error)
 
 @exportRpc
-def get_session(session_name):
-    '''Gets specified session.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    method = 'get_session'
-    try:
-        check = api_utils.check_if_not_found(Session, method, session_name)
-        if check != True:
-            return check
-        session = Session.objects.get(name=session_name)
-        logger.info('%s: %s' % (method, session_name))
-        return ApiResult(method, ok=True, data=session)
-    except Exception as e:
-        logger.error('Exception caught in %s: %s' % (method, e))
-        error = type(e).__name__
-        return ApiResult(method, ok=False, data=error)
+def get_sessions(track_name):
+    '''
+    Gets all sessions for a track.
 
-@exportRpc
-def get_sessions():
-    '''Gets all sessions for all tracks.'''
-    # TODO: Role enforcement - admins, riders or spectators
+    :param track_name: Name of track.
+    :type track_name: str
+
+    :authorization: Administrators, riders and spectators.
+    :returns: Details of track sessions.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
     method = 'get_sessions'
-    try:
-        sessions = Session.objects.all()
-        logger.info('%s: %s' % (method, sessions))
-        return ApiResult(method, ok=True, data=sessions)
-    except Exception as e:
-        logger.error('Exception caught in %s: %s' % (method, e))
-        error = type(e).__name__
-        return ApiResult(method, ok=False, data=error)
-
-@exportRpc
-def get_sessions_for_track(track_name):
-    '''Gets all sessions for specified track.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    method = 'get_sessions_for_track'
     try:
         check = api_utils.check_if_not_found(Track, method, track_name)
         if check != True:
             return check
-        track = Track.objects.get(name=track_name)
-        sessions = Session.objects.filter(track=track)
+        sessions = Session.objects.filter(track__name=track_name)
         logger.info('%s: %s' % (method, sessions))
         return ApiResult(method, ok=True, data=sessions)
     except Exception as e:
@@ -144,40 +198,22 @@ def get_sessions_for_track(track_name):
         return ApiResult(method, ok=False, data=error)
 
 @exportRpc
-def get_session_statistics(session_name):
-    '''Gets all session statistics.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    method = ''
-    try:
-        stats = 'TODO:'
-        logger.info('%s: %s' % (method, stats))
-        return ApiResult(method, ok=True, data=stats)
-    except Exception as e:
-        logger.error('Exception caught in %s: %s' % (method, e))
-        error = type(e).__name__
-        return ApiResult(method, ok=False, data=error)
+def get_session_statistics(track_name, session_name):
+    '''
+    Gets session statistics for all riders.
 
-@exportRpc
-def get_session_lap_record(session_name):
-    '''Gets statistics on session lap record.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    method = ''
-    try:
-        stats = 'TODO:'
-        logger.info('%s: %s' % (method, stats))
-        return ApiResult(method, ok=True, data=stats)
-    except Exception as e:
-        logger.error('Exception caught in %s: %s' % (method, e))
-        error = type(e).__name__
-        return ApiResult(method, ok=False, data=error)
+    :param track_name: Name of track.
+    :type track_name: str
+    :param session_name: Name of session. Must exist for track.
+    :type session_name: str
 
-@exportRpc
-def get_session_lap_average(session_name):
-    '''Gets statistics on session lap average.'''
-    # TODO: Role enforcement - admins, riders or spectators
-    method = ''
+    :authorization: Administrators, riders and spectators.
+    :returns: Session statistics.
+    :rtype: Instance of :class:`laptimer.models.ApiResult`.
+    '''
+    method = 'get_session_statistics'
     try:
-        stats = 'TODO:'
+        stats = 'TODO: Get session statistics'
         logger.info('%s: %s' % (method, stats))
         return ApiResult(method, ok=True, data=stats)
     except Exception as e:

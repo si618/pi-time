@@ -89,11 +89,16 @@ django_settings.register(UnitOfMeasurement)
 class CommonBase(models.Model):
     '''Abstract base class for Django data models.'''
 
-    modified = models.DateTimeField(default=timezone.now())
+    modified = models.DateTimeField()
     '''Records when model object was last modified.'''
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        '''Sets the modified property to the current time.'''
+        self.modified = timezone.now()
+        super(CommonBase, self).save(*args, **kwargs)
 
 
 class Track(CommonBase):
@@ -125,20 +130,27 @@ class Track(CommonBase):
 class Sensor(CommonBase):
     '''Defines the characteristics of a timing sensor.'''
 
-    name = models.CharField(max_length=64, unique=True, db_index=True)
-    '''Unique name of the sensor.'''
+    name = models.CharField(max_length=64, db_index=True)
+    '''Name of the sensor. Must be unique for track.'''
 
     track = models.ForeignKey(Track)
     '''Track associated with sensor.'''
 
     sensor_type = models.CharField(max_length=2,
-        choices=settings.SENSOR, default=settings.SENSOR_START_FINISH)
+        choices=settings.SENSOR_TYPE, default=settings.SENSOR_TYPE_RPI)
     '''Type of sensor.'''
+
+    sensor_pos = models.CharField(max_length=2,
+        choices=settings.SENSOR_POS, default=settings.SENSOR_POS_START_FINISH)
+    '''Position of sensor on track.'''
 
     # TODO: Optional foreign keys for previous/next TrackSector.
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        unique_together = ('name', 'track')
 
 
 class SensorEvent(CommonBase):
@@ -153,10 +165,10 @@ class SensorEvent(CommonBase):
 
 
 class Session(CommonBase):
-    '''Defines a track session, or grouping of laps over a period of time.'''
+    '''Defines a track session, or a group of laps over a period of time.'''
 
-    name = models.CharField(max_length=64, unique=True, db_index=True)
-    '''Unique name of the session.'''
+    name = models.CharField(max_length=64, db_index=True)
+    '''Name of the session. Must be unique for track.'''
 
     track = models.ForeignKey(Track)
     '''Track associated with session.'''
@@ -171,10 +183,13 @@ class Session(CommonBase):
         return self.name
 
     def save(self, *args, **kwargs):
-        '''Saves a session, start defaullts to now if not entered.'''
+        '''Saves a session, start defaults to now if not entered.'''
         if (self.start is None):
             self.start = timezone.now()
         super(Session, self).save(*args, **kwargs)
+
+    class Meta:
+        unique_together = ('name', 'track')
 
 
 class Rider(CommonBase):
@@ -209,7 +224,7 @@ class Lap(CommonBase):
         if (self.finish.time is None):
             finish = timezone.now()
         else:
-            finish = self.finish
+            finish = self.finish.time
         delta = finish - self.start.time
         return delta.total_seconds()
 

@@ -139,15 +139,20 @@ UNIT_OF_MEASUREMENT = (
     (IMPERIAL, 'Imperial')
 )
 
-SENSOR_START = 'ST'
-SENSOR_FINISH = 'FI'
-SENSOR_START_FINISH = 'SF'
-SENSOR_SECTOR = 'SE'
-SENSOR = (
-    (SENSOR_START, 'Start'),
-    (SENSOR_FINISH, 'Finish'),
-    (SENSOR_START_FINISH, 'Start and finish'),
-    (SENSOR_SECTOR, 'Sector checkpoint (split times)'),
+SENSOR_TYPE_RPI = 'PI'
+SENSOR_TYPE = ( # Defines the type of sensor TODO: i18n
+    (SENSOR_TYPE_RPI, 'Raspberry Pi'),
+)
+
+SENSOR_POS_START = 'ST'
+SENSOR_POS_FINISH = 'FI'
+SENSOR_POS_START_FINISH = 'SF'
+SENSOR_POS_SECTOR = 'SE'
+SENSOR_POS = ( # Defines the sensor position on track TODO: i18n
+    (SENSOR_POS_START, 'Start'),
+    (SENSOR_POS_FINISH, 'Finish'),
+    (SENSOR_POS_START_FINISH, 'Start and finish'),
+    (SENSOR_POS_SECTOR, 'Sector checkpoint (split times)'),
 )
 
 RPI_GPIO_LAYOUT = (

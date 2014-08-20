@@ -43,7 +43,7 @@ class APIClientProtocol(WebSocketClientProtocol):
             return
         if 'event' in msg:
             event = jsonMsg['event']
-            logger.debug('Received broadcast: %s data: %s' % (event, data))
+            logger.debug('Received message: %s data: %s' % (event, data))
             return
         logger.debug('Unknown message')
 

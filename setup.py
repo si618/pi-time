@@ -6,7 +6,7 @@ import pi_time
 setup(
 	name='pi-time',
 	version=pi_time.__version__,
-	description='Pump track lap timer running on a solar powered Raspberry Pi.',
+	description='Lap timer running on a solar powered Raspberry Pi.',
 	author=pi_time.__author__,
 	author_email='sshnug.si+pi-time@gmail.com',
 	url='http://github.com/si618/pi-time',
@@ -23,7 +23,7 @@ setup(
 		'Programming Language :: Python :: 2.7',
 		'Framework :: Django',
 	],
-	install_requires=open('requirements.txt').read(),	
+	install_requires=open('requirements.txt').read(),
 	zip_safe=False,
 )
 
