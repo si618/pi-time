@@ -2,7 +2,7 @@
 
 Lap timer running on a solar powered Raspberry Pi.
 
-[![Build Status](https://travis-ci.org/si618/pi-time.png?branch=master")](https://travis-ci.org/si618/pi-time)&nbsp;![Version](https://pypip.in/v/pi-time/badge.png)&nbsp;[![Development Status](https://pypip.in/status/pi-time/badge.svg)](https://pypi.python.org/pypi/pi-time/)
+[![Build Status](https://api.travis-ci.org/si618/pi-time.png?branch=master")](https://travis-ci.org/si618/pi-time)&nbsp;![Version](https://pypip.in/v/pi-time/badge.png)&nbsp;[![Development Status](https://pypip.in/status/pi-time/badge.svg)](https://pypi.python.org/pypi/pi-time/)&nbsp;[![License](https://pypip.in/license/pi-time/badge.svg)](https://pypi.python.org/pypi/pi-time/)
 
 #### Development Status
 
