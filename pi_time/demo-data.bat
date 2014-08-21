@@ -1,6 +1,5 @@
 @echo off
-..\setup.bat
-set DJANGO_SETTINGS_MODULE=pi_time.settings
+call ..\setup.bat
 rem IF EXIST "pi-time.db" DEL "pi-time.db"
 python manage.py flush --noinput
 python manage.py syncdb --noinput
