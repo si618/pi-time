@@ -1,12 +1,16 @@
 # Pi-time
 
-Pump track lap timer running on a solar powered Raspberry Pi.
+Lap timer running on a solar powered Raspberry Pi.
 
 [<img src="https://api.travis-ci.org/si618/pi-time.png?branch=master">](https://travis-ci.org/si618/pi-time)
 
+#### Development Status
+
+Still lots of work to do, hardware is working and API is getting there, but most of the web front end code still needs to be written.
+
 ## Overview
 
-An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
+An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks) or whatever you want timed, with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
 
 The Raspberry Pi (RPi), acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or TODO: mobile app.
 
@@ -113,17 +117,17 @@ TODO: Add ability to query app log
 ## Issues
 
 _Issue_:  Only one rider can be on the track at any one time.  
-_Fix_: Use [radio tags](https://en.wikipedia.org/wiki/Transponder_timing) on bikes passing a decoder instead of using an infrared sensor.
+_Fix_: Use [radio tags](https://en.wikipedia.org/wiki/Transponder_timing) passing a decoder instead of using an infrared sensor.
 
 _Issue_:  Possible to shortcut tracks which cross over.  
 _Fix_: Add sensors at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.
 
-_Issue_ : Start and finish must be from the same sensor location.  
-_Fix_: Similar to shortcut issue, add sensors to allow different start and finish locations.
+_Issue_ : Lap start and finish must be from the same sensor location.  
+_Fix_: Similar to shortcut issue, add sensors to allow different start and finish locations. Would be good to have automated discovery, so each sensor looks for the lap timer server on the network.
 
 ### Hardware Improvements
 
-* Cheaper to use 12v lead acid battery instead of AA or D batteries. No converter required for 12v sensor.
+* Cheaper to use 12v deep cycle lead acid battery instead of AA or D batteries. No converter required for 12v sensor.
 * PV panels should be optional (possible with prototype but fairly tightly coupled)
 * Cheaper enclosure by using metal or plastic box and appropriate use of silicon.
 * Wifi, wireless mesh, 3/4G, satellite etc. could be used to send sensor events back to the laptimer server. TLS or similar encryption required as well as sensor authentication.
@@ -131,5 +135,5 @@ _Fix_: Similar to shortcut issue, add sensors to allow different start and finis
 ### Software Improvements
 
 * Provide option to connect to existing WiFi access point instead of RPi, use RPi access point as fallback.
-* Add chat for riders, spectators and admin (different permissions, broadcast ability, etc.). Could be useful for event or emergency broadcast near sensors?
-* Instead of just timing laps, include optional score system (slopestyle, whipoff, speed and style, etc.) which is broadcast like lap times.
+* Add chat for riders, spectators and admin (different permissions, broadcast ability, etc.).
+* Instead of just timing laps, add scoring system (for slopestyle, dirt jams, etc.) which is broadcast like lap times.

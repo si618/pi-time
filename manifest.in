@@ -1,6 +1,6 @@
+include *.py
 include *.txt
 include readme.md
-include setup.py
 recursive-include pi_time/laptimer *
 recursive-include pi_time/pi_time *
 recursive-include rpi *
