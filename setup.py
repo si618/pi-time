@@ -14,7 +14,7 @@ setup(
 	license='GNU General Public License v3 or later (GPLv3+)',
 	include_package_data=True,
 	classifiers=[
-		'Development Status :: 4 - Beta',
+		'Development Status :: 2 - Pre-Alpha',
 		'Environment :: Web Environment',
 		'Intended Audience :: Other Audience',
 		'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
