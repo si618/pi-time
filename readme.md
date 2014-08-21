@@ -3,7 +3,6 @@
 Lap timer running on a solar powered Raspberry Pi.
 
 [![Build Status](https://travis-ci.org/si618/pi-time.png?branch=master")](https://travis-ci.org/si618/pi-time)
-n)
 &nbsp; ![Version](https://pypip.in/v/pi-time/badge.png)
 
 
