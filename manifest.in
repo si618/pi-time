@@ -1,7 +1,8 @@
-include *.py
 include *.txt
+include *.py
 include readme.md
 recursive-include pi_time/laptimer *
 recursive-include pi_time/pi_time *
 recursive-include rpi *
 exclude pi_time/demo*
+exclude pi_time/pi-time.db

@@ -1,4 +1,6 @@
+*.egg
 *.log
 *.pot
 *.pyc
 *.sublime-workspace
+pi_time.egg-info
