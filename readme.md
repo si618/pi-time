@@ -14,7 +14,7 @@ An active infrared sensor is placed on a [pump track](http://adventuresportsjour
 
 The Raspberry Pi (RPi), acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or mobile app.
 
-Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor. The 
+Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor. The
 
 Data is stored on the RPi SD card with backup to an authenticated client or cloud service.
 
