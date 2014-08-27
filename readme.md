@@ -12,21 +12,22 @@ Still lots of work to do, hardware is working and API is getting there, but most
 
 An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), or whatever needs timing, with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
 
-The Raspberry Pi (RPi), acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or TODO: mobile app.
+The Raspberry Pi (RPi), acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or mobile app.
 
-Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external toggle switch to turn on both the RPi and sensor.
+Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor. The 
 
-Data is stored on the RPi SD card with backup to an authenticated client or TODO: cloud service.
+Data is stored on the RPi SD card with backup to an authenticated client or cloud service.
 
 ## Software
 
 #### Design
 
-Client/server push notification for laptimer server using [WebSockets](http://tools.ietf.org/html/rfc6455) and [WAMP](http://wamp.ws). Sensor events also use websockets and are separated from the server app to allow multiple sensors on different platforms (Arduino, Beagleboard, etc.), and because RPi.GPIO code needs to run as root, whereas the laptimer server does not.
+Pi-time is built upon the [Crossbar.io](http://crossbar.io/) platform, which uses [WebSockets](http://tools.ietf.org/html/rfc6455) and [WAMP](http://wamp.ws). A crossbar application (TODO: link to laptimer) is used as the application and web server, pushing out notifications of events in near real-time as they are received from sensors ((TODO: link to sensor)) which are separate crossbar applications, or users from a web browser or mobile app. A single Raspberry Pi can be used to run both the laptimer server and sensor application, although the design allows for multiple sensors to be connected.
 
 #### Requirements
 
-* [autobahn](http://autobahn.ws/python) TODO: fallback for old browsers
+* [autobahn](http://autobahn.ws/python)
+* [crossbar](http://crossbar.io/)
 * [django](https://docs.djangoproject.com/en/1.5/intro/install/)
 * [django-bootstrap-toolkit](https://github.com/dyve/django-bootstrap-toolkit/)
 * [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup)
