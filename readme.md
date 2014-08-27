@@ -14,7 +14,7 @@ An active infrared sensor is placed on a [pump track](http://adventuresportsjour
 
 The Raspberry Pi (RPi), acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or mobile app.
 
-Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor. The
+Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor.
 
 Data is stored on the RPi SD card with backup to an authenticated client or cloud service.
 
@@ -22,7 +22,7 @@ Data is stored on the RPi SD card with backup to an authenticated client or clou
 
 #### Design
 
-Pi-time is built upon the [Crossbar.io](http://crossbar.io/) platform, which uses [WebSockets](http://tools.ietf.org/html/rfc6455) and [WAMP](http://wamp.ws). A crossbar application (TODO: link to laptimer) is used as the application and web server, pushing out notifications of events in near real-time as they are received from sensors ((TODO: link to sensor)) which are separate crossbar applications, or users from a web browser or mobile app. A single Raspberry Pi can be used to run both the laptimer server and sensor application, although the design allows for multiple sensors to be connected.
+Pi-time is built upon the [Crossbar](http://crossbar.io/) platform, which uses [WebSockets](http://tools.ietf.org/html/rfc6455) and [WAMP](http://wamp.ws). A crossbar application is used as the application and web [server](https://github.com/si618/pi-time/tree/master/pi_time/laptimer), pushing out notifications of events in near real-time as they are received from [sensors](https://github.com/si618/pi-time/tree/master/pi_time/sensor) which are separate crossbar applications, or users from a web browser or mobile app. A single Raspberry Pi can be used to run both the laptimer server and sensor application, although the design allows for multiple sensors to be connected.
 
 #### Requirements
 

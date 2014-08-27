@@ -1,3 +1,3 @@
-# Pi-time sensor
+# Pi-time laptimer server
 
-Crossbar application containing the code to run a sensor which sends events to a laptimer server.
+[Crossbar](http://crossbar.io/) application to run a laptimer server.
