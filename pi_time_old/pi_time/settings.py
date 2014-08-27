@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django_settings', # https://github.com/jqb/django-settings
-    'bootstrap_toolkit', # https://github.com/dyve/django-bootstrap-toolkit/
     'laptimer', # https://github.com/si618/pi-time
 )
 
