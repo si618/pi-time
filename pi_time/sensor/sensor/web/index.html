@@ -1,125 +1,171 @@
 <!DOCTYPE html>
 <html>
-   <body>
-      <h1>Hello WAMP</h1>
-      <p>Open JavaScript console to watch output.</p>
-      <script>AUTOBAHN_DEBUG = true;</script>
-      <script src="autobahn.min.js"></script>
 
-      <script>
-         // the URL of the WAMP Router (Crossbar.io)
-         //
-         var wsuri;
-         if (document.location.origin == "file://") {
-            wsuri = "ws://127.0.0.1:8080/ws";
+<head>
+    <title>Pi-time sensor</title>
+    <script>
+    AUTOBAHN_DEBUG = true;
+    </script>
+    <link rel='Stylesheet' href='sensor.css'>
+    <script src='autobahn-0.9.2-2.js'></script>
+    <script src='jquery-1.11.1.js'></script>
+    <script src='knockout-3.2.0.js'></script>
+    <script src='sammy-0.7.6.js'></script>
+</head>
 
-         } else {
-            wsuri = (document.location.protocol === "http:" ? "ws:" : "wss:") + "//" +
-                        document.location.host + "/ws";
-         }
+<body>
+    <ul class='tabs' data-bind='foreach: tabs'>
+        <li data-bind='text: $data, 
+                     css: { selected: $data == $root.selectedTabId() },
+                     click: $root.goToTab'></li>
+    </ul>
 
+    <div class='setup'>
 
-         // the WAMP connection to the Router
-         //
-         var connection = new autobahn.Connection({
-            url: wsuri,
-            realm: "pi-time"
-         });
+    </div>
 
+    <table class='events' data-bind='with: selectedTabData'>
+        <thead>
+            <tr>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody data-bind='foreach: events'>
+            <tr>
+                <td data-bind='text: date'></td>
+            </tr>
+        </tbody>
+    </table>
 
-         // timers
-         //
-         var t1, t2;
+    <script>
+    function SensorViewModel() {
+        // Data
+        var self = this;
+        self.tabs = ['Setup', 'Events'];
+        self.selectedTabId = ko.observable();
+        self.selectedTabData = ko.observable();
 
+        // Behaviours    
+        self.goToTab = function(tab) {
+            location.hash = tab
+        };
 
-         // fired when connection is established and session attached
-         //
-         connection.onopen = function (session, details) {
+        // Client-side routes    
+        Sammy(function() {
+            this.get('#:tab', function() {
+                self.selectedTabId(this.params.tab);
+            });
 
-            console.log("Connected");
+            this.get('', function() {
+                this.app.runRoute('get', '#Setup')
+            });
+        }).run();
+    };
 
-            // SUBSCRIBE to a topic and receive events
-            //
-            function on_counter (args) {
-               var counter = args[0];
-               console.log("on_counter() event received with counter " + counter);
+    ko.applyBindings(new SensorViewModel());
+    </script>
+
+    <script>
+    // URL of WAMP Router (Crossbar.io)
+    var wsuri;
+    if (document.location.origin == 'file://') {
+        wsuri = 'ws://127.0.0.1:8888/ws';
+
+    } else {
+        wsuri = (document.location.protocol === 'http:' ? 'ws:' : 'wss:') + '//' +
+            document.location.host + '/ws';
+    }
+
+    // WAMP connection to Router
+    var connection = new autobahn.Connection({
+        url: wsuri,
+        realm: 'pi-time'
+    });
+
+    // fired when connection is established and session attached
+    connection.onopen = function(session, details) {
+
+        console.log('Connected');
+
+        function on_laptimerevent(args) {
+            var laptimer = args[0];
+            // TODO: laptimer contain details of status change of laptimer 
+            // server (start/stop/error) or current lap (started/finished)
+            console.log('on_laptimerevent() event received from laptimer ' + laptimer);
+        }
+        session.subscribe('io.github.si618.pi-time.onlaptimerevent', on_laptimerevent).then(
+            function(sub) {
+                console.log('Subscribed to topic: onlaptimerevent');
+            },
+            function(err) {
+                console.log('Failed to subscribe to topic: onlaptimerevent', err);
             }
-            session.subscribe('io.github.si618.pi-time.oncounter', on_counter).then(
-               function (sub) {
-                  console.log('subscribed to topic');
-               },
-               function (err) {
-                  console.log('failed to subscribe to topic', err);
-               }
+        );
+
+        function on_sensorevent(args) {
+            var sensor = args[0];
+            var occured = args[1]
+            console.log('on_sensorevent() event received from sensor ' + sensor);
+        }
+        session.subscribe('io.github.si618.pi-time.onsensorevent', on_sensorevent).then(
+            function(sub) {
+                console.log('Subscribed to topic: onsensorevent');
+            },
+            function(err) {
+                console.log('Failed to subscribe to topic: onsensorevent', err);
+            }
+        );
+
+        function getSensorSetup(args) {
+            var hardware = args[0];
+            var laptimerServer = args[1];
+            var sensorPosition = args[2];
+            var sendorConfig = args[3]
+            console.log('Got sensor setup');
+        }
+        session.register('io.github.si618.pi-time.getSensorSetup', getSensorSetup).then(
+            function(reg) {
+                console.log('Registered procedure: getSensorSetup');
+            },
+            function(err) {
+                console.log('Failed to register procedure: getSensorSetup', err);
+            }
+        );
+
+        function getSensorEvents(args) {
+            var sensor = args[0];
+            var events = args[1];
+            console.log('Got sensor events');
+        }
+        session.register('io.github.si618.pi-time.getSensorEvents', getSensorEvents).then(
+            function(reg) {
+                console.log('Registered procedure: getSensorEvents');
+            },
+            function(err) {
+                console.log('Failed to register procedure: getSensorEvents', err);
+            }
+        );
+
+        function setSensorSetup(setup) {
+            session.call('io.github.si618.pi-time.setSensorSetup', [setup]).then(
+                function(res) {
+                    console.log("setSensorSetup() result:", res);
+                },
+                function(err) {
+                    console.log("setSensorSetup() error:", err);
+                }
             );
+        }
+    };
 
+    // fired when connection was lost (or could not be established)
+    connection.onclose = function(reason, details) {
+        console.log('Connection lost: ' + reason);
+    }
 
-            // PUBLISH an event every second
-            //
-            t1 = setInterval(function () {
+    connection.open();
+    </script>
 
-               session.publish('io.github.si618.pi-time.onhello', ['Hello from JavaScript (browser)']);
-               console.log("published to topic 'io.github.si618.pi-time.onhello'");
-            }, 1000);
+</body>
 
-
-            // REGISTER a procedure for remote calling
-            //
-            function mul2 (args) {
-               var x = args[0];
-               var y = args[1];
-               console.log("mul2() called with " + x + " and " + y);
-               return x * y;
-            }
-            session.register('io.github.si618.pi-time.mul2', mul2).then(
-               function (reg) {
-                  console.log('procedure registered');
-               },
-               function (err) {
-                  console.log('failed to register procedure', err);
-               }
-            );
-
-
-            // CALL a remote procedure every second
-            //
-            var x = 0;
-
-            t2 = setInterval(function () {
-
-               session.call('io.github.si618.pi-time.add2', [x, 18]).then(
-                  function (res) {
-                     console.log("add2() result:", res);
-                  },
-                  function (err) {
-                     console.log("add2() error:", err);
-                  }
-               );
-
-               x += 3;
-            }, 1000);
-         };
-
-
-         // fired when connection was lost (or could not be established)
-         //
-         connection.onclose = function (reason, details) {
-            console.log("Connection lost: " + reason);
-            if (t1) {
-               clearInterval(t1);
-               t1 = null;
-            }
-            if (t2) {
-               clearInterval(t2);
-               t2 = null;
-            }
-         }
-
-
-         // now actually open the connection
-         //
-         connection.open();
-
-      </script>
-   </body>
 </html>
