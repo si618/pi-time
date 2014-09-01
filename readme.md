@@ -26,15 +26,12 @@ Pi-time is built upon the [Crossbar](http://crossbar.io/) platform, which uses [
 
 #### Requirements
 
-* [autobahn](http://autobahn.ws/python)
 * [crossbar](http://crossbar.io/)
 * [django](https://docs.djangoproject.com/en/1.5/intro/install/)
-* [django-bootstrap-toolkit](https://github.com/dyve/django-bootstrap-toolkit/)
 * [django-settings](https://github.com/jqb/django-settings/blob/master/README.rst#installation--setup)
 * [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 * [python](http://python.org/download/)
 * [python-win32api](http://sourceforge.net/projects/pywin32/) (if testing on windows)
-* [twisted](https://twistedmatrix.com/trac/)
 
 See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt) for specific versions, and [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
 
