@@ -38,6 +38,9 @@
     </table>
 
     <script>
+
+    // Knockout code
+
     function SensorViewModel() {
         // Data
         var self = this;
@@ -63,9 +66,10 @@
     };
 
     ko.applyBindings(new SensorViewModel());
-    </script>
 
-    <script>
+
+    // Crossbar code
+
     // URL of WAMP Router (Crossbar.io)
     var wsuri;
     if (document.location.origin == 'file://') {
@@ -116,6 +120,20 @@
             }
         );
 
+        function getSensorEvents(args) {
+            var sensor = args[0];
+            var events = args[1];
+            console.log('Got sensor events');
+        }
+        session.register('io.github.si618.pi-time.getSensorEvents', getSensorEvents).then(
+            function(reg) {
+                console.log('Registered procedure: getSensorEvents');
+            },
+            function(err) {
+                console.log('Failed to register procedure: getSensorEvents', err);
+            }
+        );
+
         function getSensorSetup(args) {
             var hardware = args[0];
             var laptimerServer = args[1];
@@ -129,20 +147,6 @@
             },
             function(err) {
                 console.log('Failed to register procedure: getSensorSetup', err);
-            }
-        );
-
-        function getSensorEvents(args) {
-            var sensor = args[0];
-            var events = args[1];
-            console.log('Got sensor events');
-        }
-        session.register('io.github.si618.pi-time.getSensorEvents', getSensorEvents).then(
-            function(reg) {
-                console.log('Registered procedure: getSensorEvents');
-            },
-            function(err) {
-                console.log('Failed to register procedure: getSensorEvents', err);
             }
         );
 

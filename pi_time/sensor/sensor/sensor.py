@@ -1,9 +1,8 @@
-from twisted.internet.defer import inlineCallbacks
-
-from autobahn.twisted.util import sleep
 from autobahn.twisted.wamp import ApplicationSession
+from autobahn.twisted.util import sleep
 from autobahn.wamp.exception import ApplicationError
-
+from twisted.internet.defer import inlineCallbacks
+from twisted.python import log
 from pi_time.core.api import Api
 
 class AppSession(ApplicationSession):
