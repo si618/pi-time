@@ -16,8 +16,16 @@
 	[
 		{
 			"name": "Run Tests",
-			"working_dir": "${project_path}/pi_time",
-			"cmd": ["python", "manage.py", "test", "--noinput"]
+			"working_dir": "${project_path}/pi_time/pi_time/tests",
+			"shell":true,
+			"windows":
+			{
+				"cmd": ["${project_path}/setup.bat","&","python", "-m", "unittest", "discover"]
+			},
+			"linux":
+			{
+				"cmd": ["python", "-m", "unittest", "discover"]
+			}
 		}
 	]
 }

@@ -1,0 +1,14 @@
+{
+    "laptimer": {
+        "url": "ws://127.0.0.1:8080/ws",
+    },
+    "sensors": [{
+        "name": "Start & finish line",
+        "url": "ws://127.0.0.1:8888/ws",
+        "location": "START_FINISH",
+        "hardware": "RPI_REV2",
+        "pinActiveApp": 15,
+        "pinActiveLap": 16,
+        "pinEventTrigger": 18,
+    }]
+}

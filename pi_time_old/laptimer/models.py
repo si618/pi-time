@@ -12,6 +12,8 @@ logger = logging.getLogger('laptimer')
 
 # API models
 
+# TODO: add apiVersion, method, params, ... as per json style guide found here:
+# See https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml
 class ApiBase:
     '''Abstract base class for API classes.'''   
 

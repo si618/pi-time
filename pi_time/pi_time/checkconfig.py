@@ -1,7 +1,7 @@
-# Configuration code shamelessly taken from Crossbar.io checkconfig.py
-
+# Configuration code shamelessly based on Crossbar.io checkconfig.py
 import yaml
 
+from autobahn.websocket.protocol import parseWsUrl
 from twisted.python import log
 from yaml import Loader, SafeLoader
 
@@ -13,7 +13,6 @@ def construct_yaml_str(self, node):
 Loader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
 SafeLoader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
 
-
 def check_laptimer(laptimer, silence=False):
     """
     Check a laptimer configuration item.
@@ -24,12 +23,10 @@ def check_laptimer(laptimer, silence=False):
     :type silence: boolean
     """
     for k in laptimer:
-        if k not in ['name', 'address', 'unit']:
-            raise Exception("encountered unknown attribute '{}' in laptimer configuration".format(k))
+        if k not in ['name', 'url', 'unitOfMeaurement']:
+            raise Exception("Encountered unknown attribute '{}' in laptimer configuration".format(k))
 
     #if 'unit' in laptimer
-
-
 
 def check_sensor(sensor, silence=False):
     """
@@ -40,16 +37,16 @@ def check_sensor(sensor, silence=False):
     :param silence: Whether to log configuration checks. Defaults to false.
     :type silence: boolean
     """
-    if type(controller) != dict:
-        raise Exception("sensor items must be dictionaries ({} encountered)\n\n{}".format(type(controller), pformat(controller)))
+    if type(sensor) != dict:
+        raise Exception("sensor items must be dictionaries ({} encountered)\n\n{}".format(type(sensor),
+            pformat(sensor)))
 
     for k in sensor:
-        if k not in ['name', 'address', 'type', 'position']:
-            raise Exception("encountered unknown attribute '{}' in sensor configuration".format(k))
+        if k not in ['name', 'url', 'location', 'position', 'hardware',
+        'pinActiveApp', 'pinActiveLap', 'pinEventTrigger']:
+            raise Exception("Encountered unknown attribute '{}' in sensor configuration".format(k))
 
-    #if 'address' in sensor:
-    #    check_address(sensor['id'])
-
+    #if 'url' in sensor:
 
 def check_config(config, silence=False):
     """
@@ -88,20 +85,19 @@ def check_config(config, silence=False):
             check_sensor(sensor, silence)
             i += 1
 
-
-def check_config_file(configfile, silence=False):
+def check_config_file(config_file, silence=False):
     """
     Check a pi-time configuration file.
 
-    :param configfile: The file to check.
-    :type configfile: str
+    :param config_file: The file to check.
+    :type config_file: str
     :param silence: Whether to log configuration checks. Defaults to false.
     :type silence: boolean
     """
-    configext = os.path.splitext(configfile)[1]
-    configfile = os.path.abspath(configfile)
+    configext = os.path.splitext(config_file)[1]
+    config_file = os.path.abspath(config_file)
 
-    with open(configfile, 'rb') as infile:
+    with open(config_file, 'rb') as infile:
     if configext == '.yaml':
         try:
             config = yaml.safe_load(infile)
