@@ -5,5 +5,4 @@ install:
     - pip install setuptools --upgrade
     - pip install -r requirements.txt
 script:
-    - python pi_time_old/manage.py validate
-    - python pi_time_old/manage.py test pi_time
+    - python -m unittest discover -s pi_time
