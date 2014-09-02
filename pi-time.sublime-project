@@ -16,7 +16,7 @@
 	[
 		{
 			"name": "Run Tests",
-			"working_dir": "${project_path}/pi_time/pi_time/tests",
+			"working_dir": "${project_path}/pi_time/pi_time",
 			"shell":true,
 			"windows":
 			{
