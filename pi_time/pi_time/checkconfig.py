@@ -1,8 +1,14 @@
-# Configuration code shamelessly based on Crossbar.io checkconfig.py
+# Code shamelessly based on Crossbar.io checkconfig.py, with thanks! :)
+import json
+import os
 import yaml
 
+import six
+
 from autobahn.websocket.protocol import parseWsUrl
+
 from twisted.python import log
+
 from yaml import Loader, SafeLoader
 
 # Hack: force PyYAML to parse _all_ strings into Unicode
@@ -12,6 +18,27 @@ def construct_yaml_str(self, node):
 
 Loader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
 SafeLoader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
+
+def check_name(config, section):
+    if 'name' in config:
+        name = config['name']
+        if type(name) != six.text_type:
+            raise Exception("'name' in {} configuration must be str ({} encountered)".format(
+                section, type(name)))
+
+def check_url(config, section):
+    if 'url' in config:
+        url = config['url']
+        if type(url) != six.text_type:
+            raise Exception("'url' in {} configuration must be str ({} encountered)".format(
+                section, type(url)))
+        try:
+            u = parseWsUrl(url)
+        except Exception as e:
+            raise Exception("invalid 'url' in {} configuration : {}".format(
+                section, e))
+    else:
+        raise Exception("'url' required in {} configuration".format(section))
 
 def check_laptimer(laptimer, silence=False):
     """
@@ -23,10 +50,11 @@ def check_laptimer(laptimer, silence=False):
     :type silence: boolean
     """
     for k in laptimer:
-        if k not in ['name', 'url', 'unitOfMeaurement']:
+        if k not in ['name', 'url', 'unitOfMeasurement', 'timezone']:
             raise Exception("Encountered unknown attribute '{}' in laptimer configuration".format(k))
 
-    #if 'unit' in laptimer
+    check_name(laptimer, 'laptimer')
+    check_url(laptimer, 'laptimer')
 
 def check_sensor(sensor, silence=False):
     """
@@ -46,7 +74,8 @@ def check_sensor(sensor, silence=False):
         'pinActiveApp', 'pinActiveLap', 'pinEventTrigger']:
             raise Exception("Encountered unknown attribute '{}' in sensor configuration".format(k))
 
-    #if 'url' in sensor:
+    check_name(sensor, 'sensor')
+    check_url(sensor, 'sensor')
 
 def check_config(config, silence=False):
     """
@@ -69,8 +98,8 @@ def check_config(config, silence=False):
     # check laptimer config
     if 'laptimer' in config:
         if not silence:
-            log.msg("Checking laptimer item ..")
-                check_laptimer(config['laptimer'])
+            log.msg("Checking laptimer")
+        check_laptimer(config['laptimer'])
 
     # check sensors config
     sensors = config.get('sensors', [])
@@ -79,11 +108,11 @@ def check_config(config, silence=False):
         raise Exception("'sensors' attribute in top-level configuration must be a list ({} encountered)".format(type(sensors)))
 
     i = 1
-    for sensor in sensor:
+    for sensor in sensors:
         if not silence:
-            log.msg("Checking sensor item {} ..".format(i))
-            check_sensor(sensor, silence)
-            i += 1
+            log.msg("Checking sensor item {}".format(i))
+        check_sensor(sensor, silence)
+        i += 1
 
 def check_config_file(config_file, silence=False):
     """
@@ -94,20 +123,23 @@ def check_config_file(config_file, silence=False):
     :param silence: Whether to log configuration checks. Defaults to false.
     :type silence: boolean
     """
+    if not silence:
+        log.msg('Checking configuration file {}'.format(config_file))
+
     configext = os.path.splitext(config_file)[1]
     config_file = os.path.abspath(config_file)
 
     with open(config_file, 'rb') as infile:
-    if configext == '.yaml':
-        try:
-            config = yaml.safe_load(infile)
-        except Exception as e:
-            raise Exception("Configuration file does not seem to be proper YAML ('{}'')".format(e))
-    else:
-        try:
-            config = json.load(infile)
-        except ValueError as e:
-            raise Exception("Configuration file does not seem to be proper JSON ('{}'')".format(e))
+        if configext == '.yaml':
+            try:
+                config = yaml.safe_load(infile)
+            except Exception as e:
+                raise Exception("Configuration file does not seem to be proper YAML ('{}'')".format(e))
+        else:
+            try:
+                config = json.load(infile)
+            except ValueError as e:
+                raise Exception("Configuration file does not seem to be proper JSON ('{}'')".format(e))
 
     check_config(config, silence)
 

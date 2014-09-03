@@ -1,8 +1,12 @@
+import os
+
 from autobahn.twisted.wamp import ApplicationSession
 from autobahn.twisted.util import sleep
 from autobahn.wamp.exception import ApplicationError
+
 from twisted.internet.defer import inlineCallbacks
 from twisted.python import log
+
 from pi_time.api import Api
 
 class AppSession(ApplicationSession):
@@ -10,13 +14,11 @@ class AppSession(ApplicationSession):
     @inlineCallbacks
     def onJoin(self, details):
 
-        api = Api()
+        config_file = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), 'config.json')
+        self.api = Api(config_file)
 
-        counter = 0
-        while True:
-            counter += 1
-            yield sleep(1)
-
+        yield
 
         ## SUBSCRIBE to a topic and receive events
         #def onhello(msg):

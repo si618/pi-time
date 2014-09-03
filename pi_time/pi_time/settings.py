@@ -1,7 +1,3 @@
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Australia/Adelaide'
-
  # Report speed in km/h|m/s, distance in metres.
 METRIC = 'SI'
 # Report speed in m/h|y/s, distance in yards.
