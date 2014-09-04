@@ -1,7 +1,7 @@
  # Report speed in km/h|m/s, distance in metres.
-METRIC = 'SI'
+METRIC = 'METRIC'
 # Report speed in m/h|y/s, distance in yards.
-IMPERIAL = 'IM'
+IMPERIAL = 'IMPERIAL'
 CHOOSE_UNIT_OF_MEASUREMENT = (
     (METRIC, 'Metric'),
     (IMPERIAL, 'Imperial')
@@ -30,6 +30,16 @@ CHOOSE_SENSOR_LOCATION = (
     (SENSOR_LOCATION_START_FINISH, 'Start and finish line'),
     (SENSOR_LOCATION_SECTOR, 'Sector checkpoint (split time)'),
 )
+
+# Sensor pin layout, first value of tuple is config key, second is description
+SENSOR_PIN_LED_APP = ('pinLedApp', 
+    'Pin for LED when sensor application is active')
+SENSOR_PIN_LED_HEARTBEAT = ('pinLedHeartbeat', 
+    'Pin for LED when sensor received heartbeat from laptimer')
+SENSOR_PIN_LED_LAP = ('pinLedLap', 'Pin for LED when lap is active')
+SENSOR_PIN_LED_EVENT = ('pinLedEvent', 
+    'Pin for LED when sensor event is triggered')
+SENSOR_PIN_EVENT = ('pinEvent', 'Pin for triggering sensor event')
 
 # Raspberry Pi pin layouts - http://pi.gadgetoid.com/pinout
 # http://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/
@@ -77,7 +87,7 @@ SENSOR_HW_RPI_REV1 = 'RPI_REV1'
 SENSOR_HW_RPI_REV2 = 'RPI_REV2'
 SENSOR_HW_RPI_BPLUS = 'RPI_B+'
 CHOOSE_SENSOR_HW = (
-    (SENSOR_HW_TEST, 'Test computer - Software triggered events', ()),
+    (SENSOR_HW_TEST, 'Test via software triggered events', ()),
     (SENSOR_HW_RPI_REV1, 'Raspberry Pi Model B - Revision 1.0', RPI_GPIO_REV1),
     (SENSOR_HW_RPI_REV2, 'Raspberry Pi Model A/B - Revision 2.0', RPI_GPIO_REV2),
     (SENSOR_HW_RPI_BPLUS, 'Raspberry Pi Model B+', RPI_GPIO_BPLUS),

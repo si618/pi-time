@@ -25,7 +25,7 @@ def average_speed_per_hour(start, finish, distance,
     elif (unit_of_measurement == settings.IMPERIAL):
         return average_miles_per_hour(start, finish, distance)
     else:
-        raise ValueError('Unknown unit of measurement %s' %
+        raise ValueError("Unknown unit of measurement '%s'" %
             (unit_of_measurement))
 
 

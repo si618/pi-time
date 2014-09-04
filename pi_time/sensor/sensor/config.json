@@ -3,12 +3,14 @@
         "url": "ws://127.0.0.1:8080/ws"
     },
     "sensors": [{
-        "name": "Start & finish line",
+        "name": "Start & finish",
         "url": "ws://127.0.0.1:8888/ws",
         "location": "START_FINISH",
         "hardware": "RPI_REV2",
-        "pinActiveApp": 15,
-        "pinActiveLap": 16,
-        "pinEventTrigger": 18
+        "pinLedApp": 13,
+        "pinLedHeartbeat": 15,
+        "pinLedLap": 16,
+        "pinLedEvent": 18,
+        "pinEvent": 22
     }]
 }

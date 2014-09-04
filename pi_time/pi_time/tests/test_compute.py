@@ -3,6 +3,7 @@ import unittest
 import pytz
 
 from datetime import datetime, timedelta
+
 from pi_time import compute, settings
 
 
@@ -76,33 +77,45 @@ class ComputeTestCase(unittest.TestCase):
         # Arrange
         start = datetime.now(pytz.utc)
         finish = start
-        # Act & Assert
-        with self.assertRaises(ValueError):
+        # Act
+        with self.assertRaises(ValueError) as context:
             compute.average_speed_per_second(start, finish, 10)
+        # Assert
+        self.assertEqual(context.exception.message,
+            "Start time must be before finish time!")
 
     def test_average_speed_per_second_raises_exception_when_finish_less_than_start(self):
         # Arrange
         finish = datetime.now(pytz.utc)
         start = finish + timedelta(seconds=1)
         # Act & Assert
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValueError) as context:
             compute.average_speed_per_second(start, finish, 10)
+        # Assert
+        self.assertEqual(context.exception.message,
+            "Start time must be before finish time!")
 
     def test_average_speed_per_second_raises_exception_when_distance_equals_zero(self):
         # Arrange
         start = datetime.now(pytz.utc)
         finish = start + timedelta(seconds=1)
-        # Act & assert
-        with self.assertRaises(ValueError):
+        # Act
+        with self.assertRaises(ValueError) as context:
             compute.average_speed_per_second(start, finish, 0)
+        # Assert
+        self.assertEqual(context.exception.message,
+            "Track distance must be greater than zero!")
 
     def test_average_speed_per_second_raises_exception_when_distance_less_than_zero(self):
         # Arrange
         start = datetime.now(pytz.utc)
         finish = start + timedelta(seconds=1)
-        # Act & Assert
-        with self.assertRaises(ValueError):
+        # Act
+        with self.assertRaises(ValueError) as context:
             compute.average_speed_per_second(start, finish, -0.1)
+        # Assert
+        self.assertEqual(context.exception.message,
+            "Track distance must be greater than zero!")
 
     def test_average_speed_per_second_returns_5mps_50m_in_10s(self):
         # Arrange
@@ -138,7 +151,7 @@ class ComputeTestCase(unittest.TestCase):
         finish = start + timedelta(seconds=15)
         # Act
         avg_sph = compute.average_speed_per_hour(start, finish, 50,
-        	unit_of_measurement)
+            unit_of_measurement)
         # Assert
         self.assertEqual(12, avg_sph)
 
@@ -149,7 +162,7 @@ class ComputeTestCase(unittest.TestCase):
         finish = start + timedelta(seconds=15)
         # Act
         avg_sph = compute.average_speed_per_hour(start, finish, 50,
-        	unit_of_measurement)
+            unit_of_measurement)
         # Assert
         self.assertEqual(6.8182, avg_sph)
 
@@ -158,10 +171,13 @@ class ComputeTestCase(unittest.TestCase):
         unit_of_measurement = 'Bogus'
         start = datetime.now(pytz.utc)
         finish = start + timedelta(seconds=15)
-        # Act & Assert
-        with self.assertRaises(ValueError):
-        	compute.average_speed_per_hour(start, finish, 50,
-        		unit_of_measurement)
+        # Act
+        with self.assertRaises(ValueError) as context:
+            compute.average_speed_per_hour(start, finish, 50,
+                unit_of_measurement)
+        # Assert
+        self.assertEqual(context.exception.message,
+            "Unknown unit of measurement 'Bogus'")
 
 
 if __name__ == '__main__':
