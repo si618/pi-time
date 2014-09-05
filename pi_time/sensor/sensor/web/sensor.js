@@ -1,5 +1,5 @@
 // Output console logging to document as well as console
-if (typeof console  != 'undefined') 
+if (typeof console  != 'undefined')
 	if (typeof console.log != 'undefined')
 		console._log = console.log;
 else
@@ -7,7 +7,7 @@ else
 console.log = function(message) {
 	console._log(message);
 	log = $('#log')
-	now = '[' + new Date().toISOString() + '] '	
+	now = '[' + new Date().toISOString() + '] '
 	logval = log.val()
 	if (logval.length > 0) { now = '\n' + now }
 	log.val(logval + now + message);
@@ -28,12 +28,12 @@ function SensorViewModel() {
     self.settings = ko.observable();
     self.events = ko.observable();
 
-    // Behaviours    
+    // Behaviours
     self.goToTab = function(tab) {
         location.hash = tab
     };
 
-    // Client-side routes    
+    // Client-side routes
     Sammy(function() {
         this.get('#:tab', function() {
             self.selectedTabId(this.params.tab);
@@ -73,7 +73,7 @@ connection.onopen = function(session, details) {
 
     function on_laptimerevent(args) {
         var laptimer = args[0];
-        // TODO: laptimer contain details of status change of laptimer 
+        // TODO: laptimer contain details of status change of laptimer
         // server (start/stop/error) or current lap (started/finished)
         console.log('Event: on_laptimerevent received from laptimer ' + laptimer);
     }
