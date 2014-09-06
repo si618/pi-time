@@ -1,5 +1,7 @@
 body {
     font-family: Helvetica, Arial;
+    color: #f0e7d5;
+    background: #252525;
 }
 textarea {
     display: block;
@@ -49,4 +51,27 @@ textarea {
     border-right-color: #aaa;
     border-left: none;
     box-shadow: inset 1px 2px 6px #070707;
+}
+.led {
+    margin: 10px auto;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: #000 0px 0px 1px 0px, -2px -4px 12px 2px inset, 0px 0px 10px 0px;
+}
+.led.green {
+    color: #6eb300;
+}
+.led.yellow {
+    color: #b3a000;
+}
+.led.red {
+    color: #b30600;
+}
+.led.blue {
+    color: #004ab3;
+}
+.led.gray {
+    color: #282828;
 }

@@ -16,15 +16,19 @@
 <body>
     <ul class='tabs' data-bind='foreach: tabs'>
         <li data-bind='text: $root.getTabName($data),
-                     css: { selected: $data == $root.selectedTabId() },
-                     click: $root.goToTab'></li>
+            css: { selected: $data == $root.selectedTabId() },
+            click: $root.goToTab'></li>
     </ul>
 
     <div class='status' data-bind='visible: $root.selectedTabId() == "Status"'>
-        <p>Connected to laptimer</p>
-        <p>Laptimer heartbeat</p>
-        <p>Lap is active</p>
-        <p>Sensor triggered</p>
+        <p class='label'>Connected to laptimer</p>
+        <div class='led green'></div>
+        <p class='label'>Laptimer heartbeat</p>
+        <div class='led red'></div>
+        <p class='label'>Lap active</p>
+        <div class='led blue'></div>
+        <p class='label'>Sensor event</p>
+        <div class='led yellow'></div><div class='led gray'></div>
     </div>
 
     <div class='settings' data-bind='visible: $root.selectedTabId() == "Settings"'>
@@ -41,7 +45,9 @@
     <div class='authenticate' data-bind='visible: $root.selectedTabId() == "Authenticate"'>
     </div>
 
-    <script src='sensor.js'></script>
+    <script src='sensor-common.js'></script>
+    <script src='sensor-knockout.js'></script>
+    <script src='sensor-crossbar.js'></script>
 </body>
 
 </html>
