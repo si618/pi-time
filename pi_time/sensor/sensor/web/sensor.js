@@ -4,10 +4,24 @@ if (typeof console  != 'undefined')
 		console._log = console.log;
 else
 	console._log = function() {};
+function getLocalTime() {
+    now = new Date();
+    hours = now.getHours();
+    if (hours < 10) hours = '0' + hours;
+    minutes =  now.getMinutes();
+    if (minutes < 10) minutes = '0' + minutes;
+    seconds = now.getSeconds();
+    if (seconds < 10) seconds = '0' + seconds;
+    milliseconds = now.getMilliseconds();
+    if (milliseconds < 10) milliseconds = '00' + milliseconds;
+    else if (milliseconds < 100) milliseconds = '0' + milliseconds;
+    time = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+    return time;
+}
 console.log = function(message) {
 	console._log(message);
 	log = $('#log')
-	now = '[' + new Date().toISOString() + '] '
+	now = '[' + getLocalTime() + '] '
 	logval = log.val()
 	if (logval.length > 0) { now = '\n' + now }
 	log.val(logval + now + message);
@@ -18,10 +32,29 @@ console.error = console.debug = console.info = console.log
 
 // Knockout code
 
+function StatusViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+};
+
+function EventsViewModel() {
+    var self = this;
+    self.events = ko.observable();
+};
+
+function SettingsViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+};
+
 function SensorViewModel() {
     // Data
     var self = this;
-    self.tabs = ['Status', 'Events', 'Settings', 'Log'];
+    self.tabs = ['Status', 'Events', 'Settings', 'Log', 'Authenticate'];
     self.selectedTabId = ko.observable();
     self.selectedTabData = ko.observable();
     self.status = ko.observable();
@@ -31,6 +64,15 @@ function SensorViewModel() {
     // Behaviours
     self.goToTab = function(tab) {
         location.hash = tab
+    };
+    self.getTabName = function(tab) {
+        if (tab == 'Authenticate') {
+            // TODO: Logout if already logged in, otherwise Login
+            return 'Login'
+        }
+        else {
+            return tab
+        }
     };
 
     // Client-side routes
@@ -69,7 +111,7 @@ var connection = new autobahn.Connection({
 // fired when connection is established and session attached
 connection.onopen = function(session, details) {
 
-    console.log('Connected to sensor');
+    console.log('Web client connected to sensor node');
 
     function on_laptimerevent(args) {
         var laptimer = args[0];
@@ -114,29 +156,29 @@ connection.onopen = function(session, details) {
         }
     );
 
-    function getSensorSetup(args) {
+    function getSensorConfig(args) {
         var hardware = args[0];
         var laptimerServer = args[1];
         var sensorPosition = args[2];
         var sendorConfig = args[3]
-        console.log('Got sensor setup');
+        console.log('Got sensor config');
     }
-    session.register('io.github.si618.pi-time.getSensorSetup', getSensorSetup).then(
+    session.register('io.github.si618.pi-time.getSensorConfig', getSensorConfig).then(
         function(reg) {
-            console.log('Registered procedure: getSensorSetup');
+            console.log('Registered procedure: getSensorConfig');
         },
         function(err) {
-            console.log('Failed to register procedure: getSensorSetup', err);
+            console.log('Failed to register procedure: getSensorConfig', err);
         }
     );
 
-    function setSensorSetup(setup) {
-        session.call('io.github.si618.pi-time.setSensorSetup', [setup]).then(
+    function setSensorConfig(setup) {
+        session.call('io.github.si618.pi-time.setSensorConfig', [setup]).then(
             function(res) {
-                console.log('Result from setSensorSetup:', res);
+                console.log('Result from setSensorConfig:', res);
             },
             function(err) {
-                console.log('Error from setSensorSetup: ', err);
+                console.log('Error from setSensorConfig: ', err);
             }
         );
     }
@@ -144,7 +186,7 @@ connection.onopen = function(session, details) {
 
 // fired when connection was lost (or could not be established)
 connection.onclose = function(reason, details) {
-    console.log('Connection to sensor lost: ' + reason);
+    console.log('Connection to sensor node lost: ' + reason);
 }
 
 connection.open();

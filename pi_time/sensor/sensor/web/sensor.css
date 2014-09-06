@@ -1,5 +1,13 @@
 body {
-    font-family: Helvetica, Arial
+    font-family: Helvetica, Arial;
+}
+textarea {
+    display: block;
+    width: 99%;
+    height: 100%;
+    font-size: medium;
+    white-space: nowrap;
+    overflow: auto;
 }
 .tabs {
     background-color: #bbb;
@@ -14,12 +22,8 @@ body {
 .tabs li:hover {
     background-color: #ddd;
 }
-.tabs li:first-child {
-    border-left: none;
-    border-radius: 7px 0 0 7px;
-}
 .tabs li {
-    font-size: 16px;
+    font-size: large;
     font-weight: bold;
     display: inline-block;
     padding: 0.5em 1.5em;
@@ -29,6 +33,15 @@ body {
     border-left: 1px solid #ddd;
     border-right: 1px solid #888;
 }
+.tabs li:first-child {
+    border-left: none;
+    border-radius: 6px 0 0 6px;
+}
+.tabs li:last-child {
+    float: right;
+    border-right: none;
+    border-radius: 0 6px 6px 0;
+}
 .tabs .selected {
     background-color: #444 !important;
     color: white;
@@ -36,11 +49,4 @@ body {
     border-right-color: #aaa;
     border-left: none;
     box-shadow: inset 1px 2px 6px #070707;
-}
-#log {
-    display: block;
-    width: 100%;
-    height: 100%;
-    white-space: nowrap;
-    overflow: auto;
 }

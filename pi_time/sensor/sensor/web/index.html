@@ -15,30 +15,30 @@
 
 <body>
     <ul class='tabs' data-bind='foreach: tabs'>
-        <li data-bind='text: $data, 
+        <li data-bind='text: $root.getTabName($data),
                      css: { selected: $data == $root.selectedTabId() },
                      click: $root.goToTab'></li>
     </ul>
 
-    <div class='status' data-bind='visible: $root.selectedTabId() == "Status",
-                                   with: status'>
+    <div class='status' data-bind='visible: $root.selectedTabId() == "Status"'>
         <p>Connected to laptimer</p>
         <p>Laptimer heartbeat</p>
         <p>Lap is active</p>
         <p>Sensor triggered</p>
     </div>
 
-    <div class='settings' data-bind='visible: $root.selectedTabId() == "Settings",
-                                     with: settings'>
+    <div class='settings' data-bind='visible: $root.selectedTabId() == "Settings"'>
     </div>
 
-    <div class='events' data-bind='visible: $root.selectedTabId() == "Events",
-                                     with: events'>
-        <textarea id='events' readonly='true' rows='10'></textarea>
+    <div class='events' data-bind='visible: $root.selectedTabId() == "Events"'>
+        <textarea id='events' readonly='true' rows='10' data-bind="value: events"></textarea>
     </div>
 
     <div class='log' data-bind='visible: $root.selectedTabId() == "Log"'>
         <textarea id='log' readonly='true' rows='10'></textarea>
+    </div>
+
+    <div class='authenticate' data-bind='visible: $root.selectedTabId() == "Authenticate"'>
     </div>
 
     <script src='sensor.js'></script>
