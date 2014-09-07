@@ -20,7 +20,7 @@ function SettingsViewModel() {
 function SensorViewModel() {
     // Data
     var self = this;
-    self.tabs = ['Status', 'Events', 'Settings', 'Log', 'Authenticate'];
+    self.tabs = ['Status', 'Events', 'Settings', 'Log', 'Access'];
     self.selectedTabId = ko.observable();
     self.selectedTabData = ko.observable();
     self.status = ko.observable();
@@ -32,7 +32,7 @@ function SensorViewModel() {
         location.hash = tab
     };
     self.getTabName = function(tab) {
-        if (tab == 'Authenticate') {
+        if (tab == 'Access') {
             // TODO: Logout if already logged in, otherwise Login
             return 'Login'
         }

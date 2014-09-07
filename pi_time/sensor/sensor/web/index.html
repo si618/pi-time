@@ -2,6 +2,9 @@
 <html>
 
 <head>
+    <meta name=viewport content="width=device-width, initial-scale=0.8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Pi-time sensor</title>
     <script>
     AUTOBAHN_DEBUG = true;
@@ -11,16 +14,18 @@
     <script src='jquery-1.11.1.js'></script>
     <script src='knockout-3.2.0.js'></script>
     <script src='sammy-0.7.6.js'></script>
+    <script src='sensor-common.js'></script>
 </head>
 
-<body>
+<body onload='launchFullscreen(document.documentElement)'>
     <ul class='tabs' data-bind='foreach: tabs'>
         <li data-bind='text: $root.getTabName($data),
             css: { selected: $data == $root.selectedTabId() },
             click: $root.goToTab'></li>
     </ul>
 
-    <div class='status' data-bind='visible: $root.selectedTabId() == "Status"'>
+    <div data-bind='visible: $root.selectedTabId() == "Status"'>
+        <button onclick='launchFullscreen(document.documentElement)'>Full screen</button>
         <p class='label'>Connected to laptimer</p>
         <div class='led green'></div>
         <p class='label'>Laptimer heartbeat</p>
@@ -28,24 +33,24 @@
         <p class='label'>Lap active</p>
         <div class='led blue'></div>
         <p class='label'>Sensor event</p>
-        <div class='led yellow'></div><div class='led gray'></div>
+        <div class='led yellow'></div>
+        <div class='led gray'></div>
     </div>
 
-    <div class='settings' data-bind='visible: $root.selectedTabId() == "Settings"'>
+    <div data-bind='visible: $root.selectedTabId() == "Settings"'>
     </div>
 
-    <div class='events' data-bind='visible: $root.selectedTabId() == "Events"'>
-        <textarea id='events' readonly='true' rows='10' data-bind="value: events"></textarea>
+    <div data-bind='visible: $root.selectedTabId() == "Events"'>
+        <textarea id='events' readonly='true' rows='20' data-bind="value: events"></textarea>
     </div>
 
-    <div class='log' data-bind='visible: $root.selectedTabId() == "Log"'>
-        <textarea id='log' readonly='true' rows='10'></textarea>
+    <div data-bind='visible: $root.selectedTabId() == "Log"'>
+        <textarea id='log' readonly='true' rows='12'></textarea>
     </div>
 
-    <div class='authenticate' data-bind='visible: $root.selectedTabId() == "Authenticate"'>
+    <div data-bind='visible: $root.selectedTabId() == "Access"'>
     </div>
 
-    <script src='sensor-common.js'></script>
     <script src='sensor-knockout.js'></script>
     <script src='sensor-crossbar.js'></script>
 </body>

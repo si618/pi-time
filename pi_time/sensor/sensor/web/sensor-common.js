@@ -1,4 +1,4 @@
-// Output console logging to document as well as console
+// Subvert console log
 if (typeof console != 'undefined')
     if (typeof console.log != 'undefined')
         console._log = console.log;
@@ -31,4 +31,16 @@ function getLocalTime() {
     else if (milliseconds < 100) milliseconds = '0' + milliseconds;
     time = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
     return time;
+}
+
+function launchFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
 }
