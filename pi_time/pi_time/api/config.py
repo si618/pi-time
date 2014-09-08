@@ -1,14 +1,14 @@
 from twisted.python import log
 
-from pi_time import config
-from pi_time.api import base
 
+class ApiConfig:
+    """API configuration methods."""
 
-class ApiConfig(base.ApiBase):
-    """API configuration methods..."""
+    def __init__(self, api):
+        self.api = api
 
     def get_laptimer_config(self):
-        return self.config['laptimer']
+        return self.api.config['laptimer']
 
     def set_laptimer_config(self, laptimer_config):
         return

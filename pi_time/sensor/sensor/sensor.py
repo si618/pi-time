@@ -7,7 +7,7 @@ from autobahn.wamp.exception import ApplicationError
 from twisted.internet.defer import inlineCallbacks
 from twisted.python import log
 
-from pi_time.api import base, config
+from pi_time.api import api
 
 
 class AppSession(ApplicationSession):
@@ -17,7 +17,7 @@ class AppSession(ApplicationSession):
 
         config_file = os.path.join(os.path.dirname(
             os.path.realpath(__file__)), 'config.json')
-        self.apiConfig = config.ApiConfig(config_file)
+        self.api = api.Api(config_file=config_file)
 
         yield
 

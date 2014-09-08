@@ -12,7 +12,7 @@ Still lots of work to do, hardware is working and API is getting there, but most
 
 An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), or whatever needs timing, with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
 
-The Raspberry Pi (RPi), acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or mobile app.
+The Raspberry Pi (RPi), or any hardware capable of running python and networking, acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or mobile app.
 
 Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor.
 
