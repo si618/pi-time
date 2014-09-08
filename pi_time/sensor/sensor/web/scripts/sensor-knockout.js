@@ -23,22 +23,17 @@ function SensorViewModel() {
     self.tabs = ['Status', 'Events', 'Settings', 'Log', 'Access'];
     self.selectedTabId = ko.observable();
     self.selectedTabData = ko.observable();
-    self.status = ko.observable();
-    self.settings = ko.observable();
-    self.events = ko.observable();
 
     // Behaviours
     self.goToTab = function(tab) {
-        location.hash = tab
+        location.hash = tab;
     };
     self.getTabName = function(tab) {
         if (tab == 'Access') {
             // TODO: Logout if already logged in, otherwise Login
-            return 'Login'
+            return 'Login';
         }
-        else {
-            return tab
-        }
+        return tab;
     };
 
     // Client-side routes
@@ -53,4 +48,5 @@ function SensorViewModel() {
     }).run();
 };
 
-ko.applyBindings(new SensorViewModel());
+var sensorVM = new SensorViewModel();
+ko.applyBindings(sensorVM);

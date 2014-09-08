@@ -8,12 +8,7 @@ if (typeof console != 'undefined')
 console.log = function(message) {
     console._log(message);
     log = $('#log')
-    now = '[' + getLocalTime() + '] '
-    logval = log.val()
-    if (logval.length > 0) {
-        now = '\n' + now
-    }
-    log.val(logval + now + message);
+    log.text(log.text() + '[' + getLocalTime() + '] ' + message + '\n');
     log.scrollTop(log[0].scrollHeight);
 };
 console.error = console.debug = console.info = console.log
@@ -33,7 +28,8 @@ function getLocalTime() {
     return time;
 }
 
-function launchFullscreen(element) {
+function goFullscreen() {
+    element = document.documentElement;
     if (element.requestFullscreen) {
         element.requestFullscreen();
     } else if (element.mozRequestFullScreen) {
@@ -44,3 +40,25 @@ function launchFullscreen(element) {
         element.msRequestFullscreen();
     }
 }
+
+function fullscreenChanged() {
+    $('.fullscreen').toggle();
+}
+
+document.addEventListener('fullscreenchange', fullscreenChanged);
+document.addEventListener('webkitfullscreenchange', fullscreenChanged);
+document.addEventListener('mozfullscreenchange', fullscreenChanged);
+document.addEventListener('MSFullscreenChange', fullscreenChanged);
+
+$(document).ready(function() {
+    function resizeOutput() {
+        var height = $(window).height() - 100;
+        output = $('.output');
+        output.height(height);
+        output.scrollTop = output.height;
+    }
+    resizeOutput();
+    $(window).resize(function() {
+        resizeOutput();
+    });
+});

@@ -64,7 +64,7 @@ connection.onopen = function(session, details) {
 
     function getSensorConfig(args) {
         var hardware = args[0];
-        var laptimerServer = args[1];
+        var laptimerUrl = args[1];
         var sensorPosition = args[2];
         var sendorConfig = args[3]
         console.log('Got sensor config');

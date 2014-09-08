@@ -23,6 +23,7 @@ def check_name(config, section):
             raise Exception("'name' in {} configuration must be str ({} " \
                 "encountered)".format(section, type(name)))
 
+
 def check_url(config, section):
     if 'url' in config:
         url = config['url']
@@ -37,6 +38,7 @@ def check_url(config, section):
     else:
         raise Exception("'url' required in {} configuration".format(section))
 
+
 def check_unit_of_measurement(laptimer):
     if 'unitOfMeasurement' in laptimer:
         unit = laptimer['unitOfMeasurement']
@@ -44,6 +46,7 @@ def check_unit_of_measurement(laptimer):
         if unit not in units:
             raise Exception("'unitOfMeasurement' in laptimer configuration " \
                 "must be {} ({} encountered)".format(units, unit))
+
 
 def check_timezone(laptimer):
     if 'timezone' in laptimer:
@@ -53,6 +56,7 @@ def check_timezone(laptimer):
                 "valid entry in pytz.common_timezones ({} encountered)".format(
                 timezone))
 
+
 def check_sensor_location(sensor):
     if 'location' in sensor:
         location = sensor['location']
@@ -60,6 +64,7 @@ def check_sensor_location(sensor):
         if location not in locations:
             raise Exception("'location' in sensor configuration must be {} " \
                 "({} encountered)".format(locations, location))
+
 
 def check_sensor_position(sensor):
     if 'position' in sensor:
@@ -71,6 +76,7 @@ def check_sensor_position(sensor):
             raise Exception("'position' in sensor configuration must be " \
                 "greater than zero".format(position))
 
+
 def check_sensor_hardware(sensor):
     if 'hardware' in sensor:
         hardware = sensor['hardware']
@@ -78,6 +84,7 @@ def check_sensor_hardware(sensor):
         if hardware not in hw:
             raise Exception("'hardware' in sensor configuration must be {} " \
                 "({} encountered)".format(hw, hardware))
+
 
 def check_sensor_pin(sensor, pin_name):
     if pin_name not in sensor:
@@ -104,6 +111,7 @@ def check_sensor_pin(sensor, pin_name):
         raise Exception("'hardware' in sensor configuration must be " \
             "specified if setting pin")
 
+
 def check_laptimer(laptimer):
     """
     Check a laptimer configuration item.
@@ -120,6 +128,9 @@ def check_laptimer(laptimer):
     check_url(laptimer, 'laptimer')
     check_unit_of_measurement(laptimer)
     check_timezone(laptimer)
+
+    return laptimer
+
 
 def check_sensor(sensor):
     """
@@ -150,6 +161,9 @@ def check_sensor(sensor):
     check_sensor_pin(sensor, settings.SENSOR_PIN_LED_LAP[0])
     check_sensor_pin(sensor, settings.SENSOR_PIN_LED_EVENT[0])
     check_sensor_pin(sensor, settings.SENSOR_PIN_EVENT[0])
+
+    return sensor
+
 
 def check_config(config):
     """
@@ -186,6 +200,7 @@ def check_config(config):
         log.msg("Checking sensor item {}".format(i), logLevel=logging.DEBUG)
         check_sensor(sensor)
         i += 1
+
 
 def check_config_file(config_file):
     """

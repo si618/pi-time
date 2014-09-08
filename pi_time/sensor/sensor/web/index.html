@@ -9,23 +9,22 @@
     <script>
     AUTOBAHN_DEBUG = true;
     </script>
-    <link rel='Stylesheet' href='sensor.css'>
-    <script src='autobahn-0.9.2-2.js'></script>
-    <script src='jquery-1.11.1.js'></script>
-    <script src='knockout-3.2.0.js'></script>
-    <script src='sammy-0.7.6.js'></script>
-    <script src='sensor-common.js'></script>
+    <link rel='Stylesheet' href='styles/sensor.css'>
+    <script src='scripts/autobahn-0.9.2-2.js'></script>
+    <script src='scripts/jquery-1.11.1.js'></script>
+    <script src='scripts/knockout-3.2.0.js'></script>
+    <script src='scripts/sammy-0.7.6.js'></script>
+    <script src='scripts/sensor-common.js'></script>
 </head>
 
-<body onload='launchFullscreen(document.documentElement)'>
+<body>
     <ul class='tabs' data-bind='foreach: tabs'>
         <li data-bind='text: $root.getTabName($data),
             css: { selected: $data == $root.selectedTabId() },
             click: $root.goToTab'></li>
     </ul>
 
-    <div data-bind='visible: $root.selectedTabId() == "Status"'>
-        <button onclick='launchFullscreen(document.documentElement)'>Full screen</button>
+    <div id='status' data-bind='visible: $root.selectedTabId() == "Status"'>
         <p class='label'>Connected to laptimer</p>
         <div class='led green'></div>
         <p class='label'>Laptimer heartbeat</p>
@@ -37,22 +36,25 @@
         <div class='led gray'></div>
     </div>
 
-    <div data-bind='visible: $root.selectedTabId() == "Settings"'>
+    <div id='settings' data-bind='visible: $root.selectedTabId() == "Settings"'>
     </div>
 
-    <div data-bind='visible: $root.selectedTabId() == "Events"'>
-        <textarea id='events' readonly='true' rows='20' data-bind="value: events"></textarea>
+    <div id='events' data-bind='visible: $root.selectedTabId() == "Events"'>
+        <div class='output' data-bind='html: events'></div>
     </div>
 
     <div data-bind='visible: $root.selectedTabId() == "Log"'>
-        <textarea id='log' readonly='true' rows='12'></textarea>
+        <div id='log' class='output'></div>
     </div>
 
-    <div data-bind='visible: $root.selectedTabId() == "Access"'>
+    <div id='access' data-bind='visible: $root.selectedTabId() == "Access"'>
     </div>
 
-    <script src='sensor-knockout.js'></script>
-    <script src='sensor-crossbar.js'></script>
+    <div>
+        <img id='fullscreen' src='images/fullscreen.png' class='fullscreen' onclick='goFullscreen()' alt='Fullscreen' height='24' width='25' />
+    </div>
+    <script src='scripts/sensor-knockout.js'></script>
+    <script src='scripts/sensor-crossbar.js'></script>
 </body>
 
 </html>
