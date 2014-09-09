@@ -2,7 +2,7 @@
 METRIC = 'METRIC'
 # Report speed in m/h|y/s, distance in yards.
 IMPERIAL = 'IMPERIAL'
-CHOOSE_UNIT_OF_MEASUREMENT = (
+OPTIONS_UNIT_OF_MEASUREMENT = (
     (METRIC, 'Metric'),
     (IMPERIAL, 'Imperial')
 )
@@ -24,16 +24,16 @@ SENSOR_LOCATION_FINISH = 'FINISH'
 SENSOR_LOCATION_START_FINISH = 'START_FINISH'
 # Sensor located at sector position (neither start nor finish)
 SENSOR_LOCATION_SECTOR = 'SECTOR'
-CHOOSE_SENSOR_LOCATION = (
+OPTIONS_SENSOR_LOCATION = (
     (SENSOR_LOCATION_START, 'Start line'),
     (SENSOR_LOCATION_FINISH, 'Finish line'),
     (SENSOR_LOCATION_START_FINISH, 'Start and finish line'),
     (SENSOR_LOCATION_SECTOR, 'Sector checkpoint (split time)'),
 )
 
-# Sensor pin layout, first value of tuple is config key, second is description
-SENSOR_PIN_LED_APP = ('pinLedApp', 
-    'Pin for LED when sensor application is active')
+# Pin layouts, first value of tuple is config key, second is description
+PIN_LED_APP = ('pinLedApp', 
+    'Pin for LED when application is active')
 SENSOR_PIN_LED_HEARTBEAT = ('pinLedHeartbeat', 
     'Pin for LED when sensor received heartbeat from laptimer')
 SENSOR_PIN_LED_LAP = ('pinLedLap', 'Pin for LED when lap is active')
@@ -81,14 +81,14 @@ RPI_GPIO_BPLUS = RPI_GPIO_REV2 + (
     (40, '40 = GPIO 21'),
 )
 
-# Sensor hardware
-SENSOR_HW_TEST = "TEST" # Dev/test box
-SENSOR_HW_RPI_REV1 = 'RPI_REV1'
-SENSOR_HW_RPI_REV2 = 'RPI_REV2'
-SENSOR_HW_RPI_BPLUS = 'RPI_B+'
-CHOOSE_SENSOR_HW = (
-    (SENSOR_HW_TEST, 'Test via software triggered events', ()),
-    (SENSOR_HW_RPI_REV1, 'Raspberry Pi Model B - Revision 1.0', RPI_GPIO_REV1),
-    (SENSOR_HW_RPI_REV2, 'Raspberry Pi Model A/B - Revision 2.0', RPI_GPIO_REV2),
-    (SENSOR_HW_RPI_BPLUS, 'Raspberry Pi Model B+', RPI_GPIO_BPLUS),
+# Laptimer or sensor hardware
+HARDWARE_TEST = "TEST" # Dev/test box
+HARDWARE_RPI_REV1 = 'RPI_REV1'
+HARDWARE_RPI_REV2 = 'RPI_REV2'
+HARDWARE_RPI_BPLUS = 'RPI_B+'
+OPTIONS_HARDWARE = (
+    (HARDWARE_TEST, 'Test via software triggered events', ()),
+    (HARDWARE_RPI_REV1, 'Raspberry Pi Model B - Revision 1.0', RPI_GPIO_REV1),
+    (HARDWARE_RPI_REV2, 'Raspberry Pi Model A/B - Revision 2.0', RPI_GPIO_REV2),
+    (HARDWARE_RPI_BPLUS, 'Raspberry Pi Model B+', RPI_GPIO_BPLUS),
 )

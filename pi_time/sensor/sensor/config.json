@@ -5,8 +5,8 @@
     "sensors": [{
         "name": "Start & finish",
         "url": "ws://127.0.0.1:8888/ws",
-        "location": "START_FINISH",
         "hardware": "RPI_REV2",
+        "location": "START_FINISH",
         "pinLedApp": 13,
         "pinLedHeartbeat": 15,
         "pinLedLap": 16,

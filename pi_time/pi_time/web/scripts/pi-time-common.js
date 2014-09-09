@@ -1,3 +1,4 @@
+/* Pi-time common scripts */
 // Subvert console log
 if (typeof console != 'undefined')
     if (typeof console.log != 'undefined')

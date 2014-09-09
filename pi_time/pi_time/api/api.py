@@ -1,11 +1,11 @@
 from twisted.python import log
 
-from pi_time import configcheck
 from pi_time.api import config
+from pi_time.config import check, options, update
 from pi_time.models.rpc import RpcRequest, RpcResponse
 
 
-class Api:
+class Api(object):
     """
     Class responsible for handling API related requests and responses.
 
@@ -15,7 +15,7 @@ class Api:
 
     def __init__(self, config_file):
         self.config_file = config_file
-        self.config = configcheck.check_config_file(config_file)
+        self.config = check.check_config_file(config_file)
         log.msg("API ready")
 
     def process(self, request):

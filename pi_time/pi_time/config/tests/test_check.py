@@ -2,17 +2,20 @@ import json
 import os
 import unittest
 
-from pi_time import configcheck, settings
+import pi_time.config
+
+from pi_time import settings
+from pi_time.config import check
 
 
-class ConfigCheckTestCase(unittest.TestCase):
+class CheckTestCase(unittest.TestCase):
 
     def test_check_name_raises_exception_when_name_is_not_str(self):
         # Arrange
         laptimer = json.loads('{"name": 123}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_name(laptimer, 'laptimer')
+            check.check_name(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
             "'name' in laptimer configuration must be str (<type 'int'> " \
@@ -22,14 +25,14 @@ class ConfigCheckTestCase(unittest.TestCase):
         # Arrange
         laptimer = json.loads('{"name": "bogus"}')
         # Act & Assert
-        configcheck.check_name(laptimer, 'laptimer')
+        check.check_name(laptimer, 'laptimer')
 
     def test_check_url_raises_exception_when_url_is_not_missing(self):
         # Arrange
         laptimer = json.loads('{"urlbogus": "bogus"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_url(laptimer, 'laptimer')
+            check.check_url(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
             "'url' required in laptimer configuration")
@@ -39,7 +42,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         laptimer = json.loads('{"url": 123}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_url(laptimer, 'laptimer')
+            check.check_url(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
             "'url' in laptimer configuration must be str (<type 'int'> " \
@@ -50,7 +53,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         laptimer = json.loads('{"url": "bogus"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_url(laptimer, 'laptimer')
+            check.check_url(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
             "Invalid 'url' in laptimer configuration : invalid WebSocket " \
@@ -60,14 +63,14 @@ class ConfigCheckTestCase(unittest.TestCase):
         # Arrange
         laptimer = json.loads('{"url": "ws://127.0.0.1:8080/ws"}')
         # Act & Assert
-        configcheck.check_url(laptimer, 'laptimer')
+        check.check_url(laptimer, 'laptimer')
 
     def test_check_unit_of_measurement_raises_exception_when_unit_is_invalid(self):
         # Arrange
         laptimer = json.loads('{"unitOfMeasurement": "bogus"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_unit_of_measurement(laptimer)
+            check.check_unit_of_measurement(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
             "'unitOfMeasurement' in laptimer configuration must be " \
@@ -78,14 +81,14 @@ class ConfigCheckTestCase(unittest.TestCase):
         laptimer = json.loads('{"unitOfMeasurement": "%s"}' %
             (settings.METRIC))
         # Act & Assert
-        configcheck.check_unit_of_measurement(laptimer)
+        check.check_unit_of_measurement(laptimer)
 
     def test_check_timezone_raises_exception_when_timezone_is_invalid(self):
         # Arrange
         laptimer = json.loads('{"timezone": "bogus"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_timezone(laptimer)
+            check.check_timezone(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
             "'timezone' in laptimer configuration must be valid entry in " \
@@ -95,14 +98,32 @@ class ConfigCheckTestCase(unittest.TestCase):
         # Arrange
         laptimer = json.loads('{"timezone": "Australia/Adelaide"}')
         # Act & Assert
-        configcheck.check_timezone(laptimer)
+        check.check_timezone(laptimer)
+
+    def test_check_hardware_raises_exception_when_hardware_is_invalid(self):
+        # Arrange
+        sensor = json.loads('{"hardware": "bogus"}')
+        # Act
+        with self.assertRaises(Exception) as context:
+            check.check_hardware(sensor, 'sensor')
+        # Assert
+        self.assertEqual(context.exception.message,
+            "'hardware' in sensor configuration must be ('TEST', 'RPI_REV1', " \
+            "'RPI_REV2', 'RPI_B+') (bogus encountered)")
+
+    def test_check_hardware_passes_when_hardware_is_valid(self):
+        # Arrange
+        sensor = json.loads('{"hardware": "%s"}' %
+            (settings.HARDWARE_RPI_BPLUS))
+        # Act & Assert
+        check.check_hardware(sensor, 'sensor')
 
     def test_check_sensor_location_raises_exception_when_location_is_invalid(self):
         # Arrange
         sensor = json.loads('{"location": "bogus"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor_location(sensor)
+            check.check_sensor_location(sensor)
         # Assert
         self.assertEqual(context.exception.message,
             "'location' in sensor configuration must be ('START', 'FINISH', " \
@@ -113,14 +134,14 @@ class ConfigCheckTestCase(unittest.TestCase):
         sensor = json.loads('{"location": "%s"}' %
             (settings.SENSOR_LOCATION_START))
         # Act & Assert
-        configcheck.check_sensor_location(sensor)
+        check.check_sensor_location(sensor)
 
     def test_check_sensor_position_raises_exception_when_position_is_not_integer(self):
         # Arrange
         sensor = json.loads('{"position": "bogus"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor_position(sensor)
+            check.check_sensor_position(sensor)
         # Assert
         self.assertEqual(context.exception.message,
             "'position' in sensor configuration must be integer (<type " \
@@ -131,7 +152,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         sensor = json.loads('{"position": 0}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor_position(sensor)
+            check.check_sensor_position(sensor)
         # Assert
         self.assertEqual(context.exception.message,
             "'position' in sensor configuration must be greater than zero")
@@ -140,25 +161,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         # Arrange
         sensor = json.loads('{"position": 1}')
         # Act & Assert
-        configcheck.check_sensor_position(sensor)
-
-    def test_check_sensor_hardware_raises_exception_when_hardware_is_invalid(self):
-        # Arrange
-        sensor = json.loads('{"hardware": "bogus"}')
-        # Act
-        with self.assertRaises(Exception) as context:
-            configcheck.check_sensor_hardware(sensor)
-        # Assert
-        self.assertEqual(context.exception.message,
-            "'hardware' in sensor configuration must be ('TEST', 'RPI_REV1', " \
-            "'RPI_REV2', 'RPI_B+') (bogus encountered)")
-
-    def test_check_sensor_hardware_passes_when_hardware_is_valid(self):
-        # Arrange
-        sensor = json.loads('{"hardware": "%s"}' %
-            (settings.SENSOR_HW_RPI_BPLUS))
-        # Act & Assert
-        configcheck.check_sensor_hardware(sensor)
+        check.check_sensor_position(sensor)
 
     def test_check_sensor_pin_raises_exception_when_pin_is_invalid_type(self):
         # Arrange
@@ -166,7 +169,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         sensor = json.loads('{"%s": "bogus"}' % (pin))
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor_pin(sensor, pin)
+            check.check_sensor_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
             "'bogus' in sensor configuration must be integer (<type " \
@@ -178,7 +181,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         sensor = json.loads('{"%s": 22}' % (pin))
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor_pin(sensor, pin)
+            check.check_sensor_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
             "'hardware' in sensor configuration must be specified if setting " \
@@ -186,12 +189,12 @@ class ConfigCheckTestCase(unittest.TestCase):
 
     def test_check_sensor_pin_raises_exception_when_pin_is_invalid(self):
         # Arrange
-        hardware = settings.SENSOR_HW_RPI_REV1
+        hardware = settings.HARDWARE_RPI_REV1
         pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
         sensor = json.loads('{"hardware": "%s", "%s": 40}' % (hardware, pin))
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor_pin(sensor, pin)
+            check.check_sensor_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
             "'pinLedHeartbeat' in sensor configuration invalid for RPI_REV1 " \
@@ -200,26 +203,26 @@ class ConfigCheckTestCase(unittest.TestCase):
 
     def test_check_sensor_pin_passes_with_test_hardware(self):
         # Arrange
-        hardware = settings.SENSOR_HW_TEST
+        hardware = settings.HARDWARE_TEST
         pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
         sensor = json.loads('{"hardware": "%s","%s": 40}' % (hardware, pin))
         # Act & Assert
-        configcheck.check_sensor_pin(sensor, pin)
+        check.check_sensor_pin(sensor, pin)
 
     def test_check_sensor_pin_passes_when_hardware_and_pin_are_valid(self):
         # Arrange
-        hardware = settings.SENSOR_HW_RPI_BPLUS
+        hardware = settings.HARDWARE_RPI_BPLUS
         pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
         sensor = json.loads('{"hardware": "%s","%s": 40}' % (hardware, pin))
         # Act & Assert
-        configcheck.check_sensor_pin(sensor, pin)
+        check.check_sensor_pin(sensor, pin)
 
     def test_check_sensor_raises_exception_when_not_dictionary(self):
         # Arrange
         sensor = json.loads('{"bogus": "data"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor(sensor)
+            check.check_sensor(sensor)
         # Assert
         self.assertEqual(context.exception.message,
             "Encountered unknown attribute 'bogus' in sensor configuration")
@@ -230,7 +233,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         sensor = sensors['sensors']
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_sensor(sensor)
+            check.check_sensor(sensor)
         # Assert
         self.assertEqual(context.exception.message,
             "Encountered unknown attribute 'bogus' in sensor configuration")
@@ -240,14 +243,14 @@ class ConfigCheckTestCase(unittest.TestCase):
         sensors = json.loads('{"sensors": [{"url": "ws://127.0.0.1:80/ws"}]}')
         sensor = sensors['sensors'][0]
         # Act & Assert
-        configcheck.check_sensor(sensor)
+        check.check_sensor(sensor)
 
     def test_check_laptimer_raises_exception_when_not_dictionary(self):
         # Arrange
         laptimer = json.loads('{"bogus": "data"}')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_laptimer(laptimer)
+            check.check_laptimer(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
             "Encountered unknown attribute 'bogus' in laptimer configuration")
@@ -258,7 +261,7 @@ class ConfigCheckTestCase(unittest.TestCase):
         laptimer = laptimerItem['laptimer']
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_laptimer(laptimer)
+            check.check_laptimer(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
             "Encountered unknown attribute '{u'bogus': u'data'}' in laptimer "\
@@ -268,19 +271,18 @@ class ConfigCheckTestCase(unittest.TestCase):
         # Arrange
         laptimer = json.loads('{"url": "ws://127.0.0.1:8080/ws"}')
         # Act & Assert
-        configcheck.check_laptimer(laptimer)
+        check.check_laptimer(laptimer)
 
     def test_check_config_file_raises_exception_when_file_is_invalid_json(self):
         # Arrange
         file_name = os.path.join(os.getcwd(), 'bogus.json')
         if os.path.isfile(file_name):
             os.remove(file_name)
-        config_file = open(file_name, 'w')
-        config_file.write('bogus')
-        config_file.close()
+        with open(file_name, 'w') as config_file:
+            config_file.write('bogus')
         # Act
         with self.assertRaises(Exception) as context:
-            configcheck.check_config_file(file_name)
+            check.check_config_file(file_name)
         # Assert
         msg = "Configuration file '{}' does not seem to be proper JSON ('No " \
             "JSON object could be decoded')".format(file_name)
@@ -311,11 +313,10 @@ class ConfigCheckTestCase(unittest.TestCase):
         file_name = os.path.join(os.getcwd(), file_name)
         if os.path.isfile(file_name):
             os.remove(file_name)
-        config_file = open(file_name, 'w')
-        config_file.write(config_json)
-        config_file.close()
+        with open(file_name, 'w') as config_file:
+            config_file.write(config_json)
         # Act
-        cfg = configcheck.check_config_file(file_name)
+        cfg = check.check_config_file(file_name)
         # Assert
         laptimer = cfg['laptimer']
         url = laptimer['url']

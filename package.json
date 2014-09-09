@@ -1,0 +1,19 @@
+{
+    "name": "pi-time",
+    "version": "0.0.1",
+    "description": "Lap timer running on a solar powered Raspberry Pi",
+    "main": "Gruntfile.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/si618/pi-time.git"
+    },
+    "author": "Simon McKenna",
+    "license": "GPLv3+",
+    "bugs": {
+        "url": "https://github.com/si618/pi-time/issues"
+    },
+    "homepage": "https://github.com/si618/pi-time"
+}

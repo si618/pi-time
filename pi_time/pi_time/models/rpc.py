@@ -5,7 +5,7 @@ import pi_time
 
 from abc import ABCMeta
 
-class RpcBase:
+class RpcBase(object):
     """
     Abstract base class for JSON data format for RPC via API.
 

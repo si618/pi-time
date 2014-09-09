@@ -30,9 +30,8 @@ class ApiTestCase(unittest.TestCase):
         file_name = os.path.join(os.getcwd(), file_name)
         if os.path.isfile(file_name):
             os.remove(file_name)
-        config_file = open(file_name, 'w')
-        config_file.write(config_json)
-        config_file.close()
+        with open(file_name, 'w') as config_file:
+            config_file.write(config_json)
         cls.api_test_config_file = file_name
         cls.api = api.Api(file_name)
 
@@ -50,7 +49,7 @@ class ApiTestCase(unittest.TestCase):
         # Act
         response = self.api.process(request)
         # Assert
-
+        self.fail('TODO:')
 
 if __name__ == '__main__':
     unittest.main()
