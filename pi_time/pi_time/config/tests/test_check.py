@@ -21,6 +21,16 @@ class CheckTestCase(unittest.TestCase):
             "'name' in laptimer configuration must be str (<type 'int'> " \
             "encountered)")
 
+    def test_check_name_raises_exception_when_name_is_missing(self):
+        # Arrange
+        sensor = json.loads('{"bogus": 123}')
+        # Act
+        with self.assertRaises(Exception) as context:
+            check.check_name(sensor, 'sensor', True)
+        # Assert
+        self.assertEqual(context.exception.message,
+            "'name' required in sensor configuration")
+
     def test_check_name_passes_when_name_is_str(self):
         # Arrange
         laptimer = json.loads('{"name": "bogus"}')
@@ -56,7 +66,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_url(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
-            "Invalid 'url' in laptimer configuration : invalid WebSocket " \
+            "Invalid 'url' in laptimer configuration: invalid WebSocket " \
             "URL: missing hostname")
 
     def test_check_url_passes_when_url_is_valid(self):
@@ -74,7 +84,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'unitOfMeasurement' in laptimer configuration must be " \
-            "('METRIC', 'IMPERIAL') (bogus encountered)")
+            "('METRIC', 'IMPERIAL') ('bogus' encountered)")
 
     def test_check_unit_of_measurement_passes_when_unit_is_valid(self):
         # Arrange
@@ -92,7 +102,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'timezone' in laptimer configuration must be valid entry in " \
-            "pytz.common_timezones (bogus encountered)")
+            "pytz.common_timezones ('bogus' encountered)")
 
     def test_check_timezone_passes_when_timezone_is_valid(self):
         # Arrange
@@ -109,7 +119,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'hardware' in sensor configuration must be ('TEST', 'RPI_REV1', " \
-            "'RPI_REV2', 'RPI_B+') (bogus encountered)")
+            "'RPI_REV2', 'RPI_B+') ('bogus' encountered)")
 
     def test_check_hardware_passes_when_hardware_is_valid(self):
         # Arrange
@@ -127,7 +137,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'location' in sensor configuration must be ('START', 'FINISH', " \
-            "'START_FINISH', 'SECTOR') (bogus encountered)")
+            "'START_FINISH', 'SECTOR') ('bogus' encountered)")
 
     def test_check_sensor_location_passes_when_location_is_valid(self):
         # Arrange
@@ -166,7 +176,7 @@ class CheckTestCase(unittest.TestCase):
     def test_check_sensor_pin_raises_exception_when_pin_is_invalid_type(self):
         # Arrange
         pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
-        sensor = json.loads('{"%s": "bogus"}' % (pin))
+        sensor = json.loads('{"%s": "bogus"}' % pin)
         # Act
         with self.assertRaises(Exception) as context:
             check.check_sensor_pin(sensor, pin)
@@ -178,7 +188,7 @@ class CheckTestCase(unittest.TestCase):
     def test_check_sensor_pin_raises_exception_when_hardware_is_missing(self):
         # Arrange
         pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
-        sensor = json.loads('{"%s": 22}' % (pin))
+        sensor = json.loads('{"%s": 22}' % pin)
         # Act
         with self.assertRaises(Exception) as context:
             check.check_sensor_pin(sensor, pin)
@@ -197,9 +207,9 @@ class CheckTestCase(unittest.TestCase):
             check.check_sensor_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
-            "'pinLedHeartbeat' in sensor configuration invalid for RPI_REV1 " \
+            "'pinLedHeartbeat' in sensor configuration invalid for 'RPI_REV1' " \
             "hardware, must be (3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, " \
-            "21, 22, 23, 24, 26) (40 encountered)")
+            "21, 22, 23, 24, 26) ('40' encountered)")
 
     def test_check_sensor_pin_passes_with_test_hardware(self):
         # Arrange
@@ -240,7 +250,7 @@ class CheckTestCase(unittest.TestCase):
 
     def test_check_sensor_passes_when_attributes_are_valid(self):
         # Arrange
-        sensors = json.loads('{"sensors": [{"url": "ws://127.0.0.1:80/ws"}]}')
+        sensors = json.loads('{"sensors": [{"url": "ws://127.0.0.1:80/ws","name": "bogus"}]}')
         sensor = sensors['sensors'][0]
         # Act & Assert
         check.check_sensor(sensor)

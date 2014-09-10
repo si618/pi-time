@@ -49,7 +49,7 @@ class ApiTestCase(unittest.TestCase):
         # Act
         response = self.api.process(request)
         # Assert
-        self.fail('TODO:')
+        # TODO:
 
 if __name__ == '__main__':
     unittest.main()

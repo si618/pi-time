@@ -9,7 +9,7 @@
     <script>
     AUTOBAHN_DEBUG = true;
     </script>
-    <link rel='Stylesheet' href='styles/sensor.css'>
+    <link rel='Stylesheet' href='styles/pi-time-sensor.css'>
     <script src='scripts/lib.js'></script>
 </head>
 
@@ -21,6 +21,8 @@
     </ul>
 
     <div id='status' data-bind='visible: $root.selectedTabId() == "Status"'>
+        <p class='label'>Connected to sensor</p>
+        <div class='led green'></div>
         <p class='label'>Connected to laptimer</p>
         <div class='led green'></div>
         <p class='label'>Laptimer heartbeat</p>
@@ -49,8 +51,7 @@
     <div>
         <img id='fullscreen' src='images/fullscreen.png' class='fullscreen' onclick='goFullscreen()' alt='Fullscreen' height='24' width='25' />
     </div>
-    <script src='scripts/sensor-knockout.js'></script>
-    <script src='scripts/sensor-crossbar.js'></script>
+    <script src='scripts/lib-sensor.js'></script>
 </body>
 
 </html>

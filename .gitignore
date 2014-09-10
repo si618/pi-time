@@ -4,4 +4,4 @@
 *.pyc
 *.sublime-workspace
 pi_time.egg-info
-node_modules
+dist

@@ -16,7 +16,7 @@ class Api(object):
     def __init__(self, config_file):
         self.config_file = config_file
         self.config = check.check_config_file(config_file)
-        log.msg("API ready")
+        log.msg("Pi-time API ready to roll")
 
     def process(self, request):
         try:
@@ -25,7 +25,7 @@ class Api(object):
             # _processRequest checks for RpcRequest type
             method = request.method
             context = request.context
-            log.err('Exception caught in %s: %s' % (method, e))
+            log.err("Exception caught in '%s': %s" % (method, e))
             # TODO: Helper method to build exception based rpc error
             error = type(e).__name__
             response = RpcResponse(method, context, error=error)
@@ -33,11 +33,11 @@ class Api(object):
 
     def _processRequest(self, request):
         if type(request) is not RpcRequest:
-            error = 'Expected RpcRequest type ' \
-                '({} encountered)'.format(type(request))
+            error = "Expected RpcRequest type " \
+                "('{}' encountered)".format(type(request))
             response = RpcResponse(method, context, error=error)
             return response
-        log.msg('Processing API request %s' % (request.method))
+        log.msg("Processing API request '%s'" % (request.method))
         response = RpcResponse(request.method, request.context)
         return response
 

@@ -1,4 +1,4 @@
-import os
+from os import path
 
 from autobahn.twisted.wamp import ApplicationSession
 from autobahn.twisted.util import sleep
@@ -15,8 +15,8 @@ class AppSession(ApplicationSession):
     @inlineCallbacks
     def onJoin(self, details):
 
-        config_file = os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), 'config.json')
+        config_dir = path.dirname(path.dirname(path.realpath(__file__)))
+        config_file = path.join(config_dir, 'config.json')
         self.api = api.Api(config_file=config_file)
 
         yield

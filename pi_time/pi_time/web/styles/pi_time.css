@@ -1,0 +1,101 @@
+html, body, webview {
+    width: 100%;
+    height: 100%;
+    background: #252525;
+    overflow: hidden;
+}
+body {
+    font-family: Helvetica, Arial;
+    font-size: medium;
+    color: #f0e7d5;
+}
+.tabs {
+    background-color: #bbb;
+    list-style-type: none;
+    padding: 0;
+    border-radius: 6px;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e6e6e6), color-stop(0.5, #d0d0d0), color-stop(1, #a4a4a4));
+    margin: 10px 16px 16px 0;
+    font-size: 0px;
+}
+.tabs li:hover {
+    background-color: #ddd;
+}
+.tabs li {
+    font-size: medium;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0.5em 0.8em;
+    cursor: pointer;
+    color: #444;
+    text-shadow: #f7f7f7 0 1px 1px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #888;
+}
+.tabs li:first-child {
+    border-left: none;
+    border-radius: 6px 0 0 6px;
+}
+.tabs li:last-child {
+    float: right;
+    border-right: none;
+    border-radius: 0 6px 6px 0;
+}
+.tabs .selected {
+    background-color: #444 !important;
+    color: white;
+    text-shadow: none;
+    border-right-color: #aaa;
+    border-left: none;
+    box-shadow: inset 1px 2px 6px #070707;
+}
+.fullscreen {
+    position: fixed;
+    bottom: 2px;
+    right: 2px;
+    -webkit-filter: brightness(.75);
+    filter: brightness(50);
+}
+.fullscreen:hover {
+    cursor: default;
+    -webkit-filter: brightness(1);
+    filter: brightness(100);
+}
+.output {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+    white-space: pre;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    /* Padding to hide scrollbar */
+    padding-right: 20px;
+    color: #f0e7d5;
+}
+.led {
+    margin: 10px auto;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: #000 0px 0px 1px 0px, -2px -4px 12px 2px inset, 0px 0px 10px 0px;
+}
+.led.green {
+    color: #6eb300;
+}
+.led.yellow {
+    color: #b3a000;
+}
+.led.red {
+    color: #b30600;
+}
+.led.blue {
+    color: #004ab3;
+}
+.led.gray {
+    color: #282828;
+}
+.status {
+    left: 50%;
+    margin-left: -100px;
+}

@@ -15,27 +15,33 @@ from twisted.python import log
 from pi_time import settings
 
 
-def check_name(config, section):
+def check_name(config, section, required=False):
     if 'name' in config:
         name = config['name']
         if type(name) != six.text_type:
             raise Exception("'name' in {} configuration must be str ({} " \
                 "encountered)".format(section, type(name)))
+    else:
+        if required:
+            raise Exception("'name' required in {} configuration" \
+                .format(section))
+
 
 
 def check_url(config, section):
     if 'url' in config:
         url = config['url']
         if type(url) != six.text_type:
-            raise Exception("'url' in {} configuration must be str ({} " \
-                "encountered)".format(section, type(url)))
+            raise Exception("'url' in {} configuration must be str " \
+                "({} encountered)".format(section, type(url)))
         try:
             u = parseWsUrl(url)
         except Exception as e:
-            raise Exception("Invalid 'url' in {} configuration : {}".format(
+            raise Exception("Invalid 'url' in {} configuration: {}".format(
                 section, e))
     else:
-        raise Exception("'url' required in {} configuration".format(section))
+        raise Exception("'url' required in {} configuration" \
+            .format(section))
 
 
 def check_hardware(config, section):
@@ -44,7 +50,7 @@ def check_hardware(config, section):
         hw = zip(*settings.OPTIONS_HARDWARE)[0]
         if hardware not in hw:
             raise Exception("'hardware' in {} configuration must be {} " \
-                "({} encountered)".format(section, hw, hardware))
+                "('{}' encountered)".format(section, hw, hardware))
 
 
 def check_unit_of_measurement(laptimer):
@@ -53,7 +59,7 @@ def check_unit_of_measurement(laptimer):
         units = zip(*settings.OPTIONS_UNIT_OF_MEASUREMENT)[0]
         if unit not in units:
             raise Exception("'unitOfMeasurement' in laptimer configuration " \
-                "must be {} ({} encountered)".format(units, unit))
+                "must be {} ('{}' encountered)".format(units, unit))
 
 
 def check_timezone(laptimer):
@@ -61,8 +67,8 @@ def check_timezone(laptimer):
         timezone = laptimer['timezone']
         if timezone not in pytz.common_timezones:
             raise Exception("'timezone' in laptimer configuration must be " \
-                "valid entry in pytz.common_timezones ({} encountered)".format(
-                timezone))
+                "valid entry in pytz.common_timezones ('{}' encountered)" \
+                .format(timezone))
 
 
 def check_sensor_location(sensor):
@@ -71,7 +77,7 @@ def check_sensor_location(sensor):
         locations = zip(*settings.OPTIONS_SENSOR_LOCATION)[0]
         if location not in locations:
             raise Exception("'location' in sensor configuration must be {} " \
-                "({} encountered)".format(locations, location))
+                "('{}' encountered)".format(locations, location))
 
 
 def check_sensor_position(sensor):
@@ -104,8 +110,8 @@ def check_sensor_pin(sensor, pin_name):
                 pins = zip(*hw[2])[0]
                 if pin not in pins:
                     raise Exception("'{}' in sensor configuration invalid " \
-                        "for {} hardware, must be {} ({} encountered)".format(
-                            pin_name, hardware, pins, pin))
+                        "for '{}' hardware, must be {} ('{}' " \
+                        "encountered)".format(pin_name, hardware, pins, pin))
     else:
         raise Exception("'hardware' in sensor configuration must be " \
             "specified if setting pin")
@@ -145,8 +151,8 @@ def check_sensor(sensor):
     :rtype: dict
     """
     if type(sensor) != dict:
-        raise Exception("Sensor items must be dictionaries ({} encountered)" \
-            "\n\n{}".format(type(sensor), pformat(sensor)))
+        raise Exception("Sensor items must be dictionaries ('{}' " \
+            "encountered)".format(type(sensor)))
 
     for key in sensor:
         if key not in ['name', 'url', 'hardware', 'location', 'position',
@@ -156,7 +162,7 @@ def check_sensor(sensor):
             raise Exception("Encountered unknown attribute '{}' in sensor " \
                 "configuration".format(key))
 
-    check_name(sensor, 'sensor')
+    check_name(sensor, 'sensor', True)
     check_url(sensor, 'sensor')
     check_hardware(sensor, 'sensor')
     check_sensor_location(sensor)
@@ -180,7 +186,7 @@ def check_config(config):
 
     if type(config) != dict:
         raise Exception(
-            "Top-level configuration item must be a dictionary ({} " \
+            "Top-level configuration item must be a dictionary ('{}' " \
                 "encountered)".format(type(config)))
 
     for key in config:
@@ -190,21 +196,20 @@ def check_config(config):
 
     # check laptimer config
     if 'laptimer' in config:
-        log.msg("Checking laptimer", logLevel=logging.DEBUG)
         check_laptimer(config['laptimer'])
+        log.msg('Configuration ok for laptimer', logLevel=logging.DEBUG)
 
     # check sensors config
     sensors = config.get('sensors', [])
 
     if type(sensors) != list:
         raise Exception("'sensors' attribute in top-level configuration must " \
-            "be a list ({} encountered)".format(type(sensors)))
+            "be a list ('{}' encountered)".format(type(sensors)))
 
-    i = 1
     for sensor in sensors:
-        log.msg("Checking sensor item {}".format(i), logLevel=logging.DEBUG)
         check_sensor(sensor)
-        i += 1
+        log.msg("Configuration ok for sensor '{}'".format(sensor['name']),
+            logLevel=logging.DEBUG)
 
 
 def check_config_file(config_file):
@@ -216,7 +221,7 @@ def check_config_file(config_file):
     :returns: Configuration in dictionary format.
     :rtype: dict
     """
-    log.msg('Checking configuration file {}'.format(config_file),
+    log.msg("Checking configuration '{}'".format(config_file),
         logLevel=logging.DEBUG)
 
     configext = os.path.splitext(config_file)[1]
