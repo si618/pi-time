@@ -5,3 +5,4 @@
 *.sublime-workspace
 pi_time.egg-info
 dist
+/.sublime-grunt.cache

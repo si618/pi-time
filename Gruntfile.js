@@ -2,6 +2,14 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        nose: {
+            options: {
+                rednose: false
+            },
+            pi_time: {
+                src: 'pi_time'
+            },
+        },
         pylint: {
             options: {
                 disable: 'missing-docstring'
@@ -81,12 +89,16 @@ module.exports = function(grunt) {
         },
     });
 
+    grunt.loadNpmTasks('grunt-nose');
     grunt.loadNpmTasks('grunt-pylint');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', ['jshint', 'clean', 'copy', 'concat']);
+    grunt.registerTask('default', ['nose', 'jshint', 'clean', 'copy', 'concat']);
+    grunt.registerTask('dist', ['clean', 'copy', 'concat']);
+    grunt.registerTask('lint', ['pylint', 'jshint']);
+    grunt.registerTask('test', ['nose']);
 
 };
