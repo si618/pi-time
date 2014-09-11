@@ -1,8 +1,9 @@
+import json
 import os
 import unittest
 
 from pi_time.api import api
-from pi_time.models import rpc
+from pi_time.models.rpc import RpcRequest
 
 
 class ApiTestCase(unittest.TestCase):
@@ -43,13 +44,24 @@ class ApiTestCase(unittest.TestCase):
 
     def test_process_returns_expected_response_invalid_request(self):
         # Arrange
+        request = 'bogus'
+        # Act
+        response = json.loads(self.api.process(request))
+        # Assert
+        self.assertEqual(response['error'],
+            "Expected RpcRequest type (str encountered)")
+
+    def test_process_returns_expected_response_invalid_method(self):
+        # Arrange
         method = 'bogusMethod'
         context = 'bogusContext'
-        request = rpc.RpcRequest(method, context)
+        request = RpcRequest(method=method, context=context)
         # Act
-        response = self.api.process(request)
+        response = json.loads(self.api.process(request))
         # Assert
-        # TODO:
+        self.assertEqual(response['error'],
+            "Unknown API method 'bogusMethod'")
+
 
 if __name__ == '__main__':
     unittest.main()

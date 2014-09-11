@@ -8,6 +8,7 @@ from twisted.internet.defer import inlineCallbacks
 from twisted.python import log
 
 from pi_time.api import api
+from pi_time.models import RpcRequest
 
 
 class AppSession(ApplicationSession):
@@ -30,12 +31,13 @@ class AppSession(ApplicationSession):
 
 
         ## REGISTER a procedure for remote calling
-        #def add2(x, y):
-        #    print("add2() called with {} and {}".format(x, y))
-        #    return x + y
+        def get_sensor_options(self):
+            request = RpcRequest('get_sensor_options', 'sensor')
+            return api.process(request)
 
-        #reg = yield self.register(add2, 'io.github.si618.pi-time.add2')
-        #print("procedure add2() registered")
+        get_sensor_options = yield self.register(get_sensor_options, 
+            'io.github.si618.pi-time.get_sensor_options')
+        log.msg("Registered procedure 'get_sensor_options'")
 
 
         ## PUBLISH and CALL every second .. forever

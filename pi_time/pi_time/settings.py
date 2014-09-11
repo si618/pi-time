@@ -1,4 +1,20 @@
- # Report speed in km/h|m/s, distance in metres.
+"""Hardcoded settings and options."""
+
+# API methods and corresponding class
+API = (
+    ('get_laptimer_options', 'ApiConfig'),
+    ('get_sensor_options', 'ApiConfig'),
+    ('get_laptimer_config', 'ApiConfig'),
+    ('get_sensors_config', 'ApiConfig'),
+    ('get_sensor_config', 'ApiConfig'),
+    ('update_laptimer_config', 'ApiConfig'),
+    ('add_sensor', 'ApiConfig'),
+    ('update_sensor', 'ApiConfig'),
+    ('rename_sensor', 'ApiConfig'),
+    ('remove_sensor', 'ApiConfig'),
+)
+
+# Report speed in km/h|m/s, distance in metres.
 METRIC = 'METRIC'
 # Report speed in m/h|y/s, distance in yards.
 IMPERIAL = 'IMPERIAL'
@@ -7,11 +23,11 @@ OPTIONS_UNIT_OF_MEASUREMENT = (
     (IMPERIAL, 'Imperial')
 )
 
-# TODO: Needed?
+# TODO: Needed? Also consider i18n
 #SENSOR_TYPE_INFRARED_ACTIVE = 'AIR'
 #SENSOR_TYPE_INFRARED_PASSIVE = 'PIR'
 #SENSOR_TYPE_RADIO = 'RAD'
-#SENSOR_TYPE = ( # Defines the hardware used by sensor TODO: i18n
+#SENSOR_TYPE = ( # Defines the hardware used by sensor
 #    (SENSOR_TYPE_INFRARED_ACTIVE, 'Active Infrared'),
 #    (SENSOR_TYPE_INFRARED_PASSIVE, 'Passive Infrared'),
 #)
@@ -32,13 +48,12 @@ OPTIONS_SENSOR_LOCATION = (
 )
 
 # Pin layouts, first value of tuple is config key, second is description
-PIN_LED_APP = ('pinLedApp', 
-    'Pin for LED when application is active')
-SENSOR_PIN_LED_HEARTBEAT = ('pinLedHeartbeat', 
-    'Pin for LED when sensor received heartbeat from laptimer')
+PIN_LED_APP = ('pinLedApp', 'Pin for LED when application is active')
+SENSOR_PIN_LED_HEARTBEAT = ('pinLedHeartbeat', 'Pin for LED when sensor ' \
+    'received heartbeat from laptimer')
 SENSOR_PIN_LED_LAP = ('pinLedLap', 'Pin for LED when lap is active')
-SENSOR_PIN_LED_EVENT = ('pinLedEvent', 
-    'Pin for LED when sensor event is triggered')
+SENSOR_PIN_LED_EVENT = ('pinLedEvent', 'Pin for LED when sensor event is ' \
+    'triggered')
 SENSOR_PIN_EVENT = ('pinEvent', 'Pin for triggering sensor event')
 
 # Raspberry Pi pin layouts - http://pi.gadgetoid.com/pinout

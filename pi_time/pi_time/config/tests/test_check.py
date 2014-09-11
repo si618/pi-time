@@ -18,8 +18,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_name(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
-            "'name' in laptimer configuration must be str (<type 'int'> " \
-            "encountered)")
+            "'name' in laptimer configuration must be str (int encountered)")
 
     def test_check_name_raises_exception_when_name_is_missing(self):
         # Arrange
@@ -55,8 +54,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_url(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
-            "'url' in laptimer configuration must be str (<type 'int'> " \
-            "encountered)")
+            "'url' in laptimer configuration must be str (int encountered)")
 
     def test_check_url_raises_exception_when_url_is_invalid(self):
         # Arrange
@@ -84,7 +82,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'unitOfMeasurement' in laptimer configuration must be " \
-            "('METRIC', 'IMPERIAL') ('bogus' encountered)")
+            "('METRIC', 'IMPERIAL') (bogus encountered)")
 
     def test_check_unit_of_measurement_passes_when_unit_is_valid(self):
         # Arrange
@@ -101,8 +99,8 @@ class CheckTestCase(unittest.TestCase):
             check.check_timezone(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
-            "'timezone' in laptimer configuration must be valid entry in " \
-            "pytz.common_timezones ('bogus' encountered)")
+            "'timezone' in laptimer configuration must be valid timezone " \
+            "(bogus encountered)")
 
     def test_check_timezone_passes_when_timezone_is_valid(self):
         # Arrange
@@ -119,7 +117,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'hardware' in sensor configuration must be ('TEST', 'RPI_REV1', " \
-            "'RPI_REV2', 'RPI_B+') ('bogus' encountered)")
+            "'RPI_REV2', 'RPI_B+') (bogus encountered)")
 
     def test_check_hardware_passes_when_hardware_is_valid(self):
         # Arrange
@@ -137,7 +135,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'location' in sensor configuration must be ('START', 'FINISH', " \
-            "'START_FINISH', 'SECTOR') ('bogus' encountered)")
+            "'START_FINISH', 'SECTOR') (bogus encountered)")
 
     def test_check_sensor_location_passes_when_location_is_valid(self):
         # Arrange
@@ -154,8 +152,8 @@ class CheckTestCase(unittest.TestCase):
             check.check_sensor_position(sensor)
         # Assert
         self.assertEqual(context.exception.message,
-            "'position' in sensor configuration must be integer (<type " \
-            "'unicode'> encountered)")
+            "'position' in sensor configuration must be integer (unicode " \
+            "encountered)")
 
     def test_check_sensor_position_raises_exception_when_position_is_zero(self):
         # Arrange
@@ -182,8 +180,8 @@ class CheckTestCase(unittest.TestCase):
             check.check_sensor_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
-            "'bogus' in sensor configuration must be integer (<type " \
-            "'unicode'> encountered)")
+            "'bogus' in sensor configuration must be integer (unicode " \
+            "encountered)")
 
     def test_check_sensor_pin_raises_exception_when_hardware_is_missing(self):
         # Arrange
@@ -209,7 +207,7 @@ class CheckTestCase(unittest.TestCase):
         self.assertEqual(context.exception.message,
             "'pinLedHeartbeat' in sensor configuration invalid for 'RPI_REV1' " \
             "hardware, must be (3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, " \
-            "21, 22, 23, 24, 26) ('40' encountered)")
+            "21, 22, 23, 24, 26) (40 encountered)")
 
     def test_check_sensor_pin_passes_with_test_hardware(self):
         # Arrange
@@ -250,7 +248,8 @@ class CheckTestCase(unittest.TestCase):
 
     def test_check_sensor_passes_when_attributes_are_valid(self):
         # Arrange
-        sensors = json.loads('{"sensors": [{"url": "ws://127.0.0.1:80/ws","name": "bogus"}]}')
+        sensors = json.loads('{"sensors": [{"url": "ws://127.0.0.1:80/ws", ' \
+            '"name": "bogus"}]}')
         sensor = sensors['sensors'][0]
         # Act & Assert
         check.check_sensor(sensor)
@@ -294,8 +293,8 @@ class CheckTestCase(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             check.check_config_file(file_name)
         # Assert
-        msg = "Configuration file '{}' does not seem to be proper JSON ('No " \
-            "JSON object could be decoded')".format(file_name)
+        msg = "Configuration file '{}' does not seem to be proper JSON (No " \
+            "JSON object could be decoded)".format(file_name)
         self.assertEqual(context.exception.message, msg)
         # Cleanup
         os.remove(file_name)

@@ -9,7 +9,7 @@ from pi_time import compute, settings
 
 class ComputeTestCase(unittest.TestCase):
 
-    def test_average_kilometres_per_hour_returns_none_when_no_start(self):
+    def testaverage_kilometres_per_hour_returns_none_when_no_start(self):
         # Arrange
         finish = datetime.now(pytz.utc)
         # Act
@@ -17,7 +17,7 @@ class ComputeTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(None, avg_kph)
 
-    def test_average_miles_per_hour_returns_none_when_no_start(self):
+    def testaverage_miles_per_hour_returns_none_when_no_start(self):
         # Arrange
         finish = datetime.now(pytz.utc)
         # Act
@@ -41,7 +41,7 @@ class ComputeTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(None, avg_sps)
 
-    def test_average_kilometres_per_hour_returns_none_when_no_finish(self):
+    def testaverage_kilometres_per_hour_returns_none_when_no_finish(self):
         # Arrange
         start = datetime.now(pytz.utc)
         # Act
@@ -49,7 +49,7 @@ class ComputeTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(None, avg_kph)
 
-    def test_average_miles_per_hour_returns_none_when_no_finish(self):
+    def testaverage_miles_per_hour_returns_none_when_no_finish(self):
         # Arrange
         start = datetime.now(pytz.utc)
         # Act
@@ -126,7 +126,7 @@ class ComputeTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(5, avg_sps)
 
-    def test_average_kilometres_per_hour_returns_12kph_50m_in_15s(self):
+    def testaverage_kilometres_per_hour_returns_12kph_50m_in_15s(self):
         # Arrange
         start = datetime.now(pytz.utc)
         finish = start + timedelta(seconds=15)
@@ -135,7 +135,7 @@ class ComputeTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(12, avg_kph)
 
-    def test_average_miles_per_hour_returns_expected_6_8182mph_50y_in_15s(self):
+    def testaverage_miles_per_hour_returns_expected_6_8182mph_50y_in_15s(self):
         # Arrange
         start = datetime.now(pytz.utc)
         finish = start + timedelta(seconds=15)

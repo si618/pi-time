@@ -19,8 +19,8 @@ def check_name(config, section, required=False):
     if 'name' in config:
         name = config['name']
         if type(name) != six.text_type:
-            raise Exception("'name' in {} configuration must be str ({} " \
-                "encountered)".format(section, type(name)))
+            raise Exception("'name' in {} configuration must be str " \
+                "({} encountered)".format(section, type(name).__name__))
     else:
         if required:
             raise Exception("'name' required in {} configuration" \
@@ -33,7 +33,7 @@ def check_url(config, section):
         url = config['url']
         if type(url) != six.text_type:
             raise Exception("'url' in {} configuration must be str " \
-                "({} encountered)".format(section, type(url)))
+                "({} encountered)".format(section, type(url).__name__))
         try:
             u = parseWsUrl(url)
         except Exception as e:
@@ -50,7 +50,7 @@ def check_hardware(config, section):
         hw = zip(*settings.OPTIONS_HARDWARE)[0]
         if hardware not in hw:
             raise Exception("'hardware' in {} configuration must be {} " \
-                "('{}' encountered)".format(section, hw, hardware))
+                "({} encountered)".format(section, hw, hardware))
 
 
 def check_unit_of_measurement(laptimer):
@@ -59,7 +59,7 @@ def check_unit_of_measurement(laptimer):
         units = zip(*settings.OPTIONS_UNIT_OF_MEASUREMENT)[0]
         if unit not in units:
             raise Exception("'unitOfMeasurement' in laptimer configuration " \
-                "must be {} ('{}' encountered)".format(units, unit))
+                "must be {} ({} encountered)".format(units, unit))
 
 
 def check_timezone(laptimer):
@@ -67,8 +67,7 @@ def check_timezone(laptimer):
         timezone = laptimer['timezone']
         if timezone not in pytz.common_timezones:
             raise Exception("'timezone' in laptimer configuration must be " \
-                "valid entry in pytz.common_timezones ('{}' encountered)" \
-                .format(timezone))
+                "valid timezone ({} encountered)".format(timezone))
 
 
 def check_sensor_location(sensor):
@@ -77,7 +76,7 @@ def check_sensor_location(sensor):
         locations = zip(*settings.OPTIONS_SENSOR_LOCATION)[0]
         if location not in locations:
             raise Exception("'location' in sensor configuration must be {} " \
-                "('{}' encountered)".format(locations, location))
+                "({} encountered)".format(locations, location))
 
 
 def check_sensor_position(sensor):
@@ -85,7 +84,8 @@ def check_sensor_position(sensor):
         position = sensor['position']
         if type(position) not in six.integer_types:
             raise Exception("'position' in sensor configuration must be " \
-                "integer ({} encountered)".format(type(position)))
+                "integer ({} encountered)" \
+                .format(type(position).__name__))
         if position <= 0:
             raise Exception("'position' in sensor configuration must be " \
                 "greater than zero".format(position))
@@ -97,7 +97,7 @@ def check_sensor_pin(sensor, pin_name):
     pin = sensor[pin_name]
     if type(pin) not in six.integer_types:
         raise Exception("'{}' in sensor configuration must be " \
-            "integer ({} encountered)".format(pin, type(pin)))
+            "integer ({} encountered)".format(pin, type(pin).__name__))
     if 'hardware' in sensor:
         # Safe to assume hardware has already been checked
         hardware = sensor['hardware']
@@ -110,7 +110,7 @@ def check_sensor_pin(sensor, pin_name):
                 pins = zip(*hw[2])[0]
                 if pin not in pins:
                     raise Exception("'{}' in sensor configuration invalid " \
-                        "for '{}' hardware, must be {} ('{}' " \
+                        "for '{}' hardware, must be {} ({} " \
                         "encountered)".format(pin_name, hardware, pins, pin))
     else:
         raise Exception("'hardware' in sensor configuration must be " \
@@ -127,7 +127,7 @@ def check_laptimer(laptimer):
     :rtype: dict
     """
     for key in laptimer:
-        if key not in ['name', 'url', 'hardware', 'unitOfMeasurement', 
+        if key not in ['name', 'url', 'hardware', 'unitOfMeasurement',
             'timezone']:
             raise Exception("Encountered unknown attribute '{}' in " \
                 "laptimer configuration".format(key))
@@ -151,7 +151,7 @@ def check_sensor(sensor):
     :rtype: dict
     """
     if type(sensor) != dict:
-        raise Exception("Sensor items must be dictionaries ('{}' " \
+        raise Exception("Sensor items must be dictionaries ({} " \
             "encountered)".format(type(sensor)))
 
     for key in sensor:
@@ -186,7 +186,7 @@ def check_config(config):
 
     if type(config) != dict:
         raise Exception(
-            "Top-level configuration item must be a dictionary ('{}' " \
+            "Top-level configuration item must be a dictionary ({} " \
                 "encountered)".format(type(config)))
 
     for key in config:
@@ -204,7 +204,7 @@ def check_config(config):
 
     if type(sensors) != list:
         raise Exception("'sensors' attribute in top-level configuration must " \
-            "be a list ('{}' encountered)".format(type(sensors)))
+            "be a list ({} encountered)".format(type(sensors)))
 
     for sensor in sensors:
         check_sensor(sensor)
@@ -232,7 +232,7 @@ def check_config_file(config_file):
             config = json.load(infile)
         except ValueError as e:
             raise Exception("Configuration file '{}' does not seem to be proper " \
-                "JSON ('{}')".format(config_file, e))
+                "JSON ({})".format(config_file, e))
 
     check_config(config)
 

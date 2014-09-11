@@ -11,17 +11,14 @@ module.exports = function(grunt) {
             },
         },
         pylint: {
-            options: {
-                disable: 'missing-docstring'
-            },
             pi_time: {
-                src: 'pi_time/pi_time'
+                src: ['pi_time/pi_time']
             },
             laptimer: {
-                src: 'pi_time/laptimer'
+                src: ['pi_time/laptimer']
             },
             sensor: {
-                src: 'pi_time/sensor'
+                src: ['pi_time/sensor']
             },
         },
         jshint: {
@@ -54,6 +51,22 @@ module.exports = function(grunt) {
                 files: [{
                     src: ['pi_time/pi_time/**/*.py', 'pi_time/sensor/**/*.py', 'pi_time/sensor/.crossbar/*', 'pi_time/sensor/**/*.json', 'pi_time/sensor/**/*.html', '!pi_time/pi_time/**/tests/**', '!pi_time/sensor/**/tests/**'],
                     dest: 'dist/sensor',
+                    expand: true
+                }],
+            },
+            laptimer_web_images: {
+                files: [{
+                    cwd: 'pi_time/pi_time/',
+                    src: ['web/images/*.png'],
+                    dest: 'dist/laptimer/pi_time/laptimer/laptimer/',
+                    expand: true
+                }],
+            },
+            sensor_web_images: {
+                files: [{
+                    cwd: 'pi_time/pi_time/',
+                    src: ['web/images/*.png'],
+                    dest: 'dist/sensor/pi_time/sensor/sensor/',
                     expand: true
                 }],
             },

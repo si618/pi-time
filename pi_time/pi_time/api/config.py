@@ -3,7 +3,7 @@ from twisted.python import log
 from pi_time.config import options, update
 
 
-class _ApiConfig(object):
+class ApiConfig(object):
     """API configuration methods."""
 
     def __init__(self, api):
@@ -39,7 +39,7 @@ class _ApiConfig(object):
 
     def add_sensor(self, sensor_config):
         sensor = json.loads(sensor_config)
-        config = update.add_sensor(self.api.config_file, self.api.config, 
+        config = update.add_sensor(self.api.config_file, self.api.config,
             sensor)
         return config
 

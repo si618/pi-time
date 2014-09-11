@@ -19,6 +19,24 @@
             "working_dir": "${project_path}",
             "shell": true,
             "cmd": ["grunt","--no-color"]
+        },
+        {
+            "name": "Grunt dist",
+            "working_dir": "${project_path}",
+            "shell": true,
+            "cmd": ["grunt","dist","--no-color"]
+        },
+        {
+            "name": "Grunt pylint",
+            "working_dir": "${project_path}",
+            "shell": true,
+            "cmd": ["grunt","pylint","--no-color"]
+        },
+        {
+            "name": "Grunt test",
+            "working_dir": "${project_path}",
+            "shell": true,
+            "cmd": ["grunt","test","--no-color"]
         }
-    ]
+   ]
 }
