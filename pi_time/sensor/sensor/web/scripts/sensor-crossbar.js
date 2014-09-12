@@ -55,20 +55,20 @@ connection.onopen = function(session, details) {
     session.call('io.github.si618.pi-time.get_sensor_options').then(
         function(res) {
             /* TODO: Update view model */
-            console.log("API call 'get_sensor_options' (ok)");
+            console.log("API response 'get_sensor_options' (ok)");
         },
         function(err) {
-            console.log("API call 'get_sensor_options' error " + err);
+            console.log("API response 'get_sensor_options' error " + err);
         }
     );
 
     session.call('io.github.si618.pi-time.get_sensor_config').then(
         function(res) {
             /* TODO: Update view model */
-            console.log("API call 'get_sensor_config' (ok)");
+            console.log("API response 'get_sensor_config' (ok)");
         },
         function(err) {
-            console.log("API call 'get_sensor_config' error " + err);
+            console.log("API response 'get_sensor_config' error " + err);
         }
     );
 };
