@@ -41,7 +41,7 @@
         },
         "components": [{
             "type": "class",
-            "classname": "sensor.sensor.AppSession",
+            "classname": "sensor.sensor.SensorAppSession",
             "realm": "pi-time",
             "transport": {
                 "type": "websocket",

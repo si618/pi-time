@@ -50,8 +50,7 @@ class UpdateTestCase(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             update.update_laptimer(self.config_file, config, laptimer)
         # Assert
-        expected = "Encountered unknown attribute 'bogus' in laptimer " \
-            "configuration"
+        expected = "Unknown attribute 'bogus' in laptimer configuration"
         self.assertEqual(context.exception.message, expected)
 
 
@@ -62,8 +61,7 @@ class UpdateTestCase(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             update.update_laptimer(self.config_file, self.config, laptimer)
         # Assert
-        expected = "Encountered unknown attribute 'bogus' in laptimer " \
-            "configuration"
+        expected = "Unknown attribute 'bogus' in laptimer configuration"
         self.assertEqual(context.exception.message, expected)
 
     def test_update_sensor_raises_exception_when_sensor_is_invalid(self):

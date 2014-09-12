@@ -10,7 +10,7 @@ setup(
     zip_safe = False,
     entry_points = {
         'autobahn.twisted.wamplet': [
-            'backend = sensor.sensor:AppSession'
+            'backend = sensor.sensor:SensorAppSession'
         ],
     }
 )

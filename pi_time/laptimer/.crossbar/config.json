@@ -41,7 +41,7 @@
         },
         "components": [{
             "type": "class",
-            "classname": "laptimer.laptimer.AppSession",
+            "classname": "laptimer.laptimer.LaptimerAppSession",
             "realm": "pi-time",
             "transport": {
                 "type": "websocket",

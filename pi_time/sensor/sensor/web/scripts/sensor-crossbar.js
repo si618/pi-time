@@ -1,3 +1,5 @@
+
+
 // URL of WAMP Router (Crossbar.io)
 var wsuri;
 if (document.location.origin == 'file://') {
@@ -19,6 +21,7 @@ connection.onopen = function(session, details) {
 
     console.log('Connected to sensor node');
 
+/*
     function on_laptimerevent(args) {
         var laptimer = args[0];
         // TODO: laptimer contain details of status change of laptimer
@@ -47,50 +50,29 @@ connection.onopen = function(session, details) {
             console.log('Failed to subscribe to: onsensorevent ' + err);
         }
     );
+*/
 
-    function getSensorEvents(args) {
-        var sensor = args[0];
-        var events = args[1];
-        console.log('Got sensor events');
-    }
-    session.register('io.github.si618.pi-time.getSensorEvents', getSensorEvents).then(
-        function(reg) {
-            console.log('Registered procedure: getSensorEvents');
+    session.call('io.github.si618.pi-time.get_sensor_options').then(
+        function(res) {
+            /* TODO: Update view model */
+            console.log("API call 'get_sensor_options' (ok)");
         },
         function(err) {
-            console.log('Failed to register procedure: getSensorEvents ' + err);
+            console.log("API call 'get_sensor_options' error " + err);
         }
     );
 
-    function getSensorConfig(args) {
-        var hardware = args[0];
-        var laptimerUrl = args[1];
-        var sensorPosition = args[2];
-        var sendorConfig = args[3]
-        console.log('Got sensor config');
-    }
-    session.register('io.github.si618.pi-time.getSensorConfig', getSensorConfig).then(
-        function(reg) {
-            console.log('Registered procedure: getSensorConfig');
+    session.call('io.github.si618.pi-time.get_sensor_config').then(
+        function(res) {
+            /* TODO: Update view model */
+            console.log("API call 'get_sensor_config' (ok)");
         },
         function(err) {
-            console.log('Failed to register procedure: getSensorConfig ' + err);
+            console.log("API call 'get_sensor_config' error " + err);
         }
     );
-
-    function setSensorConfig(setup) {
-        session.call('io.github.si618.pi-time.setSensorConfig', [setup]).then(
-            function(res) {
-                console.log('Result from setSensorConfig:', res);
-            },
-            function(err) {
-                console.log('Error from setSensorConfig: ', err);
-            }
-        );
-    }
 };
 
-// fired when connection was lost (or could not be established)
 connection.onclose = function(reason, details) {
     console.log('Connection to sensor node lost: ' + reason);
 }

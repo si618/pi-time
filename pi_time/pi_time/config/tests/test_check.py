@@ -18,7 +18,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_name(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
-            "'name' in laptimer configuration must be str (int encountered)")
+            "'name' in laptimer configuration must be str, but got int")
 
     def test_check_name_raises_exception_when_name_is_missing(self):
         # Arrange
@@ -54,7 +54,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_url(laptimer, 'laptimer')
         # Assert
         self.assertEqual(context.exception.message,
-            "'url' in laptimer configuration must be str (int encountered)")
+            "'url' in laptimer configuration must be str, but got int")
 
     def test_check_url_raises_exception_when_url_is_invalid(self):
         # Arrange
@@ -82,7 +82,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'unitOfMeasurement' in laptimer configuration must be " \
-            "('METRIC', 'IMPERIAL') (bogus encountered)")
+            "('METRIC', 'IMPERIAL'), but got bogus")
 
     def test_check_unit_of_measurement_passes_when_unit_is_valid(self):
         # Arrange
@@ -99,8 +99,8 @@ class CheckTestCase(unittest.TestCase):
             check.check_timezone(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
-            "'timezone' in laptimer configuration must be valid timezone " \
-            "(bogus encountered)")
+            "'timezone' in laptimer configuration must be valid timezone, " \
+            "but got bogus")
 
     def test_check_timezone_passes_when_timezone_is_valid(self):
         # Arrange
@@ -117,7 +117,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'hardware' in sensor configuration must be ('TEST', 'RPI_REV1', " \
-            "'RPI_REV2', 'RPI_B+') (bogus encountered)")
+            "'RPI_REV2', 'RPI_B+'), but got bogus")
 
     def test_check_hardware_passes_when_hardware_is_valid(self):
         # Arrange
@@ -135,7 +135,7 @@ class CheckTestCase(unittest.TestCase):
         # Assert
         self.assertEqual(context.exception.message,
             "'location' in sensor configuration must be ('START', 'FINISH', " \
-            "'START_FINISH', 'SECTOR') (bogus encountered)")
+            "'START_FINISH', 'SECTOR'), but got bogus")
 
     def test_check_sensor_location_passes_when_location_is_valid(self):
         # Arrange
@@ -152,8 +152,8 @@ class CheckTestCase(unittest.TestCase):
             check.check_sensor_position(sensor)
         # Assert
         self.assertEqual(context.exception.message,
-            "'position' in sensor configuration must be integer (unicode " \
-            "encountered)")
+            "'position' in sensor configuration must be integer, but got " \
+            "unicode")
 
     def test_check_sensor_position_raises_exception_when_position_is_zero(self):
         # Arrange
@@ -180,8 +180,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_sensor_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
-            "'bogus' in sensor configuration must be integer (unicode " \
-            "encountered)")
+            "'bogus' in sensor configuration must be integer, but got unicode")
 
     def test_check_sensor_pin_raises_exception_when_hardware_is_missing(self):
         # Arrange
@@ -207,7 +206,7 @@ class CheckTestCase(unittest.TestCase):
         self.assertEqual(context.exception.message,
             "'pinLedHeartbeat' in sensor configuration invalid for 'RPI_REV1' " \
             "hardware, must be (3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, " \
-            "21, 22, 23, 24, 26) (40 encountered)")
+            "21, 22, 23, 24, 26), but got 40")
 
     def test_check_sensor_pin_passes_with_test_hardware(self):
         # Arrange
@@ -233,7 +232,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_sensor(sensor)
         # Assert
         self.assertEqual(context.exception.message,
-            "Encountered unknown attribute 'bogus' in sensor configuration")
+            "Unknown attribute 'bogus' in sensor configuration")
 
     def test_check_sensor_raises_exception_when_attribute_is_invalid(self):
         # Arrange
@@ -244,7 +243,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_sensor(sensor)
         # Assert
         self.assertEqual(context.exception.message,
-            "Encountered unknown attribute 'bogus' in sensor configuration")
+            "Unknown attribute 'bogus' in sensor configuration")
 
     def test_check_sensor_passes_when_attributes_are_valid(self):
         # Arrange
@@ -262,7 +261,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_laptimer(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
-            "Encountered unknown attribute 'bogus' in laptimer configuration")
+            "Unknown attribute 'bogus' in laptimer configuration")
 
     def test_check_laptimer_raises_exception_when_attribute_is_invalid(self):
         # Arrange
@@ -273,8 +272,7 @@ class CheckTestCase(unittest.TestCase):
             check.check_laptimer(laptimer)
         # Assert
         self.assertEqual(context.exception.message,
-            "Encountered unknown attribute '{u'bogus': u'data'}' in laptimer "\
-            "configuration")
+            "Unknown attribute '{u'bogus': u'data'}' in laptimer configuration")
 
     def test_check_laptimer_passes_when_attributes_are_valid(self):
         # Arrange

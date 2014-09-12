@@ -2,6 +2,7 @@ import json
 import os
 import unittest
 
+from pi_time import settings
 from pi_time.api import api
 from pi_time.models.rpc import RpcRequest
 
@@ -46,21 +47,35 @@ class ApiTestCase(unittest.TestCase):
         # Arrange
         request = 'bogus'
         # Act
-        response = json.loads(self.api.process(request))
+        response = self.api.process(request)
         # Assert
-        self.assertEqual(response['error'],
-            "Expected RpcRequest type (str encountered)")
+        self.assertEqual(response.error, "Expected RpcRequest but got str")
 
     def test_process_returns_expected_response_invalid_method(self):
         # Arrange
         method = 'bogusMethod'
         context = 'bogusContext'
-        request = RpcRequest(method=method, context=context)
+        request = RpcRequest('get_sensor_options', context=context)
+        request.method = method;
         # Act
-        response = json.loads(self.api.process(request))
+        response = self.api.process(request)
         # Assert
-        self.assertEqual(response['error'],
-            "Unknown API method 'bogusMethod'")
+        self.assertEqual(response.error, "Unknown API method 'bogusMethod'")
+
+    def test_process_returns_expected_response_valid_method(self):
+        # Arrange
+        method = 'get_sensor_options'
+        context = 'testing'
+        request = RpcRequest(method=method, context=context)
+        sensor_options = (
+            ('locations', settings.OPTIONS_SENSOR_LOCATION),
+            ('hardwares', settings.OPTIONS_HARDWARE)
+        )        
+        # Act
+        response = self.api.process(request)
+        # Assert
+        self.assertEqual(response.error, None)
+        self.assertEqual(response.data, sensor_options)
 
 
 if __name__ == '__main__':

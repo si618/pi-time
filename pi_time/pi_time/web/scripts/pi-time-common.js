@@ -56,6 +56,10 @@ function fullscreenChanged() {
     $('.fullscreen').toggle();
 }
 
+function parseJson(json) {
+    return JSON && JSON.parse(json) || $.parseJSON(json);
+}
+
 document.addEventListener('fullscreenchange', fullscreenChanged);
 document.addEventListener('webkitfullscreenchange', fullscreenChanged);
 document.addEventListener('mozfullscreenchange', fullscreenChanged);

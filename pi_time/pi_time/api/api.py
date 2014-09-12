@@ -1,3 +1,5 @@
+import pi_time
+
 from twisted.python import log
 
 from pi_time import settings
@@ -15,44 +17,60 @@ class Api(object):
     """
 
     def __init__(self, config_file):
-        self.config_file = config_file
+
         self.config = check.check_config_file(config_file)
-        self.api_methods = zip(*settings.API)[0]
-        log.msg("Pi-time API is ready to roll")
+        self.config_file = config_file
+        self.api_config = config.ApiConfig(self)
+
+        log.msg("Pi-time API v{} ready".format(pi_time.API_VERSION))
 
     def process(self, request):
+
+        response = None
         try:
             response = self._processRequest(request)
-        except Exception as e:
-            log.err("Exception caught: %s" % e)
+            result = 'ok'
+            if response.error is not None:
+                result = response.error
+            log.msg("API response '{}' ({})".format(response.method, result))
+        except Exception as exception:
+            log.err("API exception '{}'".format(exception))
+            method = None
+            context = None
             if type(response) is RpcResponse:
                 method = response.method
                 context = response.context
-                error = type(e).__name__
-            else:
-                method = '<unknown>'
-                context = '<unknown>'
-                error = str(e)
-            response = RpcResponse(method, context, error=error)
-        log.msg("Returning API response '%s'" % (response.method))
-        return response.toJSON()
+            response = RpcResponse(method, context, error=str(exception))
+        return response
 
     def _processRequest(self, request):
+
         if type(request) is not RpcRequest:
-            error = "Expected RpcRequest type " \
-                "({} encountered)".format(type(request).__name__)
-            response = RpcResponse('<unknown>', context='<unknown>',
+            error = "Expected RpcRequest but got {}".format(
+                type(request).__name__)
+            return RpcResponse(method=None, context=None,
                 error=error)
-            return response
-        if request.method not in self.api_methods:
+
+        log.msg("API request '{}' {}".format(request.method, request.params))
+
+        api_match = [item for item in settings.API if item[1] == request.method]
+        if len(api_match) == 0:
             error = "Unknown API method '{}'".format(request.method)
-            response = RpcResponse(request.method, request.context,
+            return RpcResponse(request.method, request.context,
                 error=error)
-            return response
-        log.msg("Processing API request '%s'" % (request.method))
-        api_class = settings.API[request.method][1]
-        # https://xkcd.com/353/ ;-)
-        method = getattr(api_class, request.method)
-        data = method(**request.params)
-        response = RpcResponse(request.method, request.context, data=data)
-        return response
+
+        method_class = self._get_method_class(api_match[0][0])
+        method = getattr(method_class, request.method)
+
+        if request.params is None:
+            data = method()
+        else:
+            data = method(request.params)
+        return RpcResponse(request.method, request.context, data=data)
+
+    def _get_method_class(self, method_class):
+
+        if method_class == 'ApiConfig':
+            return self.api_config
+
+        raise ValueError("Unknown method class '{}'".format(method_class))

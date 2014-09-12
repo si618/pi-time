@@ -5,7 +5,7 @@ from autobahn.wamp.exception import ApplicationError
 from twisted.internet.defer import inlineCallbacks
 
 
-class AppSession(ApplicationSession):
+class LaptimerAppSession(ApplicationSession):
 
     @inlineCallbacks
     def onJoin(self, details):
