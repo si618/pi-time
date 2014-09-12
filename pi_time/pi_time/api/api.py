@@ -32,9 +32,10 @@ class Api(object):
             result = 'ok'
             if response.error is not None:
                 result = response.error
-            log.msg("API response '{}' ({})".format(response.method, result))
+            log.msg("API response {} from {} ({})".format(
+                response.method, response.context, result))
         except Exception as exception:
-            log.err("API exception '{}'".format(exception))
+            log.err("API exception {}".format(exception))
             method = None
             context = None
             if type(response) is RpcResponse:
@@ -51,7 +52,8 @@ class Api(object):
             return RpcResponse(method=None, context=None,
                 error=error)
 
-        log.msg("API request '{}' {}".format(request.method, request.params))
+        log.msg("API request {} from {} ({})".format(request.method,
+            request.context, request.params))
 
         api_match = [item for item in settings.API if item[1] == request.method]
         if len(api_match) == 0:

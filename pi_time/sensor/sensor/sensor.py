@@ -23,7 +23,9 @@ class SensorAppSession(ApplicationSession):
         config_dir = path.dirname(path.dirname(path.realpath(__file__)))
         config_file = path.join(config_dir, 'config.json')
         self.api = api.Api(config_file=config_file)
-        self.context = 'Sensor session {}'.format(details.session)
+        # TODO: Handle multiple sensors
+        self.sensor_name = self.api.config['sensors'][0]['name']
+        self.context = 'sensor {}'.format(self.sensor_name)
 
         def get_sensor_config():
             result = self.call_api('get_sensor_config')
