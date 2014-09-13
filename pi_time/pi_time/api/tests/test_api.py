@@ -4,7 +4,7 @@ import unittest
 
 from pi_time import settings
 from pi_time.api import api
-from pi_time.models.rpc import RpcRequest
+from pi_time.models.api import ApiRequest
 
 
 class ApiTestCase(unittest.TestCase):
@@ -49,13 +49,13 @@ class ApiTestCase(unittest.TestCase):
         # Act
         response = self.api.process(request)
         # Assert
-        self.assertEqual(response.error, "Expected RpcRequest but got str")
+        self.assertEqual(response.error, "Expected ApiRequest but got str")
 
     def test_process_returns_expected_response_invalid_method(self):
         # Arrange
         method = 'bogusMethod'
         context = 'bogusContext'
-        request = RpcRequest('get_sensor_options', context=context)
+        request = ApiRequest('get_sensor_options', context=context)
         request.method = method;
         # Act
         response = self.api.process(request)
@@ -66,11 +66,11 @@ class ApiTestCase(unittest.TestCase):
         # Arrange
         method = 'get_sensor_options'
         context = 'testing'
-        request = RpcRequest(method=method, context=context)
+        request = ApiRequest(method=method, context=context)
         sensor_options = (
             ('locations', settings.OPTIONS_SENSOR_LOCATION),
             ('hardwares', settings.OPTIONS_HARDWARE)
-        )        
+        )
         # Act
         response = self.api.process(request)
         # Assert

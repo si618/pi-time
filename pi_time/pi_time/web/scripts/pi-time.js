@@ -1,4 +1,5 @@
-/* Pi-time common scripts */
+// Pi-time scripts shared between laptimer and sensor
+
 // Subvert console log
 if (typeof console != 'undefined') {
     if (typeof console.log != 'undefined') {
@@ -39,6 +40,10 @@ function getLocalTime() {
     return time;
 }
 
+function parseJson(json) {
+    return JSON && JSON.parse(json) || $.parseJSON(json);
+}
+
 function goFullscreen() {
     element = document.documentElement;
     if (element.requestFullscreen) {
@@ -54,10 +59,6 @@ function goFullscreen() {
 
 function fullscreenChanged() {
     $('.fullscreen').toggle();
-}
-
-function parseJson(json) {
-    return JSON && JSON.parse(json) || $.parseJSON(json);
 }
 
 document.addEventListener('fullscreenchange', fullscreenChanged);

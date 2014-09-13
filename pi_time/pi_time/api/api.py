@@ -5,7 +5,7 @@ from twisted.python import log
 from pi_time import settings
 from pi_time.api import config
 from pi_time.config import check, options, update
-from pi_time.models.rpc import RpcRequest, RpcResponse
+from pi_time.models.api import ApiRequest, ApiResponse
 
 
 class Api(object):
@@ -38,18 +38,18 @@ class Api(object):
             log.err("API exception {}".format(exception))
             method = None
             context = None
-            if type(response) is RpcResponse:
+            if type(response) is ApiResponse:
                 method = response.method
                 context = response.context
-            response = RpcResponse(method, context, error=str(exception))
+            response = ApiResponse(method, context, error=str(exception))
         return response
 
     def _processRequest(self, request):
 
-        if type(request) is not RpcRequest:
-            error = "Expected RpcRequest but got {}".format(
+        if type(request) is not ApiRequest:
+            error = "Expected ApiRequest but got {}".format(
                 type(request).__name__)
-            return RpcResponse(method=None, context=None,
+            return ApiResponse(method=None, context=None,
                 error=error)
 
         log.msg("API request {} from {} ({})".format(request.method,
@@ -58,7 +58,7 @@ class Api(object):
         api_match = [item for item in settings.API if item[1] == request.method]
         if len(api_match) == 0:
             error = "Unknown API method '{}'".format(request.method)
-            return RpcResponse(request.method, request.context,
+            return ApiResponse(request.method, request.context,
                 error=error)
 
         method_class = self._get_method_class(api_match[0][0])
@@ -68,7 +68,7 @@ class Api(object):
             data = method()
         else:
             data = method(request.params)
-        return RpcResponse(request.method, request.context, data=data)
+        return ApiResponse(request.method, request.context, data=data)
 
     def _get_method_class(self, method_class):
 

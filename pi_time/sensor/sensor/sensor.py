@@ -10,16 +10,14 @@ from twisted.internet.defer import inlineCallbacks
 from twisted.python import log
 
 from pi_time.api import api
-from pi_time.models.rpc import RpcRequest
+from pi_time.models.api import ApiRequest
 
 
 class SensorAppSession(ApplicationSession):
-    """
-    Sensor application session.
-    """
 
     @inlineCallbacks
     def onJoin(self, details):
+
         config_dir = path.dirname(path.dirname(path.realpath(__file__)))
         config_file = path.join(config_dir, 'config.json')
         self.api = api.Api(config_file=config_file)
@@ -29,6 +27,7 @@ class SensorAppSession(ApplicationSession):
 
         def get_sensor_config():
             result = self.call_api('get_sensor_config')
+            self.publish('io.github.si618.pi-time.on_sensor_changed')
             return result
 
         def get_sensor_options():
@@ -42,8 +41,7 @@ class SensorAppSession(ApplicationSession):
 
         log.msg("Sensor v{} ready".format(pi_time.VERSION))
 
-
     def call_api(self, method, params=None):
-        request = RpcRequest(method, self.context, params)
+        request = ApiRequest(method, self.context, params)
         response = self.api.process(request)
         return response.encode()

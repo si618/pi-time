@@ -3,19 +3,19 @@ import unittest
 import pi_time
 
 from pi_time import settings
-from pi_time.models.rpc import RpcRequest, RpcResponse
+from pi_time.models.api import ApiRequest, ApiResponse
 
 
 class RpcTestCase(unittest.TestCase):
 
-    def test_rpc_request_sets_attributes(self):
+    def test_api_request_sets_attributes(self):
         # Arrange
         apiVersion = pi_time.API_VERSION
         method = 'bogusSensor'
         context = 'bogusContext'
         params = ('bogusParamName', 'bogusParamValue')
         # Act
-        request = RpcRequest(method, context, params)
+        request = ApiRequest(method, context, params)
         # Assert
         self.assertEqual(apiVersion, request.apiVersion)
         self.assertEqual(method, request.method)
@@ -30,7 +30,7 @@ class RpcTestCase(unittest.TestCase):
         data = ('bogusDataName', 'bogusDataValue')
         error = ('bogusErrorName', 'bogusErrorValue')
         # Act
-        response = RpcResponse(method, context, data, error)
+        response = ApiResponse(method, context, data, error)
         # Assert
         self.assertEqual(apiVersion, response.apiVersion)
         self.assertEqual(method, response.method)

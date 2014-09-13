@@ -21,36 +21,53 @@ connection.onopen = function(session, details) {
 
     console.log('Connected to sensor node');
 
-/*
-    function on_laptimerevent(args) {
-        var laptimer = args[0];
-        // TODO: laptimer contain details of status change of laptimer
-        // server (start/stop/error) or current lap (started/finished)
-        console.log('Event: on_laptimerevent received from laptimer ' + laptimer);
+    function on_sensor_changed(args) {
+        console.log('Event: on_sensor_changed received from sensor');
     }
-    session.subscribe('io.github.si618.pi-time.onlaptimerevent', on_laptimerevent).then(
+    session.subscribe('io.github.si618.pi-time.on_sensor_changed', on_sensor_changed).then(
         function(sub) {
-            console.log('Subscribed to: onlaptimerevent');
+            console.log('Subscribed to: on_sensor_changed');
         },
         function(err) {
-            console.log('Failed to subscribe to: onlaptimerevent ' + err);
+            console.log('Failed to subscribe to: on_sensor_changed ' + err);
         }
     );
 
-    function on_sensorevent(args) {
-        var sensor = args[0];
-        var occured = args[1]
-        console.log('Event: on_sensorevent received from sensor ' + sensor);
+    function on_sensor_event(args) {
+        console.log('Event: on_sensor_event received from sensor');
     }
-    session.subscribe('io.github.si618.pi-time.onsensorevent', on_sensorevent).then(
+    session.subscribe('io.github.si618.pi-time.on_sensor_event', on_sensor_event).then(
         function(sub) {
-            console.log('Subscribed to: onsensorevent');
+            console.log('Subscribed to: on_sensor_event');
         },
         function(err) {
-            console.log('Failed to subscribe to: onsensorevent ' + err);
+            console.log('Failed to subscribe to: on_sensor_event ' + err);
         }
     );
-*/
+
+    function on_laptimer_changed(args) {
+        console.log('Event: on_laptimer_changed received from laptimer');
+    }
+    session.subscribe('io.github.si618.pi-time.on_laptimer_changed', on_laptimer_changed).then(
+        function(sub) {
+            console.log('Subscribed to: on_laptimer_changed');
+        },
+        function(err) {
+            console.log('Failed to subscribe to: on_laptimer_changed ' + err);
+        }
+    );
+
+    function on_laptimer_heartbeat(args) {
+        console.log('Event: on_laptimer_heartbeat received from laptimer');
+    }
+    session.subscribe('io.github.si618.pi-time.on_laptimer_heartbeat', on_laptimer_heartbeat).then(
+        function(sub) {
+            console.log('Subscribed to: on_laptimer_heartbeat');
+        },
+        function(err) {
+            console.log('Failed to subscribe to: on_laptimer_heartbeat ' + err);
+        }
+    );
 
     session.call('io.github.si618.pi-time.get_sensor_options').then(
         function(res) {
@@ -74,7 +91,7 @@ connection.onopen = function(session, details) {
 };
 
 connection.onclose = function(reason, details) {
-    console.log('Connection to sensor node lost: ' + reason);
+    console.log('Lost connection to sensor node: ' + reason);
 }
 
 connection.open();

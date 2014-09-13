@@ -7,9 +7,9 @@ from abc import ABCMeta
 
 from pi_time import settings
 
-class RpcBase(object):
+class ApiBase(object):
     """
-    Abstract base class for JSON data format for RPC via API.
+    Abstract base class for rpc, pubsub and events triggered via API.
 
     Follows style guide:
     https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml
@@ -27,7 +27,7 @@ class RpcBase(object):
 
         :param method: API method to invoke.
         :type method: str
-        :param context: Context of client making RPC.
+        :param context: Context of client.
         :type context: str
         """
 
@@ -41,8 +41,8 @@ class RpcBase(object):
         return jsonpickle.encode(clone, unpicklable=False)
 
 
-class RpcRequest(RpcBase):
-    """Request data format for RPC calls."""
+class ApiRequest(ApiBase):
+    """Request data format for API calls."""
 
     def __init__(self, json_data):
         """
@@ -50,14 +50,14 @@ class RpcRequest(RpcBase):
 
         :param method: API method to invoke.
         :type method: str
-        :param context: Context of client making RPC.
+        :param context: Context of client.
         :type context: str
         :param params: Optional request parameters.
         :type params: object
         """
         data = json.loads(json_data)
 
-        super(RpcRequest, self).__init__(method, context)
+        super(ApiRequest, self).__init__(method, context)
         self.params = params
 
 
@@ -67,29 +67,48 @@ class RpcRequest(RpcBase):
 
         :param method: API method to invoke.
         :type method: str
-        :param context: Context of client making RPC.
+        :param context: Context of client.
         :type context: str
         :param params: Optional request parameters.
         :type params: object
         """
-        super(RpcRequest, self).__init__(method, context)
+        super(ApiRequest, self).__init__(method, context)
         self.params = params
 
 
-class RpcResponse(RpcBase):
-    """Response data format for results from API calls."""
+class ApiResponse(ApiBase):
+    """Response data format for results of API calls."""
 
     def __init__(self, method, context, data=None, error=None):
         """
         :param method: API method to invoke.
         :type method: str
-        :param context: Context of client making RPC.
+        :param context: Context of client.
         :type context: str
         :param data: Contains any payload data.
         :type data: object
         :param error: Details of any errors.
         :type error: object
         """
-        super(RpcResponse, self).__init__(method, context)
+        super(ApiResponse, self).__init__(method, context)
+        self.data = data
+        self.error = error
+
+
+class ApiEvent(ApiResponse):
+    """Data format for events triggered ."""
+
+    def __init__(self, event, context, data=None):
+        """
+        :param event: API event invoked.
+        :type event: str
+        :param context: Context of client.
+        :type context: str
+        :param data: Contains any payload data.
+        :type data: object
+        :param error: Details of any errors.
+        :type error: object
+        """
+        super(ApiEvent, self).__init__(method, context)
         self.data = data
         self.error = error

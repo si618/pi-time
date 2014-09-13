@@ -26,13 +26,13 @@ module.exports = function(grunt) {
                 curly: true
             },
             pi_time: {
-                src: ['pi_time/pi_time/web/scripts/pi-time-*.js']
+                src: ['pi_time/pi_time/web/scripts/pi-time*.js']
             },
             laptimer: {
-                src: ['laptimer/laptimer/web/scripts/laptimer-*.js']
+                src: ['laptimer/laptimer/web/scripts/laptimer*.js']
             },
             sensor: {
-                src: ['sensor/sensor/web/scripts/sensor-*.js']
+                src: ['sensor/sensor/web/scripts/sensor*.js']
             },
         },
         clean: ['dist'],
@@ -76,11 +76,11 @@ module.exports = function(grunt) {
                 separator: ';'
             },
             pi_time_laptimer_js: {
-                src: ['pi_time/pi_time/web/scripts/jquery*.js', 'pi_time/pi_time/web/scripts/autobahn*.js', 'pi_time/pi_time/web/scripts/knockout*.js', 'pi_time/pi_time/web/scripts/sammy*.js', 'pi_time/pi_time/web/scripts/pi-time-common.js'],
+                src: ['pi_time/pi_time/web/scripts/jquery*.js', 'pi_time/pi_time/web/scripts/autobahn*.js', 'pi_time/pi_time/web/scripts/knockout*.js', 'pi_time/pi_time/web/scripts/sammy*.js', 'pi_time/pi_time/web/scripts/pi-time*.js'],
                 dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/scripts/lib.js'
             },
             pi_time_sensor_js: {
-                src: ['pi_time/pi_time/web/scripts/jquery*.js', 'pi_time/pi_time/web/scripts/autobahn*.js', 'pi_time/pi_time/web/scripts/knockout*.js', 'pi_time/pi_time/web/scripts/sammy*.js', 'pi_time/pi_time/web/scripts/pi-time-common.js'],
+                src: ['pi_time/pi_time/web/scripts/jquery*.js', 'pi_time/pi_time/web/scripts/autobahn*.js', 'pi_time/pi_time/web/scripts/knockout*.js', 'pi_time/pi_time/web/scripts/sammy*.js', 'pi_time/pi_time/web/scripts/pi-time*.js'],
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/scripts/lib.js'
             },
             laptimer_js: {
