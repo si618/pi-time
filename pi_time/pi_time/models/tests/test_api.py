@@ -6,7 +6,7 @@ from pi_time import settings
 from pi_time.models.api import ApiRequest, ApiResponse
 
 
-class RpcTestCase(unittest.TestCase):
+class ApiTestCase(unittest.TestCase):
 
     def test_api_request_sets_attributes(self):
         # Arrange

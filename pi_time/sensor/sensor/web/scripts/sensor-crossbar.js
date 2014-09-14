@@ -19,7 +19,7 @@ var connection = new autobahn.Connection({
 // fired when connection is established and session attached
 connection.onopen = function(session, details) {
 
-    console.log('Connected to sensor node');
+    console.log('Connection to sensor opened');
 
     function on_sensor_changed(args) {
         console.log('Event: on_sensor_changed received from sensor');
@@ -91,7 +91,7 @@ connection.onopen = function(session, details) {
 };
 
 connection.onclose = function(reason, details) {
-    console.log('Lost connection to sensor node: ' + reason);
+    console.log('Connection to sensor closed: ' + reason);
 }
 
 connection.open();

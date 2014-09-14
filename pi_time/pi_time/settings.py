@@ -1,16 +1,16 @@
 """Hardcoded settings and options."""
 
-# API method names and corresponding class module
+# API method names with corresponding class module and event
 API = (
-    ('ApiConfig', 'add_sensor'),
-    ('ApiConfig', 'get_laptimer_config'),
-    ('ApiConfig', 'get_laptimer_options'),
-    ('ApiConfig', 'get_sensor_config'),
-    ('ApiConfig', 'get_sensor_options'),
-    ('ApiConfig', 'update_laptimer_config'),
-    ('ApiConfig', 'update_sensor'),
-    ('ApiConfig', 'remove_sensor'),
-    ('ApiConfig', 'rename_sensor'),
+    ('ApiConfig', 'add_sensor', None),
+    ('ApiConfig', 'get_laptimer_config', None),
+    ('ApiConfig', 'get_laptimer_options', None),
+    ('ApiConfig', 'get_sensor_config', None),
+    ('ApiConfig', 'get_sensor_options', None),
+    ('ApiConfig', 'update_laptimer', 'on_laptimer_changed'),
+    ('ApiConfig', 'update_sensor', 'on_sensor_changed'),
+    ('ApiConfig', 'remove_sensor', 'on_sensor_changed'),
+    ('ApiConfig', 'rename_sensor', 'on_sensor_changed'),
 )
 
 # Report speed in km/h|m/s, distance in metres.

@@ -9,7 +9,7 @@ from pi_time import settings
 
 class ApiBase(object):
     """
-    Abstract base class for rpc, pubsub and events triggered via API.
+    Abstract base class for rpc, pubsub and event handling triggered via API.
 
     Follows style guide:
     https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml

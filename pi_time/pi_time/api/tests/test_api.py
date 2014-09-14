@@ -77,6 +77,20 @@ class ApiTestCase(unittest.TestCase):
         self.assertEqual(response.error, None)
         self.assertEqual(response.data, sensor_options)
 
+    def test_call_returns_expected_response_valid_method(self):
+        # Arrange
+        method = 'get_sensor_options'
+        context = 'testing'
+        sensor_options = (
+            ('locations', settings.OPTIONS_SENSOR_LOCATION),
+            ('hardwares', settings.OPTIONS_HARDWARE)
+        )
+        # Act
+        response = self.api.call(method, context)
+        # Assert
+        self.assertEqual(response.error, None)
+        self.assertEqual(response.data, sensor_options)
+
 
 if __name__ == '__main__':
     unittest.main()

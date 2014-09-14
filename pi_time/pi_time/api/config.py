@@ -21,13 +21,13 @@ class ApiConfig(object):
     def get_sensor_config(self):
         return self.api.config['sensors']
 
-    def update_laptimer_config(self, laptimer):
+    def update_laptimer(self, laptimer):
         config = update.update_laptimer(self.api.config_file, self.api.config,
             laptimer)
         return config
 
     def add_sensor(self, sensor):
-        config = update.add_sensor(self.api.config_file, self.api.config, 
+        config = update.add_sensor(self.api.config_file, self.api.config,
             sensor)
         return config
 
