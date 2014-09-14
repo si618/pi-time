@@ -52,8 +52,10 @@ class Api(object):
             return ApiResponse(method=None, context=None,
                 error=error)
 
-        log.msg("API request {} from {} ({})".format(request.method,
-            request.context, request.params))
+        msg = 'API request {} from {}'.format(request.method, request.context)
+        if request.params is not None:
+            msg += '({})'.format(request.params)
+        log.msg(msg)
 
         api_match = [item for item in settings.API if item[1] == request.method]
         if len(api_match) == 0:
