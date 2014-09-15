@@ -1,6 +1,6 @@
 // Pi-time scripts shared between laptimer and sensor
 
-// Subvert console log
+// Subvert console log to output to div in window as well as console
 if (typeof console != 'undefined') {
     if (typeof console.log != 'undefined') {
         console._log = console.log;
@@ -16,6 +16,8 @@ console.log = function(message) {
 };
 console.error = console.debug = console.info = console.log;
 
+
+// Helper function to get formatted current local time including milliseconds
 function getLocalTime() {
     now = new Date();
     hours = now.getHours();
@@ -40,10 +42,53 @@ function getLocalTime() {
     return time;
 }
 
+
+// Helper function to parse JSON, default to native parser, jquery as fallback
 function parseJson(json) {
     return JSON && JSON.parse(json) || $.parseJSON(json);
 }
 
+
+// Helper function to subscribe to an autobahn event
+function sessionSubscribe(session, name, method, success, failure) {
+    session.subscribe('io.github.si618.pi-time.' + name, method).then(
+        function(sub) {
+            console.log("Subscribed to '" + name + "'");
+            if (success !== undefined) {
+                success(sub);
+            }
+        },
+        function(err) {
+            console.log("Failed to subscribe to '" + name +
+                "' (" + err.error + ")");
+            if (failure !== undefined) {
+                failure(err);
+            }
+        }
+    );
+}
+
+// Helper function to invoke to an autobahn rpc call
+function sessionCall(session, method, params, success, failure) {
+    console.log("Request '" + method + "'");
+    session.call('io.github.si618.pi-time.' + method, params).then(
+        function(res) {
+            console.log("Response '" + method + "' (ok)");
+            if (success !== undefined) {
+                success(res);
+            }
+        },
+        function(err) {
+            console.log("Response '" + method + "' error " + err.error);
+            if (failure !== undefined) {
+                failure(err);
+            }
+        }
+    );
+}
+
+
+// Activate full screen mode for different browsers
 function goFullscreen() {
     element = document.documentElement;
     if (element.requestFullscreen) {
@@ -56,16 +101,17 @@ function goFullscreen() {
         element.msRequestFullscreen();
     }
 }
-
+// Toggles full screen state
 function fullscreenChanged() {
     $('.fullscreen').toggle();
 }
-
+// Wire up full screen events in different browsers
 document.addEventListener('fullscreenchange', fullscreenChanged);
 document.addEventListener('webkitfullscreenchange', fullscreenChanged);
 document.addEventListener('mozfullscreenchange', fullscreenChanged);
 document.addEventListener('MSFullscreenChange', fullscreenChanged);
 
+// Monitor resize events to resize matching 'output' class element
 $(document).ready(function() {
     function resizeOutput() {
         var height = $(window).height() - 100;

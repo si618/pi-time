@@ -1,4 +1,4 @@
-
+// Sesnor specific crossbar code
 
 // URL of WAMP Router (Crossbar.io)
 var wsuri;
@@ -16,78 +16,39 @@ var connection = new autobahn.Connection({
     realm: 'pi-time'
 });
 
-// fired when connection is established and session attached
+// Fired when connection is established and session attached
 connection.onopen = function(session, details) {
-
     console.log('Connection to sensor opened');
 
-    function on_sensor_changed(args) {
-        console.log('Event: on_sensor_changed received from sensor');
+    function sensor_changed(details) {
+        console.log('TODO: [sensor_changed] Update sensor config view model...');
     }
-    session.subscribe('io.github.si618.pi-time.on_sensor_changed', on_sensor_changed).then(
-        function(sub) {
-            console.log('Subscribed to: on_sensor_changed');
-        },
-        function(err) {
-            console.log('Failed to subscribe to: on_sensor_changed ' + err);
-        }
-    );
+    sessionSubscribe(session, 'sensor_changed', sensor_changed);
 
-    function on_sensor_event(args) {
-        console.log('Event: on_sensor_event received from sensor');
+    function sensor_event(details) {
+        console.log('TODO: [sensor_event] Update sensor event view model...');
     }
-    session.subscribe('io.github.si618.pi-time.on_sensor_event', on_sensor_event).then(
-        function(sub) {
-            console.log('Subscribed to: on_sensor_event');
-        },
-        function(err) {
-            console.log('Failed to subscribe to: on_sensor_event ' + err);
-        }
-    );
+    sessionSubscribe(session, 'sensor_event', sensor_event);
 
-    function on_laptimer_changed(args) {
-        console.log('Event: on_laptimer_changed received from laptimer');
+    function laptimer_changed(details) {
+        console.log('TODO: [laptimer_changed]');
     }
-    session.subscribe('io.github.si618.pi-time.on_laptimer_changed', on_laptimer_changed).then(
-        function(sub) {
-            console.log('Subscribed to: on_laptimer_changed');
-        },
-        function(err) {
-            console.log('Failed to subscribe to: on_laptimer_changed ' + err);
-        }
-    );
+    sessionSubscribe(session, 'laptimer_changed', laptimer_changed);
 
-    function on_laptimer_heartbeat(args) {
-        console.log('Event: on_laptimer_heartbeat received from laptimer');
+    function laptimer_heartbeat(details) {
+        console.log('TODO: [laptimer_heartbeat]');
     }
-    session.subscribe('io.github.si618.pi-time.on_laptimer_heartbeat', on_laptimer_heartbeat).then(
-        function(sub) {
-            console.log('Subscribed to: on_laptimer_heartbeat');
-        },
-        function(err) {
-            console.log('Failed to subscribe to: on_laptimer_heartbeat ' + err);
-        }
-    );
+    sessionSubscribe(session, 'laptimer_heartbeat', laptimer_heartbeat);
 
-    session.call('io.github.si618.pi-time.get_sensor_options').then(
-        function(res) {
-            /* TODO: Update view model */
-            console.log("API response 'get_sensor_options' (ok)");
-        },
-        function(err) {
-            console.log("API response 'get_sensor_options' error " + err);
-        }
-    );
+    function sensor_options(details) {
+        console.log('TODO: Update sensor options view model...');
+    }
+    sessionCall(session, 'get_sensor_options', [], sensor_options);
 
-    session.call('io.github.si618.pi-time.get_sensor_config').then(
-        function(res) {
-            /* TODO: Update view model */
-            console.log("API response 'get_sensor_config' (ok)");
-        },
-        function(err) {
-            console.log("API response 'get_sensor_config' error " + err);
-        }
-    );
+    function sensor_config(details) {
+        console.log('TODO: Update sensor config view model...');
+    }
+    sessionCall(session, 'get_sensor_config', [], sensor_config);
 };
 
 connection.onclose = function(reason, details) {
