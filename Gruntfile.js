@@ -42,14 +42,14 @@ module.exports = function(grunt) {
             },
             laptimer: {
                 files: [{
-                    src: ['pi_time/pi_time/**/*.py', 'pi_time/laptimer/**/*.py', 'pi_time/laptimer/.crossbar/*', 'pi_time/laptimer/**/*.json', 'pi_time/laptimer/**/*.html', '!pi_time/pi_time/**/tests/**', '!pi_time/laptimer/**/tests/**'],
+                    src: ['pi_time/pi_time/**/*.py', 'pi_time/laptimer/**/*.py', 'pi_time/laptimer/.crossbar/*', 'pi_time/laptimer/**/*.json', 'pi_time/laptimer/**/*.html', '!pi_time/pi_time/**/test/**', '!pi_time/laptimer/**/test/**'],
                     dest: 'dist/laptimer',
                     expand: true
                 }],
             },
             sensor: {
                 files: [{
-                    src: ['pi_time/pi_time/**/*.py', 'pi_time/sensor/**/*.py', 'pi_time/sensor/.crossbar/*', 'pi_time/sensor/**/*.json', 'pi_time/sensor/**/*.html', '!pi_time/pi_time/**/tests/**', '!pi_time/sensor/**/tests/**'],
+                    src: ['pi_time/pi_time/**/*.py', 'pi_time/sensor/**/*.py', 'pi_time/sensor/.crossbar/*', 'pi_time/sensor/**/*.json', 'pi_time/sensor/**/*.html', '!pi_time/pi_time/**/test/**', '!pi_time/sensor/**/test/**'],
                     dest: 'dist/sensor',
                     expand: true
                 }],

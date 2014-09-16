@@ -7,9 +7,10 @@ from abc import ABCMeta
 
 from pi_time import settings
 
-class ApiBase(object):
+class ApiDataFormat(object):
     """
-    Abstract base class for rpc, pubsub and event handling triggered via API.
+    Abstract base class to define data format for rpc, pubsub and event 
+    handling triggered via API.
 
     Follows style guide:
     https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml
@@ -41,7 +42,7 @@ class ApiBase(object):
         return jsonpickle.encode(clone, unpicklable=False)
 
 
-class ApiRequest(ApiBase):
+class ApiRequest(ApiDataFormat):
     """Request data format for API calls."""
 
     def __init__(self, json_data):
@@ -76,7 +77,7 @@ class ApiRequest(ApiBase):
         self.params = params
 
 
-class ApiResponse(ApiBase):
+class ApiResponse(ApiDataFormat):
     """Response data format for results of API calls."""
 
     def __init__(self, method, context, data=None, error=None):

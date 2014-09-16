@@ -3,11 +3,11 @@ import os
 import unittest
 
 from pi_time import settings
-from pi_time.api import api
+from pi_time.api.processor import ApiProcessor
 from pi_time.models.api import ApiRequest
 
 
-class ApiTestCase(unittest.TestCase):
+class ApiProcessorTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -35,7 +35,7 @@ class ApiTestCase(unittest.TestCase):
         with open(file_name, 'w') as config_file:
             config_file.write(config_json)
         cls.api_test_config_file = file_name
-        cls.api = api.Api(file_name)
+        cls.api = ApiProcessor(file_name)
 
     @classmethod
     def tearDownClass(cls):
@@ -49,7 +49,7 @@ class ApiTestCase(unittest.TestCase):
         # Act
         response = self.api.process(request)
         # Assert
-        self.assertEqual(response.error, "Expected ApiRequest but got str")
+        self.assertEqual(response.error, 'Request must be of type ApiRequest')
 
     def test_process_returns_expected_response_invalid_method(self):
         # Arrange
@@ -80,13 +80,12 @@ class ApiTestCase(unittest.TestCase):
     def test_call_returns_expected_response_valid_method(self):
         # Arrange
         method = 'get_sensor_options'
-        context = 'testing'
         sensor_options = (
             ('locations', settings.OPTIONS_SENSOR_LOCATION),
             ('hardwares', settings.OPTIONS_HARDWARE)
         )
         # Act
-        response = self.api.call(method, context)
+        response = self.api.call(method)
         # Assert
         self.assertEqual(response.error, None)
         self.assertEqual(response.data, sensor_options)

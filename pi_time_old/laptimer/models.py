@@ -14,7 +14,7 @@ logger = logging.getLogger('laptimer')
 
 # TODO: add apiVersion, method, params, ... as per json style guide found here:
 # See https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml
-class ApiBase:
+class ApiDataFormat:
     '''Abstract base class for API classes.'''   
 
     data = object
@@ -31,7 +31,7 @@ class ApiBase:
         return jsonpickle.encode(clone, unpicklable=False)
 
 
-class ApiResult(ApiBase):
+class ApiResult(ApiDataFormat):
     '''Represents the result from an API call.'''   
     
     call = str
@@ -46,7 +46,7 @@ class ApiResult(ApiBase):
         self.data = data
 
 
-class ApiBroadcast(ApiBase):
+class ApiBroadcast(ApiDataFormat):
     '''Represents an API broadcast.'''
 
     event = str

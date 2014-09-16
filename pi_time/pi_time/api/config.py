@@ -1,5 +1,6 @@
-from twisted.python import log
+from autobahn import wamp
 
+from pi_time.api import api
 from pi_time.config import options, update
 
 
@@ -9,48 +10,49 @@ class ApiConfig(object):
     def __init__(self, api):
         self.api = api
 
+    #@api.method
     def get_laptimer_options(self):
         return options.get_laptimer_options()
 
+    #@api.method
     def get_sensor_options(self):
         return options.get_sensor_options()
 
+    #@api.method
     def get_laptimer_config(self):
         return self.api.config['laptimer']
 
+    #@api.method
     def get_sensor_config(self):
         return self.api.config['sensors']
 
+    #@api.method
     def update_laptimer(self, laptimer):
-        config = update.update_laptimer(self.api.config_file, self.api.config,
+        return update.update_laptimer(self.api.config_file, self.api.config,
             laptimer)
-        return config
 
+    #@api.method(publish='sensor_changed')
     def add_sensor(self, sensor):
-        config = update.add_sensor(self.api.config_file, self.api.config,
+        return update.add_sensor(self.api.config_file, self.api.config,
             sensor)
-        return config
 
+    #@api.method(publish='sensor_changed')
     def update_sensor(self, sensor):
-        config = update.update_sensor(self.api.config_file, self.api.config,
+        return update.update_sensor(self.api.config_file, self.api.config,
             sensor)
-        return config
 
+    #@api.method(publish='sensor_changed')
     def rename_sensor(self, rename):
         if 'name' not in sensor:
             raise Exception('Sensor name required')
         if 'newName' not in sensor:
             raise Exception('Sensor newName required')
-        sensor_name = sensor['name']
-        new_sensor_name = sensor['newName']
-        config = update.rename_sensor(self.api.config_file, self.api.config,
-            sensor_name, new_sensor_name)
-        return config
+        return update.rename_sensor(self.api.config_file, self.api.config,
+            sensor['name'], sensor['newName'])
 
+    #@api.method(publish='sensor_changed')
     def remove_sensor(self, sensor):
         if 'name' not in sensor:
             raise Exception('Sensor name required')
-        sensor_name = sensor['name']
-        config = update.remove_sensor(self.api.config_file, self.api.config,
-            sensor_name)
-        return config
+        return update.remove_sensor(self.api.config_file, self.api.config,
+            sensor['name'])
