@@ -1,5 +1,7 @@
 """Hardcoded settings and options."""
 
+URI_PREFIX = 'pi-time.'
+
 TRACK_USAGE_RIDE = 'RIDE'
 TRACK_USAGE_RUN = 'RUN'
 TRACK_USAGE_DRIVE = 'DRIVE'

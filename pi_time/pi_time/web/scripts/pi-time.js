@@ -48,10 +48,19 @@ function parseJson(json) {
     return JSON && JSON.parse(json) || $.parseJSON(json);
 }
 
+prefix = 'pi-time.';
+
+function printError(error) {
+    msg = error.error;
+    if (error.args.length > 0) {
+        msg += ': ' + error.args[0];
+    }
+    return msg;
+}
 
 // Helper function to subscribe to an autobahn event
 function sessionSubscribe(session, name, method, success, failure) {
-    session.subscribe('io.github.si618.pi-time.' + name, method).then(
+    session.subscribe(prefix + name, method).then(
         function(sub) {
             console.log("Subscribed to '" + name + "'");
             if (success !== undefined) {
@@ -60,7 +69,7 @@ function sessionSubscribe(session, name, method, success, failure) {
         },
         function(err) {
             console.log("Failed to subscribe to '" + name +
-                "' (" + err.error + ")");
+                "' (" + printError(err) + ")");
             if (failure !== undefined) {
                 failure(err);
             }
@@ -71,7 +80,7 @@ function sessionSubscribe(session, name, method, success, failure) {
 // Helper function to invoke to an autobahn rpc call
 function sessionCall(session, method, params, success, failure) {
     console.log("Request '" + method + "'");
-    session.call('io.github.si618.pi-time.' + method, params).then(
+    session.call(prefix + method, params).then(
         function(res) {
             console.log("Response '" + method + "' (ok)");
             if (success !== undefined) {
@@ -79,7 +88,7 @@ function sessionCall(session, method, params, success, failure) {
             }
         },
         function(err) {
-            console.log("Response '" + method + "' error " + err.error);
+            console.log("Response '" + method + "' (" + printError(err) + ")");
             if (failure !== undefined) {
                 failure(err);
             }
