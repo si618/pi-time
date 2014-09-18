@@ -29,10 +29,10 @@ module.exports = function(grunt) {
                 src: ['pi_time/pi_time/web/scripts/pi-time*.js']
             },
             laptimer: {
-                src: ['laptimer/laptimer/web/scripts/laptimer*.js']
+                src: ['pi_time/laptimer/laptimer/web/scripts/laptimer*.js']
             },
             sensor: {
-                src: ['sensor/sensor/web/scripts/sensor*.js']
+                src: ['pi_time/sensor/sensor/web/scripts/sensor*.js']
             },
         },
         clean: ['dist'],
