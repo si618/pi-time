@@ -21,24 +21,21 @@
     </ul>
 
     <div id='status' data-bind='visible: $root.selectedTabId() == "Status"'>
-        <p class='label'>Connected to sensor</p>
-        <div class='led green'></div>
-        <p class='label'>Connected to laptimer</p>
-        <div class='led green'></div>
-        <p class='label'>Laptimer heartbeat</p>
-        <div class='led red'></div>
-        <p class='label'>Lap active</p>
-        <div class='led blue'></div>
-        <p class='label'>Sensor event</p>
-        <div class='led yellow'></div>
-        <div class='led gray'></div>
+        <div class='main'>
+            <!-- TODO: Data needs to be defined in the view model -->
+            <div class='label'>Connected to sensor</div><div class='led green'></div>
+            <div class='label'>Connected to laptimer</div><div class='led gray'></div>
+            <div class='label'>Laptimer heartbeat</div><div class='led red'></div>
+            <div class='label'>Lap active</div><div class='led blue'></div>
+            <div class='label'>Sensor event</div><div class='led yellow'></div>
+        </div>
     </div>
 
     <div id='settings' data-bind='visible: $root.selectedTabId() == "Settings"'>
     </div>
 
     <div id='events' data-bind='visible: $root.selectedTabId() == "Events"'>
-        <div class='output' data-bind='html: events'></div>
+        <div class='output' data-bind='html: events.events'></div>
     </div>
 
     <div data-bind='visible: $root.selectedTabId() == "Log"'>
