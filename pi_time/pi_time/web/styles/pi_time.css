@@ -9,6 +9,10 @@ body {
     font-size: medium;
     color: #f0e7d5;
 }
+#page-wrap {
+    width: 440px;
+    margin: 0 auto;
+}
 .tabs {
     background-color: #bbb;
     list-style-type: none;
@@ -62,30 +66,40 @@ body {
     filter: brightness(100);
 }
 .main {
-    width: 500px;
     display: block;
-    margin-top: 16px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 32px;
+}
+.ledColumn {
+    float: left;
+    padding-right: 8px;
+    padding-bottom: 16px;
+}
+.ledTextColumn {
+    padding-bottom: 16px;
 }
 .label {
-    float: left;
+    padding-top: 4px;
+    height: 32px;
+    cursor: default;
+}
+.spacer {
+    height: 16px;
 }
 .output {
     font-family: 'Courier New', Courier, monospace;
-    font-size: medium;
+    font-size: smaller;
     white-space: pre;
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
     /* Padding to hide scrollbar */
-    padding-right: 20px;
+    padding-right: 1000px;
     color: #f0e7d5;
 }
 .led {
-    margin: 10px auto;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
+    margin-bottom: 12px;
     background-color: #fff;
     border-radius: 50%;
     box-shadow: #000 0px 0px 1px 0px, -2px -4px 12px 2px inset, 0px 0px 10px 0px;

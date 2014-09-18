@@ -55,6 +55,6 @@ connection.onopen = function(session, details) {
 connection.onclose = function(reason, details) {
     sensorVM.status.sensor(false);
     console.log('Connection to sensor closed: ' + reason);
-}
+};
 
 connection.open();

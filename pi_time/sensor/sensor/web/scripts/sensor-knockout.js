@@ -1,34 +1,39 @@
 function StatusViewModel() {
-    // Data
     var self = this;
-    self.sensor = ko.observable(false)
-    self.sensorTrigger = ko.observable(false)
-    self.sensorTriggered = ko.observable(false)
-    self.laptimer = ko.observable(false)
-    self.laptimerHeartbeat = ko.observable(false)
-    self.lap = ko.observable(false)
 
-    // Behaviours
-};
+    self.sensorLabel = ko.observable('Connected to sensor');
+    self.triggerLabel = ko.observable('Connected to sensor trigger');
+    self.triggeredLabel = ko.observable('Sensor triggered');
+    self.laptimerLabel = ko.observable('Connected to laptimer');
+    self.heartbeatLabel = ko.observable('Laptimer heartbeat');
+    self.lapLabel = ko.observable('Active lap');
+
+    self.sensor = ko.observable(false);
+    self.trigger = ko.observable(false);
+    self.triggered = ko.observable(false);
+    self.laptimer = ko.observable(false);
+    self.heartbeat = ko.observable(false);
+    self.lap = ko.observable(false);
+}
 
 function EventsViewModel() {
     var self = this;
     self.events = ko.observable();
-};
+}
 
 function SettingsViewModel() {
     // Data
     var self = this;
 
     // Behaviours
-};
+}
 
 function LogsViewModel() {
     // Data
     var self = this;
 
     // Behaviours
-};
+}
 
 function AccessViewModel() {
     // Data
@@ -38,8 +43,8 @@ function AccessViewModel() {
     // Behaviours
     self.getTabName = function() {
         return self.authenticated() ? 'Logout' : 'Login';
-    }
-};
+    };
+}
 
 function SensorViewModel() {
     // Data
@@ -74,10 +79,10 @@ function SensorViewModel() {
         });
 
         this.get('', function() {
-            this.app.runRoute('get', '#Status')
+            this.app.runRoute('get', '#Status');
         });
     }).run();
-};
+}
 
 sensorVM = new SensorViewModel();
 ko.applyBindings(sensorVM);
