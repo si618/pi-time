@@ -36,23 +36,16 @@ function LogsViewModel() {
 }
 
 function AccessViewModel() {
-    // Data
     var self = this;
     self.authenticated = ko.observable(false);
-
-    // Behaviours
-    self.getTabName = function() {
+    self.role = ko.observable('anonymous');
+    self.accessLabel = ko.pureComputed(function() {
         return self.authenticated() ? 'Logout' : 'Login';
-    };
+    }, this);
 }
 
 function SensorViewModel() {
-    // Data
     var self = this;
-
-    self.tabs = ['Status', 'Events', 'Settings', 'Log', 'Access'];
-    self.selectedTabId = ko.observable();
-    self.selectedTabData = ko.observable();
 
     // Nested view models
     self.status = new StatusViewModel();
@@ -61,13 +54,23 @@ function SensorViewModel() {
     self.logs = new LogsViewModel();
     self.access = new AccessViewModel();
 
+    // Data
+    self.tabs = ['Status', 'Events', 'Settings', 'Log', 'Access'];
+    self.selectedTabId = ko.observable();
+    self.selectedTabData = ko.observable();
+
+    // TODO: Tab should be disabled if sensor connection lost or not authorised.
+    // Status tab always enabled for all users.
+    // Settings and Log tab only enabled if authorised.
+    // Events, Settings and Access tabs only enabled if sensor connected.
+
     // Behaviours
     self.goToTab = function(tab) {
         location.hash = tab;
     };
     self.getTabName = function(tab) {
         if (tab == 'Access') {
-            return self.access.getTabName();
+            return self.access.accessLabel();
         }
         return tab;
     };
