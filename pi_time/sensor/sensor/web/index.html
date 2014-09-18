@@ -14,35 +14,43 @@
 </head>
 
 <body>
-    <ul class='tabs' data-bind='foreach: tabs'>
-        <li data-bind='text: $root.getTabName($data),
-            css: { selected: $data == $root.selectedTabId() },
-            click: $root.goToTab'></li>
-    </ul>
+    <div id='menu'>
+        <ul class='tabs' data-bind='foreach: tabs'>
+            <li data-bind='text: $root.getTabName($data),
+                           css: { selected: $data == $root.selectedTabId() },
+                           click: $root.goToTab'></li>
+        </ul>
+    </div>
 
-    <div id='status' data-bind='visible: $root.selectedTabId() == "Status"'>
+    <div data-bind='with: status, visible: $root.selectedTabId() == "Status"'>
         <div class='main'>
-            <!-- TODO: Data needs to be defined in the view model -->
-            <div class='label'>Connected to sensor</div><div class='led green'></div>
-            <div class='label'>Connected to laptimer</div><div class='led gray'></div>
-            <div class='label'>Laptimer heartbeat</div><div class='led red'></div>
-            <div class='label'>Lap active</div><div class='led blue'></div>
-            <div class='label'>Sensor event</div><div class='led yellow'></div>
+            <div class='label'>Connected to sensor node</div>
+            <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
+            <div class='label'>Connected to sensor trigger</div>
+            <div data-bind="css: sensorTrigger() ? 'led green' : 'led gray'"></div>
+            <div class='label'>Sensor triggered</div>
+            <div data-bind="css: sensorTriggered() ? 'led yellow' : 'led gray'"></div>
+            <div class='label'>Connected to laptimer node</div>
+            <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
+            <div class='label'>Laptimer heartbeat</div>
+            <div data-bind="css: laptimerHeartbeat() ? 'led red' : 'led gray'"></div>
+            <div class='label'>Lap active</div>
+            <div data-bind="css: lap() ? 'led blue' : 'led gray'"></div>
         </div>
     </div>
 
-    <div id='settings' data-bind='visible: $root.selectedTabId() == "Settings"'>
+    <div data-bind='with: settings, visible: $root.selectedTabId() == "Settings"'>
     </div>
 
-    <div id='events' data-bind='visible: $root.selectedTabId() == "Events"'>
+    <div data-bind='with: events, visible: $root.selectedTabId() == "Events"'>
         <div class='output' data-bind='html: events.events'></div>
     </div>
 
-    <div data-bind='visible: $root.selectedTabId() == "Log"'>
+    <div data-bind='with: logs, visible: $root.selectedTabId() == "Log"'>
         <div id='log' class='output'></div>
     </div>
 
-    <div id='access' data-bind='visible: $root.selectedTabId() == "Access"'>
+    <div data-bind='with: access, visible: $root.selectedTabId() == "Access"'>
     </div>
 
     <div>

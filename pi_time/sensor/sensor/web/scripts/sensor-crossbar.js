@@ -49,9 +49,11 @@ connection.onopen = function(session, details) {
         console.log('TODO: Update sensor config view model...');
     }
     sessionCall(session, 'get_sensor_config', [], sensor_config);
+    sensorVM.status.sensor(true);
 };
 
 connection.onclose = function(reason, details) {
+    sensorVM.status.sensor(false);
     console.log('Connection to sensor closed: ' + reason);
 }
 

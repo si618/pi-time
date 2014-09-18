@@ -1,6 +1,12 @@
 function StatusViewModel() {
     // Data
     var self = this;
+    self.sensor = ko.observable(false)
+    self.sensorTrigger = ko.observable(false)
+    self.sensorTriggered = ko.observable(false)
+    self.laptimer = ko.observable(false)
+    self.laptimerHeartbeat = ko.observable(false)
+    self.lap = ko.observable(false)
 
     // Behaviours
 };
@@ -17,12 +23,38 @@ function SettingsViewModel() {
     // Behaviours
 };
 
+function LogsViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+};
+
+function AccessViewModel() {
+    // Data
+    var self = this;
+    self.authenticated = ko.observable(false);
+
+    // Behaviours
+    self.getTabName = function() {
+        return self.authenticated() ? 'Logout' : 'Login';
+    }
+};
+
 function SensorViewModel() {
     // Data
     var self = this;
+
     self.tabs = ['Status', 'Events', 'Settings', 'Log', 'Access'];
     self.selectedTabId = ko.observable();
     self.selectedTabData = ko.observable();
+
+    // Nested view models
+    self.status = new StatusViewModel();
+    self.events = new EventsViewModel();
+    self.settings = new SettingsViewModel();
+    self.logs = new LogsViewModel();
+    self.access = new AccessViewModel();
 
     // Behaviours
     self.goToTab = function(tab) {
@@ -30,8 +62,7 @@ function SensorViewModel() {
     };
     self.getTabName = function(tab) {
         if (tab == 'Access') {
-            // TODO: Logout if already logged in, otherwise Login
-            return 'Login';
+            return self.access.getTabName();
         }
         return tab;
     };
@@ -48,5 +79,5 @@ function SensorViewModel() {
     }).run();
 };
 
-var sensorVM = new SensorViewModel();
+sensorVM = new SensorViewModel();
 ko.applyBindings(sensorVM);
