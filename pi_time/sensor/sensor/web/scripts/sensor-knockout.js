@@ -1,14 +1,14 @@
 function StatusViewModel() {
     var self = this;
 
-    self.laptimer = ko.observable(false);
     self.sensor = ko.observable(false);
+    self.laptimer = ko.observable(false);
     self.heartbeat = ko.observable(false);
     self.triggered = ko.observable(false);
     self.lap = ko.observable(false);
 
-    self.laptimerLabel  = ko.observable('Connected to laptimer');
     self.sensorLabel    = ko.observable('Connected to sensor');
+    self.laptimerLabel  = ko.observable('Connected to laptimer');
     self.heartbeatLabel = ko.observable('Laptimer heartbeat');
     self.triggeredLabel = ko.observable('Sensor triggered');
     self.lapLabel = ko.observable('Active lap');

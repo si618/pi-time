@@ -14,12 +14,13 @@ body {
     margin: 0 auto;
 }
 .tabs {
+    width: 100%;
     background-color: #bbb;
     list-style-type: none;
     padding: 0;
     border-radius: 6px;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e6e6e6), color-stop(0.5, #d0d0d0), color-stop(1, #a4a4a4));
-    margin: 10px 16px 16px 0;
+    margin: 0 16px 16px 0;
     font-size: 0px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -38,6 +39,7 @@ body {
     padding: 0.5em 0.8em;
     cursor: pointer;
     color: #444;
+    text-align: center;
     text-shadow: #f7f7f7 0 1px 1px;
     border-left: 1px solid #ddd;
     border-right: 1px solid #888;
@@ -112,7 +114,8 @@ body {
     color: #004ab3;
 }
 .led.gray {
-    color: #080808;
+    box-shadow: #222 0px 0px 1px 0px, -2px -4px 12px 2px inset, 0px 0px 10px 0px !important;
+    color: #0f0f0f;
 }
 .ledColumn {
     float: left;
