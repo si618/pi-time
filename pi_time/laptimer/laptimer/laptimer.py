@@ -43,6 +43,7 @@ class LaptimerAppSession(ApplicationSession):
         log.msg('Pi-time laptimer v{} ready'.format(pi_time.VERSION))
         yield self.publish(settings.URI_PREFIX + 'start_laptimer')
 
+        # TODO: Send heartbeat to all sensors
 
         """
         ## SUBSCRIBE to a topic and receive events
