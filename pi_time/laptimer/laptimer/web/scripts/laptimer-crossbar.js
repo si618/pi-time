@@ -4,7 +4,7 @@ var connection = getConnection();
 
 // Fired when connection is established and session attached
 connection.onopen = function(session, details) {
-    console.log('Connection to sensor opened');
+    console.log('Connection to laptimer opened');
 
     function laptimer_changed(details) {
         console.log('TODO: [laptimer_changed]');
@@ -21,15 +21,19 @@ connection.onopen = function(session, details) {
     }
     sessionSubscribe(session, 'sensor_event', sensor_event);
 
-    function laptimer_options(details) {
-        console.log('TODO: Update laptimer options view model...');
+    function sensor_connected(details) {
+        // TODO: Support multiple sensors
+        // mainVM.admin.status.sensor(true);
+        console.log('TODO: [sensor_connected]' + details);
     }
-    sessionCall(session, 'get_laptimer_options', [], laptimer_options);
+    sessionSubscribe(session, 'sensor_connected', sensor_connected);
 
-    function laptimer_config(details) {
-        console.log('TODO: Update laptimer config view model...');
+    function sensor_disconnected(details) {
+        // TODO: Support multiple sensors
+        // mainVM.admin.status.sensor(false);
+        console.log('TODO: [sensor_disconnected]' + details);
     }
-    sessionCall(session, 'get_laptimer_config', [], laptimer_config);
+    sessionSubscribe(session, 'sensor_disconnected', sensor_disconnected);
 
     mainVM.admin.status.laptimer(true);
 };

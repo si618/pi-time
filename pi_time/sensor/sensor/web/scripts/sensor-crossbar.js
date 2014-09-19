@@ -16,6 +16,16 @@ connection.onopen = function(session, details) {
     }
     sessionSubscribe(session, 'sensor_event', sensor_event);
 
+    function laptimer_connected(details) {
+        mainVM.status.laptimer(true);
+    }
+    sessionSubscribe(session, 'laptimer_connected', laptimer_connected);
+
+    function laptimer_disconnected(details) {
+        mainVM.status.laptimer(false);
+    }
+    sessionSubscribe(session, 'laptimer_disconnected', laptimer_disconnected);
+
     function laptimer_changed(details) {
         console.log('TODO: [laptimer_changed]');
     }
@@ -26,15 +36,6 @@ connection.onopen = function(session, details) {
     }
     sessionSubscribe(session, 'laptimer_heartbeat', laptimer_heartbeat);
 
-    function sensor_options(details) {
-        console.log('TODO: Update sensor options view model...');
-    }
-    sessionCall(session, 'get_sensor_options', [], sensor_options);
-
-    function sensor_config(details) {
-        console.log('TODO: Update sensor config view model...');
-    }
-    sessionCall(session, 'get_sensor_config', [], sensor_config);
     mainVM.status.sensor(true);
 };
 

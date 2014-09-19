@@ -32,7 +32,8 @@ def api_method(wrapped=None, publish=None):
         data = wrapped(*args, **kwargs)
         if publish and instance.session:
             log.msg('Publish {}'.format(publish), logLevel=logging.DEBUG)
-            instance.session.publish(settings.URI_PREFIX + publish)
+            instance.session.publish(settings.URI_PREFIX + publish, data)
+            # TODO: data = None?
         return data
     return wrapper(wrapped)
 
@@ -46,6 +47,24 @@ class Api(object):
 
         log.msg('Pi-time API v{} ready'.format(pi_time.API_VERSION))
 
+    @api_method(publish='laptimer_started')
+    def start_laptimer(self):
+        laptimer = [
+            options.get_laptimer_options(),
+            self.config['laptimer'],
+            options.get_sensor_options(),
+            self.config['sensors']]
+        return laptimer
+
+    @api_method(publish='sensor_started')
+    def start_sensor(self):
+        laptimer = [
+            self.config['laptimer'],
+            options.get_sensor_options(),
+            self.config['sensors']]
+        return laptimer
+
+    """
     @api_method
     def get_laptimer_options(self):
         return options.get_laptimer_options()
@@ -61,6 +80,7 @@ class Api(object):
     @api_method
     def get_sensor_config(self):
         return self.config['sensors']
+    """
 
     @api_method(publish='laptimer_changed')
     def update_laptimer(self, laptimer):

@@ -23,12 +23,25 @@ class LaptimerAppSession(ApplicationSession):
 
         api = Api(session=self, config_file=config_file)
 
+        def sensor_connected(msg):
+            yield self.publish(settings.URI_PREFIX + 'sensor_connected', msg)
+        sub_sensor_connected = yield self.subscribe(sensor_connected,
+            settings.URI_PREFIX + 'sensor_connected')
+        def sensor_disconnected(msg):
+            yield self.publish(settings.URI_PREFIX + 'sensor_disconnected',
+                msg)
+        sub_sensor_disconnected = yield self.subscribe(sensor_disconnected,
+            settings.URI_PREFIX + 'sensor_disconnected')
+
+        """
         reg_options = yield self.register(api.get_laptimer_options,
             settings.URI_PREFIX + 'get_laptimer_options')
         reg_config = yield self.register(api.get_laptimer_config,
             settings.URI_PREFIX + 'get_laptimer_config')
+        """
 
         log.msg('Pi-time laptimer v{} ready'.format(pi_time.VERSION))
+        yield self.publish(settings.URI_PREFIX + 'start_laptimer')
 
 
         """
