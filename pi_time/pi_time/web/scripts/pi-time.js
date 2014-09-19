@@ -1,7 +1,5 @@
 // Pi-time general scripts shared between laptimer and sensor apps
 
-AUTOBAHN_DEBUG = true;
-
 // Subvert console log to output to div in window as well as console
 if (typeof console != 'undefined') {
     if (typeof console.log != 'undefined') {
