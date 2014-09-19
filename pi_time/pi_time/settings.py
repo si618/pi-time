@@ -2,17 +2,17 @@
 
 URI_PREFIX = 'pi-time.'
 
-TRACK_USAGE_RIDE = 'RIDE'
-TRACK_USAGE_RUN = 'RUN'
-TRACK_USAGE_DRIVE = 'DRIVE'
-TRACK_USAGE_FLY = 'FLY'
-TRACK_USAGE_SWIM = 'SWIM'
-OPTIONS_TRACK_USAGE = (
-    (TRACK_USAGE_RIDE, 'Ride', 'Rider'),
-    (TRACK_USAGE_RIDE, 'Run', 'Runner'),
-    (TRACK_USAGE_DRIVE, 'Drive', 'Driver'),
-    (TRACK_USAGE_FLY, 'Fly', 'Pilot'),
-    (TRACK_USAGE_SWIM, 'Swim', 'Swimmer')
+PLAYA_RIDE = 'RIDE'
+PLAYA_RUN = 'RUN'
+PLAYA_DRIVE = 'DRIVE'
+PLAYA_FLY = 'FLY'
+PLAYA_SWIM = 'SWIM'
+OPTIONS_PLAYA = (
+    (PLAYA_RIDE, 'Ride', 'Rider'),
+    (PLAYA_RUN, 'Run', 'Runner'),
+    (PLAYA_SWIM, 'Swim', 'Swimmer'),
+    (PLAYA_DRIVE, 'Drive', 'Driver'),
+    (PLAYA_FLY, 'Fly', 'Pilot'),
 )
 
 # Report speed in km/h|m/s, distance in metres.

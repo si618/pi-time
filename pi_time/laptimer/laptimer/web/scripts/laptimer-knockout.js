@@ -1,16 +1,48 @@
+function SessionViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+}
+
+function TrackRecordsViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+}
+
+function PlayaRecordsViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+}
+
+function SessionRecordsViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+}
+
+function RecordsViewModel() {
+    // Data
+    var self = this;
+
+    // Behaviours
+}
+
 function StatusViewModel() {
     var self = this;
 
     self.laptimer = ko.observable(false);
-    self.sensor = ko.observable(false);
-    self.heartbeat = ko.observable(false);
-    self.triggered = ko.observable(false);
+    //self.sensor = ko.observable(false); TODO: Array of sensors
     self.lap = ko.observable(false);
 
     self.laptimerLabel  = ko.observable('Connected to laptimer');
-    self.sensorLabel    = ko.observable('Connected to sensor');
-    self.heartbeatLabel = ko.observable('Laptimer heartbeat');
-    self.triggeredLabel = ko.observable('Sensor triggered');
+    //self.sensorLabel    = ko.observable('Connected to sensor'); TODO: Array of sensors
+    //self.triggeredLabel = ko.observable('Sensor triggered'); TODO: Array of sensors
     self.lapLabel = ko.observable('Active lap');
 }
 
@@ -26,6 +58,17 @@ function SettingsViewModel() {
     // Behaviours
 }
 
+function AdminViewModel() {
+    // Data
+    var self = this;
+
+    self.status = new StatusViewModel();
+    self.events = new EventsViewModel();
+    self.settings = new SettingsViewModel();
+
+    // Behaviours
+}
+
 function AccessViewModel() {
     var self = this;
     self.authenticated = ko.observable(false);
@@ -33,28 +76,26 @@ function AccessViewModel() {
     self.label = ko.pureComputed(function() {
         return self.authenticated() ? 'Logout' : 'Login';
     }, this);
-
-    // Behaviours
 }
 
 function MainViewModel() {
     var self = this;
 
     // Nested view models
-    self.status = new StatusViewModel();
-    self.events = new EventsViewModel();
-    self.settings = new SettingsViewModel();
+    self.session = new SessionViewModel();
+    self.records = new RecordsViewModel();
+    self.admin = new AdminViewModel();
     self.access = new AccessViewModel();
 
     // Tab data
-    self.tabs = ['Status', 'Events', 'Settings', 'Access'];
+    self.tabs = ['Session', 'Records', 'Admin', 'Access'];
     self.selectedTabId = ko.observable();
     self.selectedTabData = ko.observable();
 
     // TODO: Tab should be disabled if sensor connection lost or not authorised.
     // Status tab always enabled for all users.
-    // Settings tab only enabled if authorised.
-    // Settings and Access tabs only enabled if sensor connected.
+    // Settings and Log tab only enabled if authorised.
+    // Events, Settings and Access tabs only enabled if sensor connected.
 
     // Behaviours
     self.goToTab = function(tab) {
@@ -74,7 +115,7 @@ function MainViewModel() {
         });
 
         this.get('', function() {
-            this.app.runRoute('get', '#Status');
+            this.app.runRoute('get', '#Session');
         });
     }).run();
 }

@@ -3,11 +3,11 @@
         "name": "Pi-time lap timer",
         "url": "ws://127.0.0.1:8080/ws",
         "unitOfMeasurement": "METRIC",
-        "timezone": "Australia/Adelaide",
+        "timezone": "Australia/Adelaide"
     },
     "sensors": [{
         "name": "Start & finish line",
         "url": "ws://127.0.0.1:8888/ws",
-        "location": "START_FINISH",
+        "location": "START_FINISH"
     }]
 }

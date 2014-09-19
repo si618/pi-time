@@ -1,125 +1,46 @@
 <!DOCTYPE html>
 <html>
-   <body>
-      <h1>Hello WAMP</h1>
-      <p>Open JavaScript console to watch output.</p>
-      <script>AUTOBAHN_DEBUG = true;</script>
-      <script src="autobahn.min.js"></script>
 
-      <script>
-         // the URL of the WAMP Router (Crossbar.io)
-         //
-         var wsuri;
-         if (document.location.origin == "file://") {
-            wsuri = "ws://127.0.0.1:8080/ws";
+<head>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Pi-time laptimer</title>
+    <link rel='Stylesheet' href='styles/pi-time-laptimer.css'>
+    <script src='scripts/lib.js'></script>
+</head>
 
-         } else {
-            wsuri = (document.location.protocol === "http:" ? "ws:" : "wss:") + "//" +
-                        document.location.host + "/ws";
-         }
+<body>
+    <div id='page-wrap'>
+        <div id='menu'>
+            <ul class='tabs' data-bind='foreach: tabs'>
+                <li data-bind='text: $root.getTabName($data),
+                               css: { selected: $data == $root.selectedTabId() },
+                               click: $root.goToTab'></li>
+            </ul>
+        </div>
 
+        <div data-bind='with: session, visible: $root.selectedTabId() == "Session"'>
+        </div>
 
-         // the WAMP connection to the Router
-         //
-         var connection = new autobahn.Connection({
-            url: wsuri,
-            realm: "pi-time"
-         });
+        <div data-bind='with: records, visible: $root.selectedTabId() == "Records"'>
+        </div>
 
+        <div data-bind='with: admin, visible: $root.selectedTabId() == "Admin"'>
+            <!-- TODO: Move to events sub-menu -->
+            <div data-bind='with: events'>
+                <div class='output' data-bind='html: events' id='log'></div>
+            </div>
+        </div>
 
-         // timers
-         //
-         var t1, t2;
+        <div data-bind='with: access, visible: $root.selectedTabId() == "Access"'>
+        </div>
 
+        <div>
+            <img id='fullscreen' src='images/fullscreen.png' class='fullscreen' onclick='goFullscreen()' alt='Fullscreen' height='24' width='25' />
+        </div>
+    </div>
+    <script src='scripts/lib-laptimer.js'></script>
+</body>
 
-         // fired when connection is established and session attached
-         //
-         connection.onopen = function (session, details) {
-
-            console.log("Connected");
-
-            // SUBSCRIBE to a topic and receive events
-            //
-            function on_counter (args) {
-               var counter = args[0];
-               console.log("on_counter() event received with counter " + counter);
-            }
-            session.subscribe('io.github.si618.pi-time.oncounter', on_counter).then(
-               function (sub) {
-                  console.log('subscribed to topic');
-               },
-               function (err) {
-                  console.log('failed to subscribe to topic', err);
-               }
-            );
-
-
-            // PUBLISH an event every second
-            //
-            t1 = setInterval(function () {
-
-               session.publish('io.github.si618.pi-time.onhello', ['Hello from JavaScript (browser)']);
-               console.log("published to topic 'io.github.si618.pi-time.onhello'");
-            }, 1000);
-
-
-            // REGISTER a procedure for remote calling
-            //
-            function mul2 (args) {
-               var x = args[0];
-               var y = args[1];
-               console.log("mul2() called with " + x + " and " + y);
-               return x * y;
-            }
-            session.register('io.github.si618.pi-time.mul2', mul2).then(
-               function (reg) {
-                  console.log('procedure registered');
-               },
-               function (err) {
-                  console.log('failed to register procedure', err);
-               }
-            );
-
-
-            // CALL a remote procedure every second
-            //
-            var x = 0;
-
-            t2 = setInterval(function () {
-
-               session.call('io.github.si618.pi-time.add2', [x, 18]).then(
-                  function (res) {
-                     console.log("add2() result:", res);
-                  },
-                  function (err) {
-                     console.log("add2() error:", err);
-                  }
-               );
-
-               x += 3;
-            }, 1000);
-         };
-
-
-         // fired when connection was lost (or could not be established)
-         //
-         connection.onclose = function (reason, details) {
-            console.log("Connection lost: " + reason);
-            if (t1) {
-               clearInterval(t1);
-               t1 = null;
-            }
-            if (t2) {
-               clearInterval(t2);
-               t2 = null;
-            }
-         }
-
-
-         // now actually open the connection
-         //
-         connection.open();
-
-      </script>
-   </body>
 </html>

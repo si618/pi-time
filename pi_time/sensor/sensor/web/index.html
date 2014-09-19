@@ -2,13 +2,10 @@
 <html>
 
 <head>
-    <meta name=viewport content="width=device-width, initial-scale=0.8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Pi-time sensor</title>
-    <script>
-    AUTOBAHN_DEBUG = true;
-    </script>
     <link rel='Stylesheet' href='styles/pi-time-sensor.css'>
     <script src='scripts/lib.js'></script>
 </head>
@@ -26,24 +23,17 @@
         <div data-bind='with: status, visible: $root.selectedTabId() == "Status"'>
             <div class='main'>
                 <div class='ledColumn'>
-                    <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
-                    <div data-bind="css: trigger() ? 'led green' : 'led gray'"></div>
-                    <div data-bind="css: triggered() ? 'led yellow' : 'led gray'"></div>
-                </div>
-                <div class='ledTextColumn'>
-                    <div class='label' data-bind='text: sensorLabel()'></div>
-                    <div class='label' data-bind='text: triggerLabel()'></div>
-                    <div class='label' data-bind='text: triggeredLabel()'></div>
-                </div>
-                <div class='spacer'></div>
-                <div class='ledColumn'>
                     <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
+                    <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
                     <div data-bind="css: heartbeat() ? 'led red' : 'led gray'"></div>
+                    <div data-bind="css: triggered() ? 'led yellow' : 'led gray'"></div>
                     <div data-bind="css: lap() ? 'led blue' : 'led gray'"></div>
                 </div>
                 <div class='ledTextColumn'>
                     <div class='label' data-bind='text: laptimerLabel()'></div>
+                    <div class='label' data-bind='text: sensorLabel()'></div>
                     <div class='label' data-bind='text: heartbeatLabel()'></div>
+                    <div class='label' data-bind='text: triggeredLabel()'></div>
                     <div class='label' data-bind='text: lapLabel()'></div>
                 </div>
             </div>
@@ -53,11 +43,7 @@
         </div>
 
         <div data-bind='with: events, visible: $root.selectedTabId() == "Events"'>
-            <div class='output' data-bind='html: events.events'></div>
-        </div>
-
-        <div data-bind='with: logs, visible: $root.selectedTabId() == "Log"'>
-            <div id='log' class='output'></div>
+            <div class='output' data-bind='html: events' id='log'></div>
         </div>
 
         <div data-bind='with: access, visible: $root.selectedTabId() == "Access"'>

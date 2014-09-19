@@ -10,7 +10,7 @@ body {
     color: #f0e7d5;
 }
 #page-wrap {
-    width: 440px;
+    width: 360px;
     margin: 0 auto;
 }
 .tabs {
@@ -21,6 +21,12 @@ body {
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e6e6e6), color-stop(0.5, #d0d0d0), color-stop(1, #a4a4a4));
     margin: 10px 16px 16px 0;
     font-size: 0px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .tabs li:hover {
     background-color: #ddd;
@@ -67,15 +73,12 @@ body {
 }
 .main {
     display: block;
-    margin: 32px;
+    margin: 24px;
 }
 .label {
     padding-top: 4px;
     height: 32px;
     cursor: default;
-}
-.spacer {
-    height: 16px;
 }
 .output {
     font-family: 'Courier New', Courier, monospace;
@@ -109,7 +112,7 @@ body {
     color: #004ab3;
 }
 .led.gray {
-    color: #282828;
+    color: #080808;
 }
 .ledColumn {
     float: left;

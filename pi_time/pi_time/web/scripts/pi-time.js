@@ -1,4 +1,6 @@
-// Pi-time scripts shared between laptimer and sensor
+// Pi-time general scripts shared between laptimer and sensor apps
+
+AUTOBAHN_DEBUG = true;
 
 // Subvert console log to output to div in window as well as console
 if (typeof console != 'undefined') {
@@ -9,6 +11,8 @@ if (typeof console != 'undefined') {
     }
 }
 console.log = function(message) {
+    // Always uppercase first character for consistency
+    message = message.charAt(0).toUpperCase() + message.slice(1);
     console._log(message);
     log = $('#log');
     log.text(log.text() + '[' + getLocalTime() + '] ' + message + '\n');
@@ -48,8 +52,6 @@ function parseJson(json) {
     return JSON && JSON.parse(json) || $.parseJSON(json);
 }
 
-prefix = 'pi-time.';
-
 function printError(error) {
     msg = error.error;
     if (error.args.length > 0) {
@@ -58,9 +60,11 @@ function printError(error) {
     return msg;
 }
 
+URI_PREFIX = 'pi-time.';
+
 // Helper function to subscribe to an autobahn event
 function sessionSubscribe(session, name, method, success, failure) {
-    session.subscribe(prefix + name, method).then(
+    session.subscribe(URI_PREFIX + name, method).then(
         function(sub) {
             console.log("Subscribed to '" + name + "'");
             if (success !== undefined) {
@@ -80,7 +84,7 @@ function sessionSubscribe(session, name, method, success, failure) {
 // Helper function to invoke to an autobahn rpc call
 function sessionCall(session, method, params, success, failure) {
     console.log("Request '" + method + "'");
-    session.call(prefix + method, params).then(
+    session.call(URI_PREFIX + method, params).then(
         function(res) {
             console.log("Response '" + method + "' (ok)");
             if (success !== undefined) {

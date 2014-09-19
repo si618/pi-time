@@ -1,20 +1,6 @@
-// Sesnor specific crossbar code
+// Sensor specific crossbar code
 
-// URL of WAMP Router (Crossbar.io)
-var wsuri;
-if (document.location.origin == 'file://') {
-    wsuri = 'ws://127.0.0.1:8888/ws';
-
-} else {
-    wsuri = (document.location.protocol === 'http:' ? 'ws:' : 'wss:') + '//' +
-        document.location.host + '/ws';
-}
-
-// WAMP connection to Router
-var connection = new autobahn.Connection({
-    url: wsuri,
-    realm: 'pi-time'
-});
+var connection = getConnection();
 
 // Fired when connection is established and session attached
 connection.onopen = function(session, details) {
@@ -49,12 +35,12 @@ connection.onopen = function(session, details) {
         console.log('TODO: Update sensor config view model...');
     }
     sessionCall(session, 'get_sensor_config', [], sensor_config);
-    sensorVM.status.sensor(true);
+    mainVM.status.sensor(true);
 };
 
 connection.onclose = function(reason, details) {
-    sensorVM.status.sensor(false);
-    console.log('Connection to sensor closed: ' + reason);
+    mainVM.status.sensor(false);
+    console.log('Connection to sensor closed (' + reason + ')');
 };
 
 connection.open();
