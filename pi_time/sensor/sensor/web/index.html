@@ -43,6 +43,26 @@
         </div>
 
         <div data-bind='with: settings, visible: $root.selectedTabId() == "Settings"'>
+            <div class='main'>
+                <div id="settingsTabs">
+                    <ul>
+                        <li><a href="#LaptimerSettings">Laptimer</a>
+                        </li>
+                        <li><a href="#SensorSettings">Sensor</a>
+                        </li>
+                    </ul>
+                    <div id="laptimerSettings">
+                        <div class='settingLabel'>
+                            <div class='label' data-bind='text: urlLabel()'></div>
+                        </div>
+                        <div class='settingValue'>
+                            <div class='label' data-bind='text: laptimerUrl()'></div>
+                        </div>
+                    </div>
+                    <div id="laptimerSettings">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div data-bind='with: events, visible: $root.selectedTabId() == "Events"'>

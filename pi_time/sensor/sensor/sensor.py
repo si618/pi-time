@@ -36,13 +36,7 @@ class SensorAppSession(ApplicationSession):
             laptimer_disconnected,
             settings.URI_PREFIX + 'laptimer_disconnected')
 
-        """
-        reg_options = yield self.register(api.get_sensor_options,
-            settings.URI_PREFIX + 'get_sensor_options')
-        reg_config = yield self.register(api.get_sensor_config,
-            settings.URI_PREFIX + 'get_sensor_config')
-        """
+        self.register(api.sensor_started,
+            settings.URI_PREFIX + 'sensor_started');
 
         log.msg('Pi-time sensor v{} ready'.format(pi_time.VERSION))
-        # TODO: How to support multiple sensors on single hardware?
-        yield self.publish(settings.URI_PREFIX + 'start_sensor')

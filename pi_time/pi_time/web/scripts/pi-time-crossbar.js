@@ -40,7 +40,7 @@ function sessionCall(session, method, params, success, failure) {
     );
 }
 
-getConnection = function() {
+function getConnection() {
     // URL of WAMP Router (Crossbar.io)
     protocol = document.location.protocol === 'http:' ? 'ws:' : 'wss:';
     wsuri = protocol + '//' + document.location.host + '/ws';
@@ -50,4 +50,4 @@ getConnection = function() {
         realm: 'pi-time'
     });
     return connection;
-};
+}

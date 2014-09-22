@@ -7,8 +7,8 @@ function StatusViewModel() {
     self.triggered = ko.observable(false);
     self.lap = ko.observable(false);
 
-    self.sensorLabel    = ko.observable('Connected to sensor');
-    self.laptimerLabel  = ko.observable('Connected to laptimer');
+    self.sensorLabel = ko.observable('Connected to sensor');
+    self.laptimerLabel = ko.observable('Connected to laptimer');
     self.heartbeatLabel = ko.observable('Laptimer heartbeat');
     self.triggeredLabel = ko.observable('Sensor triggered');
     self.lapLabel = ko.observable('Active lap');
@@ -20,8 +20,20 @@ function EventsViewModel() {
 }
 
 function SettingsViewModel() {
-    // Data
     var self = this;
+
+    self.nameLabel = ko.observable('Name');
+    self.urlLabel = ko.observable('Address');
+    self.hardwareLabel = ko.observable('Hardware');
+    self.locationLabel = ko.observable('Location');
+
+    self.laptimerName = ko.observable();
+    self.laptimerUrl = ko.observable();
+    self.sensorName = ko.observable();
+    self.sensorUrl = ko.observable();
+    self.hardware = ko.observable();
+    self.location = ko.observable();
+
 
     // Behaviours
 }

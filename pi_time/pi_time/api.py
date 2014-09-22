@@ -48,34 +48,28 @@ class Api(object):
         log.msg('Pi-time API v{} ready'.format(pi_time.API_VERSION))
 
     @api_method(publish='laptimer_started')
-    def start_laptimer(self):
-        laptimer = [
-            options.get_laptimer_options(),
-            self.config['laptimer'],
-            options.get_sensor_options(),
-            self.config['sensors']]
-        return laptimer
+    def laptimer_started(self):
+        details = [
+            ('laptimer_options', options.get_laptimer_options()),
+            ('laptimer_config', self.config['laptimer']),
+            ('sensor_options', options.get_sensor_options()),
+            ('sensor_config', self.config['sensors'])
+        ]
+        return details
 
     @api_method(publish='sensor_started')
-    def start_sensor(self):
-        laptimer = [
-            self.config['laptimer'],
-            options.get_sensor_options(),
-            self.config['sensors']]
-        return laptimer
+    def sensor_started(self):
+        details = [
+            ('laptimer_config', self.config['laptimer']),
+            ('sensor_options', options.get_sensor_options()),
+            ('sensor_config', self.config['sensors'])
+        ]
+        return details
 
     """
     @api_method
-    def get_laptimer_options(self):
-        return options.get_laptimer_options()
-
-    @api_method
     def get_laptimer_config(self):
         return self.config['laptimer']
-
-    @api_method
-    def get_sensor_options(self):
-        return options.get_sensor_options()
 
     @api_method
     def get_sensor_config(self):

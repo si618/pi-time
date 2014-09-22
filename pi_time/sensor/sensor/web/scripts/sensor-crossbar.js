@@ -36,7 +36,11 @@ connection.onopen = function(session, details) {
     }
     sessionSubscribe(session, 'laptimer_heartbeat', laptimer_heartbeat);
 
-    mainVM.status.sensor(true);
+    function sensor_started(result) {
+        mainVM.status.sensor(true);
+        // TODO: Wire up settings options and sensor config
+    }
+    sessionCall(session, 'sensor_started', null, sensor_started);
 };
 
 connection.onclose = function(reason, details) {

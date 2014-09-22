@@ -1,6 +1,6 @@
 """Hardcoded settings and options."""
 
-URI_PREFIX = 'pi-time.'
+URI_PREFIX = u'pi-time.'
 
 PLAYA_RIDE = 'RIDE'
 PLAYA_RUN = 'RUN'

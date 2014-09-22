@@ -11,6 +11,11 @@ connection.onopen = function(session, details) {
     }
     sessionSubscribe(session, 'laptimer_changed', laptimer_changed);
 
+    function sensor_started(details) {
+        console.log('TODO: [sensor_started] Update sensor config view model...');
+    }
+    sessionSubscribe(session, 'sensor_started', sensor_started);
+
     function sensor_changed(details) {
         console.log('TODO: [sensor_changed]');
     }
@@ -28,14 +33,11 @@ connection.onopen = function(session, details) {
     }
     sessionSubscribe(session, 'sensor_connected', sensor_connected);
 
-    function sensor_disconnected(details) {
-        // TODO: Support multiple sensors
-        // mainVM.admin.status.sensor(false);
-        console.log('TODO: [sensor_disconnected]' + details);
-    }
-    sessionSubscribe(session, 'sensor_disconnected', sensor_disconnected);
-
-    mainVM.admin.status.laptimer(true);
+    sessionCall(session, 'laptimer_started').then(
+        function laptimer_started(result) {
+            mainVM.admin.status.laptimer(true);
+        }
+    );
 };
 
 connection.onclose = function(reason, details) {
