@@ -1,51 +1,62 @@
 // Sensor specific crossbar code
 
-var connection = getConnection();
+function openLaptimerConnection(details) {
+    var laptimerConnection = getConnection(details.url);
 
-// Fired when connection is established and session attached
-connection.onopen = function(session, details) {
+    laptimerConnection.onopen = function(session, detalis) {
+        console.log('Connection to laptimer opened');
+
+        function laptimer_started(details) {
+            console.log('[laptimer_started]');
+            mainVM.status.laptimer(true);
+        }
+        sessionSubscribe(session, 'laptimer_started', laptimer_started);
+
+        function laptimer_stopped(details) {
+            console.log('[laptimer_stopped]');
+            mainVM.status.laptimer(false);
+        }
+        sessionSubscribe(session, 'laptimer_stopped', laptimer_stopped);
+
+        function laptimer_changed(details) {
+            console.log('[laptimer_changed] Update laptimer settings');
+        }
+        sessionSubscribe(session, 'laptimer_changed', laptimer_changed);
+
+        mainVM.status.laptimer(true);
+    };
+
+    laptimerConnection.onclose = function(reason, details) {
+        mainVM.status.laptimer(false);
+        console.log('Connection to laptimer closed (' + reason + ')');
+    };
+
+    laptimerConnection.open();
+}
+
+var sensorConnection = getConnection();
+
+sensorConnection.onopen = function(session, details) {
     console.log('Connection to sensor opened');
 
     function sensor_changed(details) {
-        console.log('TODO: [sensor_changed] Update sensor config view model...');
+        console.log('[sensor_changed] Update sensor settings');
     }
     sessionSubscribe(session, 'sensor_changed', sensor_changed);
 
     function sensor_event(details) {
-        console.log('TODO: [sensor_event] Update sensor event view model...');
+        console.log('[sensor_event] Update sensor events');
     }
     sessionSubscribe(session, 'sensor_event', sensor_event);
 
-    function laptimer_connected(details) {
-        mainVM.status.laptimer(true);
-    }
-    sessionSubscribe(session, 'laptimer_connected', laptimer_connected);
+    mainVM.status.sensor(true);
 
-    function laptimer_disconnected(details) {
-        mainVM.status.laptimer(false);
-    }
-    sessionSubscribe(session, 'laptimer_disconnected', laptimer_disconnected);
-
-    function laptimer_changed(details) {
-        console.log('TODO: [laptimer_changed]');
-    }
-    sessionSubscribe(session, 'laptimer_changed', laptimer_changed);
-
-    function laptimer_heartbeat(details) {
-        console.log('TODO: [laptimer_heartbeat]');
-    }
-    sessionSubscribe(session, 'laptimer_heartbeat', laptimer_heartbeat);
-
-    function sensor_started(result) {
-        mainVM.status.sensor(true);
-        // TODO: Wire up settings options and sensor config
-    }
-    sessionCall(session, 'sensor_started', null, sensor_started);
+    sessionCall(session, 'get_laptimer_config', null, openLaptimerConnection);
 };
 
-connection.onclose = function(reason, details) {
+sensorConnection.onclose = function(reason, details) {
     mainVM.status.sensor(false);
     console.log('Connection to sensor closed (' + reason + ')');
 };
 
-connection.open();
+sensorConnection.open();

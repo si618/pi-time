@@ -1,5 +1,29 @@
 {
-    "controller": {},
+    "controller": {
+        "id": "pi-time-laptimer-node",
+        "realm": "pi-time-management",
+        "transport": {
+            "type": "websocket",
+            "endpoint": {
+                "type": "tcp",
+                "port": 9000
+            },
+            "options": {
+                "compression": {
+                    "deflate": {
+                        "request_no_context_takeover": false,
+                        "request_max_window_bits": 11,
+                        "no_context_takeover": false,
+                        "max_window_bits": 11,
+                        "memory_level": 4
+                    }
+                }
+            }
+        },
+        "options": {
+            "title": "pi-time-controller"
+        }
+    },
     "workers": [{
         "type": "router",
         "options": {
@@ -56,8 +80,8 @@
         },
         "components": [{
             "type": "class",
-            "classname": "laptimer.laptimer.LaptimerAppSession",
             "realm": "pi-time",
+            "classname": "laptimer.laptimer.LaptimerAppSession",
             "transport": {
                 "type": "websocket",
                 "endpoint": {
@@ -65,7 +89,18 @@
                     "host": "127.0.0.1",
                     "port": 8080
                 },
-                "url": "ws://127.0.0.1:8080/ws"
+                "url": "ws://127.0.0.1:8080/ws",
+                "options": {
+                    "compression": {
+                        "deflate": {
+                            "request_no_context_takeover": false,
+                            "request_max_window_bits": 11,
+                            "no_context_takeover": false,
+                            "max_window_bits": 11,
+                            "memory_level": 4
+                        }
+                    }
+                }
             }
         }]
     }, {
@@ -75,8 +110,8 @@
         },
         "components": [{
             "type": "class",
-            "classname": "sensor.sensor.SensorAppSession",
             "realm": "pi-time",
+            "classname": "sensor.sensor.SensorAppSession",
             "transport": {
                 "type": "websocket",
                 "endpoint": {
@@ -84,7 +119,18 @@
                     "host": "127.0.0.1",
                     "port": 8888
                 },
-                "url": "ws://127.0.0.1:8888/ws"
+                "url": "ws://127.0.0.1:8888/ws",
+                "options": {
+                    "compression": {
+                        "deflate": {
+                            "request_no_context_takeover": false,
+                            "request_max_window_bits": 11,
+                            "no_context_takeover": false,
+                            "max_window_bits": 11,
+                            "memory_level": 4
+                        }
+                    }
+                }
             }
         }]
     }]

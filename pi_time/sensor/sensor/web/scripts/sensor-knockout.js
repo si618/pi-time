@@ -1,15 +1,13 @@
 function StatusViewModel() {
     var self = this;
 
-    self.sensor = ko.observable(false);
     self.laptimer = ko.observable(false);
-    self.heartbeat = ko.observable(false);
+    self.sensor = ko.observable(false);
     self.triggered = ko.observable(false);
     self.lap = ko.observable(false);
 
-    self.sensorLabel = ko.observable('Connected to sensor');
     self.laptimerLabel = ko.observable('Connected to laptimer');
-    self.heartbeatLabel = ko.observable('Laptimer heartbeat');
+    self.sensorLabel = ko.observable('Connected to sensor');
     self.triggeredLabel = ko.observable('Sensor triggered');
     self.lapLabel = ko.observable('Active lap');
 }
@@ -34,8 +32,20 @@ function SettingsViewModel() {
     self.hardware = ko.observable();
     self.location = ko.observable();
 
+/*
+    // Tab data
+    self.tabs = ['Sensor', 'Laptimer'];
+    self.selectedTabId = ko.observable();
+    self.selectedTabData = ko.observable();
 
     // Behaviours
+    // Client-side routes
+    Sammy(function() {
+        this.get('#:tab', function() {
+            self.selectedTabId(this.params.tab);
+        });
+    }).run();
+*/
 }
 
 function AccessViewModel() {

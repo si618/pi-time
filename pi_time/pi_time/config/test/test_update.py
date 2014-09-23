@@ -23,7 +23,6 @@ class UpdateTestCase(unittest.TestCase):
         '       "hardware": "RPI_REV2",' \
         '       "location": "START_FINISH",' \
         '       "pinLedApp": 13,' \
-        '       "pinLedHeartbeat": 15,' \
         '       "pinLedLap": 16,' \
         '       "pinLedEvent": 18,' \
         '       "pinEvent": 22' \

@@ -21,22 +21,33 @@ class SensorAppSession(ApplicationSession):
         config_dir = path.dirname(path.dirname(path.realpath(__file__)))
         config_file = path.join(config_dir, 'config.json')
 
-        api = Api(session=self, config_file=config_file)
+        self.api = Api(session=self, config_file=config_file)
 
-        def laptimer_connected(msg):
-            yield self.publish(settings.URI_PREFIX + 'laptimer_connected',
-                msg)
-        sub_laptimer_connected = yield self.subscribe(
-            laptimer_connected,
-            settings.URI_PREFIX + 'laptimer_connected')
-        def laptimer_disconnected(msg):
-            yield self.publish(settings.URI_PREFIX + 'laptimer_disconnected',
-                msg)
-        sub_laptimer_disconnected = yield self.subscribe(
-            laptimer_disconnected,
-            settings.URI_PREFIX + 'laptimer_disconnected')
+        # Methods to publish events from sensor node to sensor clients
+        #def sensor_event(msg):
+        #    # Let sensor clients know a sensor event was triggered
+        #    yield self.publish(settings.URI_PREFIX + 'sensor_event', msg)
 
-        self.register(api.sensor_started,
-            settings.URI_PREFIX + 'sensor_started');
+        # Subscribe to events from laptimer or sensor clients
+        #yield self.subscribe(sensor_event,
+        #    settings.URI_PREFIX + 'sensor_event')
+
+        # Register procedures available from sensor clients
+        def _register(method, uri):
+            self.register(method, settings.URI_PREFIX + uri);
+        # TODO: How to avoid ApplicationError.PROCEDURE_ALREADY_EXISTS?
+        _register(self.api.get_laptimer_config, 'get_laptimer_config')
+        _register(self.api.get_sensor_options, 'get_sensor_options')
+        _register(self.api.get_sensor_config, 'get_sensor_config')
 
         log.msg('Pi-time sensor v{} ready'.format(pi_time.VERSION))
+
+        # Broadcast to laptimer session that this sensor session started
+        yield self.publish(settings.URI_PREFIX + 'sensor_started',
+            str(details))
+
+    @inlineCallbacks
+    def onLeave(self, details):
+
+        # Broadcast to laptimer session that this sensor session stopped
+        self.publish(settings.URI_PREFIX + 'sensor_stopped', str(details))

@@ -173,7 +173,7 @@ class CheckTestCase(unittest.TestCase):
 
     def test_check_sensor_pin_raises_exception_when_pin_is_invalid_type(self):
         # Arrange
-        pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
+        pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"%s": "bogus"}' % pin)
         # Act
         with self.assertRaises(Exception) as context:
@@ -184,7 +184,7 @@ class CheckTestCase(unittest.TestCase):
 
     def test_check_sensor_pin_raises_exception_when_hardware_is_missing(self):
         # Arrange
-        pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
+        pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"%s": 22}' % pin)
         # Act
         with self.assertRaises(Exception) as context:
@@ -197,21 +197,21 @@ class CheckTestCase(unittest.TestCase):
     def test_check_sensor_pin_raises_exception_when_pin_is_invalid(self):
         # Arrange
         hardware = settings.HARDWARE_RPI_REV1
-        pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
+        pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"hardware": "%s", "%s": 40}' % (hardware, pin))
         # Act
         with self.assertRaises(Exception) as context:
             check.check_sensor_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
-            "'pinLedHeartbeat' in sensor configuration invalid for 'RPI_REV1' " \
+            "'pinLedApp' in sensor configuration invalid for 'RPI_REV1' " \
             "hardware, must be (3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, " \
             "21, 22, 23, 24, 26), but got 40")
 
     def test_check_sensor_pin_passes_with_test_hardware(self):
         # Arrange
         hardware = settings.HARDWARE_TEST
-        pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
+        pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"hardware": "%s","%s": 40}' % (hardware, pin))
         # Act & Assert
         check.check_sensor_pin(sensor, pin)
@@ -219,7 +219,7 @@ class CheckTestCase(unittest.TestCase):
     def test_check_sensor_pin_passes_when_hardware_and_pin_are_valid(self):
         # Arrange
         hardware = settings.HARDWARE_RPI_BPLUS
-        pin = settings.SENSOR_PIN_LED_HEARTBEAT[0]
+        pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"hardware": "%s","%s": 40}' % (hardware, pin))
         # Act & Assert
         check.check_sensor_pin(sensor, pin)
@@ -311,7 +311,6 @@ class CheckTestCase(unittest.TestCase):
         '       "location": "START_FINISH",' \
         '       "hardware": "RPI_REV2",' \
         '       "pinLedApp": 13,' \
-        '       "pinLedHeartbeat": 15,' \
         '       "pinLedLap": 16,' \
         '       "pinLedEvent": 18,' \
         '       "pinEvent": 22' \

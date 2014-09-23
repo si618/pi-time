@@ -1,5 +1,8 @@
 """Hardcoded settings and options."""
 
+# Crossbar node for laptimer, details in .crossbar/config.json
+LAPTIMER_NODE = u'pi-time-laptimer-node'
+# URI prefix for PUBSUB and RPC
 URI_PREFIX = u'pi-time.'
 
 PLAYA_RIDE = 'RIDE'

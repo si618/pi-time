@@ -21,7 +21,6 @@ class ApiTestCase(unittest.TestCase):
         '       "location": "START_FINISH",' \
         '       "hardware": "RPI_REV2",' \
         '       "pinLedApp": 13,' \
-        '       "pinLedHeartbeat": 15,' \
         '       "pinLedLap": 16,' \
         '       "pinLedEvent": 18,' \
         '       "pinEvent": 22' \

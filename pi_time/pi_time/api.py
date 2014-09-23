@@ -40,41 +40,28 @@ def api_method(wrapped=None, publish=None):
 
 class Api(object):
 
-    def __init__(self, session, config_file):
+    def __init__(self, session, config_file):       
         self.session = session
         self.config = check.check_config_file(config_file)
         self.config_file = config_file
 
         log.msg('Pi-time API v{} ready'.format(pi_time.API_VERSION))
 
-    @api_method(publish='laptimer_started')
-    def laptimer_started(self):
-        details = [
-            ('laptimer_options', options.get_laptimer_options()),
-            ('laptimer_config', self.config['laptimer']),
-            ('sensor_options', options.get_sensor_options()),
-            ('sensor_config', self.config['sensors'])
-        ]
-        return details
+    @api_method
+    def get_laptimer_options(self):
+        return options.get_laptimer_options()
 
-    @api_method(publish='sensor_started')
-    def sensor_started(self):
-        details = [
-            ('laptimer_config', self.config['laptimer']),
-            ('sensor_options', options.get_sensor_options()),
-            ('sensor_config', self.config['sensors'])
-        ]
-        return details
-
-    """
     @api_method
     def get_laptimer_config(self):
         return self.config['laptimer']
 
     @api_method
+    def get_sensor_options(self):
+        return options.get_sensor_options()
+
+    @api_method
     def get_sensor_config(self):
         return self.config['sensors']
-    """
 
     @api_method(publish='laptimer_changed')
     def update_laptimer(self, laptimer):

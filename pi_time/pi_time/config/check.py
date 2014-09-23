@@ -156,9 +156,8 @@ def check_sensor(sensor):
 
     for key in sensor:
         if key not in ['name', 'url', 'hardware', 'location', 'position',
-        settings.PIN_LED_APP[0], settings.SENSOR_PIN_LED_HEARTBEAT[0],
-        settings.SENSOR_PIN_LED_LAP[0], settings.SENSOR_PIN_LED_EVENT[0],
-        settings.SENSOR_PIN_EVENT[0]]:
+        settings.PIN_LED_APP[0], settings.SENSOR_PIN_LED_LAP[0], 
+        settings.SENSOR_PIN_LED_EVENT[0], settings.SENSOR_PIN_EVENT[0]]:
             raise ValueError("Unknown attribute '{}' in sensor configuration" \
                 .format(key))
 
@@ -168,7 +167,6 @@ def check_sensor(sensor):
     check_sensor_location(sensor)
     check_sensor_position(sensor)
     check_sensor_pin(sensor, settings.PIN_LED_APP[0])
-    check_sensor_pin(sensor, settings.SENSOR_PIN_LED_HEARTBEAT[0])
     check_sensor_pin(sensor, settings.SENSOR_PIN_LED_LAP[0])
     check_sensor_pin(sensor, settings.SENSOR_PIN_LED_EVENT[0])
     check_sensor_pin(sensor, settings.SENSOR_PIN_EVENT[0])
