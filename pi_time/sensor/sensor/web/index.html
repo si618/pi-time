@@ -26,10 +26,10 @@
         <div data-bind='with: status, visible: $root.selectedTabId() == "Status"'>
             <div class='main'>
                 <div class='ledColumn'>
-                    <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
-                    <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
+                    <div data-bind="css: laptimer() ? 'led blue' : 'led gray'"></div>
+                    <div data-bind="css: sensor() ? 'led blue' : 'led gray'"></div>
                     <div data-bind="css: triggered() ? 'led yellow' : 'led gray'"></div>
-                    <div data-bind="css: lap() ? 'led blue' : 'led gray'"></div>
+                    <div data-bind="css: lap() ? 'led green' : 'led gray'"></div>
                 </div>
                 <div class='ledTextColumn'>
                     <div class='label' data-bind='text: laptimerLabel()'></div>

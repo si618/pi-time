@@ -42,12 +42,12 @@ class SensorAppSession(ApplicationSession):
 
         log.msg('Pi-time sensor v{} ready'.format(pi_time.VERSION))
 
-        # Broadcast to laptimer session that this sensor session started
         yield self.publish(settings.URI_PREFIX + 'sensor_started',
             str(details))
+        yield self.publish(settings.URI_PREFIX + 'sensor_triggered',
+            'TODO: Testing')
 
     @inlineCallbacks
     def onLeave(self, details):
 
-        # Broadcast to laptimer session that this sensor session stopped
         self.publish(settings.URI_PREFIX + 'sensor_stopped', str(details))

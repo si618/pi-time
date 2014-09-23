@@ -37,12 +37,12 @@ function StatusViewModel() {
     var self = this;
 
     self.laptimer = ko.observable(false);
-    //self.sensor = ko.observable(false); TODO: Array of sensors
+    self.sensors = ko.observableArray();
     self.lap = ko.observable(false);
 
     self.laptimerLabel  = ko.observable('Connected to laptimer');
-    //self.sensorLabel    = ko.observable('Connected to sensor'); TODO: Array of sensors
-    //self.triggeredLabel = ko.observable('Sensor triggered'); TODO: Array of sensors
+    self.sensorLabel    = ko.observableArray();
+    self.triggeredLabel = ko.observableArray();
     self.lapLabel = ko.observable('Active lap');
 }
 
