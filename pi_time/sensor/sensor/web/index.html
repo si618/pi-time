@@ -18,7 +18,7 @@
         <div id='menu'>
             <ul class='tabs' data-bind='foreach: tabs'>
                 <li data-bind='text: $root.getTabName($data),
-                               css: { selected: $data == $root.selectedTabId() },
+                               css: { selected: $root.selectedTabId().lastIndexOf($data, 0) === 0 },
                                click: $root.goToTab'></li>
             </ul>
         </div>
@@ -26,10 +26,10 @@
         <div data-bind='with: status, visible: $root.selectedTabId() == "Status"'>
             <div class='main'>
                 <div class='ledColumn'>
-                    <div data-bind="css: laptimer() ? 'led red' : 'led gray'"></div>
-                    <div data-bind="css: sensor() ? 'led red' : 'led gray'"></div>
+                    <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
+                    <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
                     <div data-bind="css: triggered() ? 'led blue' : 'led gray'"></div>
-                    <div data-bind="css: lap() ? 'led green' : 'led gray'"></div>
+                    <div data-bind="css: lap() ? 'led red' : 'led gray'"></div>
                 </div>
                 <div class='ledTextColumn'>
                     <div class='label' data-bind='text: laptimerLabel()'></div>
@@ -40,24 +40,38 @@
             </div>
         </div>
 
-        <div data-bind='with: settings, visible: $root.selectedTabId() == "Settings"'>
+        <div data-bind='with: settings, 
+                        visible: $root.selectedTabId().lastIndexOf("Settings", 0) === 0'>
+            <div>
+                <ul class='tabs' data-bind='foreach: tabs'>
+                    <li data-bind='text: $root.getTabName($data),
+                                   css: { selected: $data == $root.selectedTabId() },
+                                   click: $root.goToTab'></li>
+                </ul>
+            </div>
             <div class='main'>
-                <div id="settingsTabs">
-                    <ul>
-                        <li><a href="#LaptimerSettings">Laptimer</a>
-                        </li>
-                        <li><a href="#SensorSettings">Sensor</a>
-                        </li>
-                    </ul>
-                    <div id="LaptimerSettings">
-                        <div class='settingLabel'>
-                            <div class='label' data-bind='text: urlLabel()'></div>
-                        </div>
-                        <div class='settingValue'>
-                            <div class='label' data-bind='text: laptimerUrl()'></div>
-                        </div>
+                <div data-bind='visible: $root.selectedTabId() == "Settings-Laptimer"'>
+                    <div class='settingsLabelColumn'>
+                        <div class='label' data-bind='text: nameLabel()'></div>
+                        <div class='label' data-bind='text: urlLabel()'></div>
                     </div>
-                    <div id="SensorSettings">
+                    <div class='settingsValueColumn'>
+                        <div class='label' data-bind='text: laptimerName()'></div>
+                        <div class='label' data-bind='text: laptimerUrl()'></div>
+                    </div>
+                </div>
+                <div data-bind='visible: $root.selectedTabId() == "Settings-Sensor"'>
+                    <div class='settingsLabelColumn'>
+                        <div class='label' data-bind='text: nameLabel()'></div>
+                        <div class='label' data-bind='text: urlLabel()'></div>
+                        <div class='label' data-bind='text: hardwareLabel()'></div>
+                        <div class='label' data-bind='text: locationLabel()'></div>
+                    </div>
+                    <div class='settingsValueColumn'>
+                        <div class='label' data-bind='text: sensorName()'></div>
+                        <div class='label' data-bind='text: sensorUrl()'></div>
+                        <div class='label' data-bind='text: hardware()'></div>
+                        <div class='label' data-bind='text: location()'></div>
                     </div>
                 </div>
             </div>

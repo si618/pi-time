@@ -32,12 +32,7 @@ class LaptimerAppSession(ApplicationSession):
         #    settings.URI_PREFIX + 'player_changed')
 
         # Register procedures available from laptimer clients
-        def _register(method, uri):
-            self.register(method, settings.URI_PREFIX + uri);
-        # TODO: How to avoid ApplicationError.PROCEDURE_ALREADY_EXISTS?
-        _register(self.api.get_laptimer_options, 'get_laptimer_options')
-        _register(self.api.get_laptimer_config, 'get_laptimer_config')
-        _register(self.api.get_sensor_config, 'get_sensor_config')
+        yield self.register(self.api)
 
         log.msg('Pi-time laptimer v{} ready'.format(pi_time.VERSION))
 
@@ -49,4 +44,5 @@ class LaptimerAppSession(ApplicationSession):
     def onLeave(self, details):
 
         # Broadcast to all sensor sessions that laptimer session stopped
-        self.publish(settings.URI_PREFIX + 'laptimer_stopped', str(details))
+        yield self.publish(settings.URI_PREFIX + 'laptimer_stopped', 
+            str(details))

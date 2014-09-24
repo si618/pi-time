@@ -24,30 +24,24 @@ class SensorAppSession(ApplicationSession):
         self.api = Api(session=self, config_file=config_file)
 
         # Methods to publish events from sensor node to sensor clients
-        #def sensor_event(msg):
+        #def sensor_triggered(msg):
         #    # Let sensor clients know a sensor event was triggered
-        #    yield self.publish(settings.URI_PREFIX + 'sensor_event', msg)
+        #    yield self.publish(settings.URI_PREFIX + 'sensor_triggered', msg)
 
         # Subscribe to events from laptimer or sensor clients
-        #yield self.subscribe(sensor_event,
-        #    settings.URI_PREFIX + 'sensor_event')
+        #yield self.subscribe(sensor_triggered,
+        #    settings.URI_PREFIX + 'sensor_triggered')
 
         # Register procedures available from sensor clients
-        def _register(method, uri):
-            self.register(method, settings.URI_PREFIX + uri);
-        # TODO: How to avoid ApplicationError.PROCEDURE_ALREADY_EXISTS?
-        _register(self.api.get_laptimer_config, 'get_laptimer_config')
-        _register(self.api.get_sensor_options, 'get_sensor_options')
-        _register(self.api.get_sensor_config, 'get_sensor_config')
+        yield self.register(self.api)
 
         log.msg('Pi-time sensor v{} ready'.format(pi_time.VERSION))
 
         yield self.publish(settings.URI_PREFIX + 'sensor_started',
             str(details))
-        yield self.publish(settings.URI_PREFIX + 'sensor_triggered',
-            'TODO: Testing')
 
     @inlineCallbacks
     def onLeave(self, details):
 
-        self.publish(settings.URI_PREFIX + 'sensor_stopped', str(details))
+        yield self.publish(settings.URI_PREFIX + 'sensor_stopped', 
+            str(details))

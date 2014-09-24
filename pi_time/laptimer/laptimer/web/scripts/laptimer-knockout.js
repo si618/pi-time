@@ -122,3 +122,4 @@ function MainViewModel() {
 
 mainVM = new MainViewModel();
 ko.applyBindings(mainVM);
+startLaptimer(mainVM);

@@ -32,20 +32,10 @@ function SettingsViewModel() {
     self.hardware = ko.observable();
     self.location = ko.observable();
 
-/*
     // Tab data
-    self.tabs = ['Sensor', 'Laptimer'];
+    self.tabs = ['Settings-Laptimer', 'Settings-Sensor'];
     self.selectedTabId = ko.observable();
     self.selectedTabData = ko.observable();
-
-    // Behaviours
-    // Client-side routes
-    Sammy(function() {
-        this.get('#:tab', function() {
-            self.selectedTabId(this.params.tab);
-        });
-    }).run();
-*/
 }
 
 function AccessViewModel() {
@@ -86,7 +76,7 @@ function MainViewModel() {
         if (tab == 'Access') {
             return self.access.label();
         }
-        return tab;
+        return tab.substring(tab.lastIndexOf('-') + 1);
     };
 
     // Client-side routes
@@ -103,3 +93,4 @@ function MainViewModel() {
 
 mainVM = new MainViewModel();
 ko.applyBindings(mainVM);
+startSensor(mainVM);

@@ -1,88 +1,100 @@
 // Sensor specific crossbar code
 
-function startLaptimer(details) {
-    var connection = getConnection(details.url);
+function startSensor(vm) {
+    var sensor = getConnection();
 
-    connection.onopen = function(session, detalis) {
-        console.log('Connection to laptimer opened');
-
-        function laptimer_started(details) {
-            console.log('[laptimer_started]');
-            mainVM.status.laptimer(true);
-        }
-        sessionSubscribe(session, 'laptimer_started', laptimer_started);
-
-        function laptimer_stopped(details) {
-            console.log('[laptimer_stopped]');
-            mainVM.status.laptimer(false);
-        }
-        sessionSubscribe(session, 'laptimer_stopped', laptimer_stopped);
-
-        function laptimer_changed(details) {
-            console.log('[laptimer_changed] Update laptimer settings');
-        }
-        sessionSubscribe(session, 'laptimer_changed', laptimer_changed);
-
-        function lap_started(details) {
-            console.log('[lap_started]');
-            mainVM.status.lap(true);
-        }
-        sessionSubscribe(session, 'lap_started', lap_started);
-
-        function lap_finished(details) {
-            console.log('[lap_finished]');
-            mainVM.status.lap(false);
-        }
-        sessionSubscribe(session, 'lap_finished', lap_finished);
-
-        function lap_cancelled(details) {
-            console.log('[lap_cancelled]');
-            mainVM.status.lap(false);
-        }
-        sessionSubscribe(session, 'lap_cancelled', lap_cancelled);
-
-        mainVM.status.laptimer(true);
-    };
-
-    connection.onclose = function(reason, details) {
-        mainVM.status.laptimer(false);
-        console.log('Connection to laptimer closed (' + reason + ')');
-    };
-
-    connection.open();
-}
-
-function startSensor() {
-    var connection = getConnection();
-
-    connection.onopen = function(session, details) {
+    sensor.onopen = function(session, details) {
         console.log('Connection to sensor opened');
 
-        function sensor_changed(details) {
+        function sensorChanged(details) {
             console.log('[sensor_changed] Update sensor settings');
         }
-        sessionSubscribe(session, 'sensor_changed', sensor_changed);
+        sessionSubscribe(session, 'sensor_changed', sensorChanged);
 
-        function sensor_triggered(details) {
-            console.log('Event sensor_triggered (' + details +')');
-            mainVM.status.triggered(true);
+        function sensorTriggered(details) {
+            console.log('Event sensor_triggered (' + details + ')');
+            vm.status.triggered(true);
             setTimeout(function() {
-                mainVM.status.triggered(false);
+                vm.status.triggered(false);
             }, 1000);
         }
-        sessionSubscribe(session, 'sensor_triggered', sensor_triggered);
+        sessionSubscribe(session, 'sensor_triggered', sensorTriggered);
 
-        sessionCall(session, 'get_laptimer_config', null, startLaptimer);
+        function laptimerConfig(details) {
+            vm.settings.laptimerName(details.name);
+            vm.settings.laptimerUrl(details.url);
+            startLaptimer(details);
+        }
+        sessionCall(session, 'get_laptimer_config', null, laptimerConfig);
 
-        mainVM.status.sensor(true);
+        function sensorConfig(details) {
+            vm.settings.sensorName(details[0].name);
+            vm.settings.sensorUrl(details[0].url);
+            vm.settings.hardware(details[0].hardware);
+            vm.settings.location(details[0].location);
+        }
+        sessionCall(session, 'get_sensor_config', null, sensorConfig);
+
+        vm.status.sensor(true);
     };
 
-    connection.onclose = function(reason, details) {
-        mainVM.status.sensor(false);
+    sensor.onclose = function(reason, details) {
+        vm.status.sensor(false);
         console.log('Connection to sensor closed (' + reason + ')');
     };
 
-    connection.open();
-}
+    sensor.open();
 
-startSensor();
+    // Nested function to preserve scope allowing update of view model observables
+    function startLaptimer(details) {
+        var laptimer = getConnection(details.url);
+
+        laptimer.onopen = function(session, detalis) {
+            console.log('Connection to laptimer opened');
+
+            function laptimerStarted(details) {
+                console.log('[laptimer_started]');
+                vm.status.laptimer(true);
+            }
+            sessionSubscribe(session, 'laptimer_started', laptimerStarted);
+
+            function laptimerStopped(details) {
+                console.log('[laptimer_stopped]');
+                vm.status.laptimer(false);
+            }
+            sessionSubscribe(session, 'laptimer_stopped', laptimerStopped);
+
+            function laptimerChanged(details) {
+                console.log('[laptimer_changed] Update laptimer settings');
+            }
+            sessionSubscribe(session, 'laptimer_changed', laptimerChanged);
+
+            function lapStarted(details) {
+                console.log('[lap_started]');
+                vm.status.lap(true);
+            }
+            sessionSubscribe(session, 'lapStarted', lapStarted);
+
+            function lapFinished(details) {
+                console.log('[lap_finished]');
+                vm.status.lap(false);
+            }
+            sessionSubscribe(session, 'lap_finished', lapFinished);
+
+            function lapCancelled(details) {
+                console.log('[lap_cancelled]');
+                vm.status.lap(false);
+            }
+            sessionSubscribe(session, 'lap_cancelled', lapCancelled);
+
+            vm.status.laptimer(true);
+        };
+
+        laptimer.onclose = function(reason, details) {
+            vm.status.laptimer(false);
+            console.log('Connection to laptimer closed (' + reason + ')');
+        };
+
+        laptimer.open();
+    }
+}

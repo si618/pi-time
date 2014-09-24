@@ -1,27 +1,9 @@
 {
     "controller": {
         "id": "pi-time-laptimer-node",
-        "realm": "pi-time-management",
-        "transport": {
-            "type": "websocket",
-            "endpoint": {
-                "type": "tcp",
-                "port": 9000
-            },
-            "options": {
-                "compression": {
-                    "deflate": {
-                        "request_no_context_takeover": false,
-                        "request_max_window_bits": 11,
-                        "no_context_takeover": false,
-                        "max_window_bits": 11,
-                        "memory_level": 4
-                    }
-                }
-            }
-        },
+        "realm": "pi-time-laptimer-management",
         "options": {
-            "title": "pi-time-controller"
+            "title": "pi-time-laptimer-controller"
         }
     },
     "workers": [{
