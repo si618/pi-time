@@ -1,3 +1,5 @@
+// Knockout specific code for sensor web app
+
 function StatusViewModel() {
     var self = this;
 
@@ -36,21 +38,53 @@ function SettingsViewModel() {
     self.tabs = ['Settings-Laptimer', 'Settings-Sensor'];
     self.selectedTabId = ko.observable();
     self.selectedTabData = ko.observable();
+
+    // Behaviours
+    function todo(result) {
+        console.log('todo: ' + result);
+        sensor = details[0];
+        self.sensorName(sensor.name);
+        self.sensorUrl(sensor.url);
+        self.hardware(sensor.hardware);
+        self.location(sensor.location);
+    }
+    self.temp = function() {
+        rpc('get_sensor_config', todo);
+    };
 }
 
 function AccessViewModel() {
     var self = this;
+
     self.authenticated = ko.observable(false);
     self.role = ko.observable('anonymous');
+
+    // UI
+    self.secretLabel = ko.observable('Password');
+    self.secret = ko.observable();
+
+    // Tab label
     self.label = ko.pureComputed(function() {
         return self.authenticated() ? 'Logout' : 'Login';
     }, this);
 
     // Behaviours
+    function authenticated(result) {
+        console.log('authenticated: ' + result);
+    }
+    self.authenticate = function(tab) {
+        rpc('authenticate', authenticated, {
+            'params': [self.secret]
+        });
+    };
 }
 
 function MainViewModel() {
     var self = this;
+
+    // Autobahn websocket connections
+    var connection = null;
+    var laptimerConnection = null;
 
     // Nested view models
     self.status = new StatusViewModel();
@@ -91,6 +125,5 @@ function MainViewModel() {
     }).run();
 }
 
-mainVM = new MainViewModel();
-ko.applyBindings(mainVM);
-startSensor(mainVM);
+vm = new MainViewModel();
+ko.applyBindings(vm);

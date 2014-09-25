@@ -1,9 +1,9 @@
-// Pi-time crossbar scripts shared between laptimer and sensor
+// Pi-time autobahn scripts shared between laptimer and sensor
 
 URI_PREFIX = 'pi-time.';
 
 // Helper function to subscribe to an autobahn event
-function sessionSubscribe(session, name, method, success, failure) {
+function subscribe(session, name, method, success, failure) {
     session.subscribe(URI_PREFIX + name, method).then(
         function(sub) {
             console.log('Subscribed to ' + name);
@@ -21,25 +21,32 @@ function sessionSubscribe(session, name, method, success, failure) {
     );
 }
 
-// Helper function to invoke to an autobahn rpc call
-function sessionCall(session, method, params, success, failure) {
+// Helper function to invoke to an autobahn rpc call. Options are:
+//   session: Name of session, otherwise use default vm.connection.session
+//   params: RPC parameters, otherwise, pass none
+//   failure: Name of function to call if unsuccessfull
+function rpc(method, callback, options) {
+    var session = options.session ? options.session : vm.connection.session;
+    var params = options.params ? options.params : [];
+    if (session === null || !session.isOpen) {
+        console.log('Unable to call ' + method + ' (session closed)');
+    }
     console.log('Request ' + method);
     session.call(URI_PREFIX + method, params).then(
         function(res) {
             console.log('Response from ' + method + ' (ok)');
-            if (success !== undefined) {
-                success(res);
+            if (callback) {
+                callback(res);
             }
         },
         function(err) {
             console.log('Response from ' + method + ' (' + printError(err) + ')');
-            if (failure !== undefined) {
-                failure(err);
+            if (options.failure) {
+                options.failure(err);
             }
         }
     );
 }
-
 function getConnection(wsuri) {
     // URL of WAMP Router (Crossbar.io)
     if (wsuri === undefined) {

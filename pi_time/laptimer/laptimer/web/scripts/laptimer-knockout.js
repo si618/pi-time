@@ -1,3 +1,5 @@
+// Knockout specific code for laptimer web app
+
 function SessionViewModel() {
     // Data
     var self = this;
@@ -81,6 +83,10 @@ function AccessViewModel() {
 function MainViewModel() {
     var self = this;
 
+    // Autobahn websocket connections
+    var connection = null;
+    var sensorConnections = []; // One connection per sensor
+
     // Nested view models
     self.session = new SessionViewModel();
     self.records = new RecordsViewModel();
@@ -120,6 +126,5 @@ function MainViewModel() {
     }).run();
 }
 
-mainVM = new MainViewModel();
-ko.applyBindings(mainVM);
-startLaptimer(mainVM);
+vm = new MainViewModel();
+ko.applyBindings(vm);

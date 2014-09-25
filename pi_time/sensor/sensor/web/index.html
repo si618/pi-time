@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div data-bind='with: settings, 
+        <div data-bind='with: settings,
                         visible: $root.selectedTabId().lastIndexOf("Settings", 0) === 0'>
             <div>
                 <ul class='tabs' data-bind='foreach: tabs'>
@@ -51,23 +51,23 @@
             </div>
             <div class='main'>
                 <div data-bind='visible: $root.selectedTabId() == "Settings-Laptimer"'>
-                    <div class='settingsLabelColumn'>
+                    <div class='labelColumn'>
                         <div class='label' data-bind='text: nameLabel()'></div>
                         <div class='label' data-bind='text: urlLabel()'></div>
                     </div>
-                    <div class='settingsValueColumn'>
+                    <div class='valueColumn'>
                         <div class='label' data-bind='text: laptimerName()'></div>
                         <div class='label' data-bind='text: laptimerUrl()'></div>
                     </div>
                 </div>
                 <div data-bind='visible: $root.selectedTabId() == "Settings-Sensor"'>
-                    <div class='settingsLabelColumn'>
+                    <div class='labelColumn'>
                         <div class='label' data-bind='text: nameLabel()'></div>
                         <div class='label' data-bind='text: urlLabel()'></div>
                         <div class='label' data-bind='text: hardwareLabel()'></div>
                         <div class='label' data-bind='text: locationLabel()'></div>
                     </div>
-                    <div class='settingsValueColumn'>
+                    <div class='valueColumn'>
                         <div class='label' data-bind='text: sensorName()'></div>
                         <div class='label' data-bind='text: sensorUrl()'></div>
                         <div class='label' data-bind='text: hardware()'></div>
@@ -82,6 +82,13 @@
         </div>
 
         <div data-bind='with: access, visible: $root.selectedTabId() == "Access"'>
+            <div class='labelColumn'>
+                <div class='label' data-bind='text: secretLabel()'></div>
+            </div>
+            <div class='valueColumn'>
+                <input type='password' data-bind='value: secret' />
+                <button data-bind='text: label, click: authenticate'></button>
+            </div>
         </div>
 
         <div>

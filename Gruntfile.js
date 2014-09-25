@@ -84,11 +84,11 @@ module.exports = function(grunt) {
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/scripts/lib.js'
             },
             laptimer_js: {
-                src: ['pi_time/pi_time/web/scripts/pi-time-crossbar.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-crossbar.js', 'pi_time/pi_time/web/scripts/pi-time-knockout.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-knockout.js'],
+                src: ['pi_time/pi_time/web/scripts/pi-time-knockout.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-knockout.js', 'pi_time/pi_time/web/scripts/pi-time-autobahn.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-autobahn.js'],
                 dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/scripts/lib-laptimer.js'
             },
             sensor_js: {
-                src: ['pi_time/pi_time/web/scripts/pi-time-crossbar.js', 'pi_time/sensor/sensor/web/scripts/sensor-crossbar.js', 'pi_time/pi_time/web/scripts/pi-time-knockout.js', 'pi_time/sensor/sensor/web/scripts/sensor-knockout.js'],
+                src: ['pi_time/pi_time/web/scripts/pi-time-knockout.js', 'pi_time/sensor/sensor/web/scripts/sensor-knockout.js', 'pi_time/pi_time/web/scripts/pi-time-autobahn.js', 'pi_time/sensor/sensor/web/scripts/sensor-autobahn.js'],
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/scripts/lib-sensor.js'
             },
             laptimer_css: {
