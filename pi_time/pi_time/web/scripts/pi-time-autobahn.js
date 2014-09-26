@@ -2,6 +2,15 @@
 
 URI_PREFIX = 'pi-time.';
 
+function printError(error) {
+    msg = error.error;
+    if (AUTOBAHN_DEBUG === true && error.args.length > 0) {
+        msg += ': ' + error.args[0];
+    }
+    return msg;
+}
+
+
 // Helper function to subscribe to an autobahn event
 function subscribe(session, name, method, success, failure) {
     session.subscribe(URI_PREFIX + name, method).then(

@@ -19,7 +19,23 @@ function EventsViewModel() {
     self.events = ko.observable();
 }
 
-function SettingsViewModel() {
+function LaptimerViewModel() {
+    var self = this;
+
+    self.nameLabel = ko.observable('Name');
+    self.urlLabel = ko.observable('Address');
+
+    self.laptimerName = ko.observable();
+    self.laptimerUrl = ko.observable();
+
+    // Behaviours
+    self.updateConfig = function(laptimer) {
+        self.laptimerName(laptimer.name);
+        self.laptimerUrl(laptimer.url);
+    };
+}
+
+function SensorViewModel() {
     var self = this;
 
     self.nameLabel = ko.observable('Name');
@@ -27,29 +43,17 @@ function SettingsViewModel() {
     self.hardwareLabel = ko.observable('Hardware');
     self.locationLabel = ko.observable('Location');
 
-    self.laptimerName = ko.observable();
-    self.laptimerUrl = ko.observable();
     self.sensorName = ko.observable();
     self.sensorUrl = ko.observable();
     self.hardware = ko.observable();
     self.location = ko.observable();
 
-    // Tab data
-    self.tabs = ['Settings-Laptimer', 'Settings-Sensor'];
-    self.selectedTabId = ko.observable();
-    self.selectedTabData = ko.observable();
-
     // Behaviours
-    function todo(result) {
-        console.log('todo: ' + result);
-        sensor = details[0];
+    self.updateConfig = function(sensor) {
         self.sensorName(sensor.name);
         self.sensorUrl(sensor.url);
         self.hardware(sensor.hardware);
         self.location(sensor.location);
-    }
-    self.temp = function() {
-        rpc('get_sensor_config', todo);
     };
 }
 
@@ -60,13 +64,11 @@ function AccessViewModel() {
     self.role = ko.observable('anonymous');
 
     // UI
-    self.secretLabel = ko.observable('Password');
-    self.secret = ko.observable();
-
-    // Tab label
-    self.label = ko.pureComputed(function() {
+    self.accessLabel = ko.pureComputed(function() {
         return self.authenticated() ? 'Logout' : 'Login';
     }, this);
+    self.secretLabel = ko.observable('Password');
+    self.secret = ko.observable();
 
     // Behaviours
     function authenticated(result) {
@@ -89,13 +91,20 @@ function MainViewModel() {
     // Nested view models
     self.status = new StatusViewModel();
     self.events = new EventsViewModel();
-    self.settings = new SettingsViewModel();
+    self.laptimer = new LaptimerViewModel();
+    self.sensor = new SensorViewModel();
     self.access = new AccessViewModel();
 
-    // Tab data
-    self.tabs = ['Status', 'Events', 'Settings', 'Access'];
-    self.selectedTabId = ko.observable();
-    self.selectedTabData = ko.observable();
+    // Menu
+    self.selectedMenu = ko.observable('Status');
+    self.statusLabel = ko.observable('Status');
+    self.eventsLabel = ko.observable('Events');
+    self.settingsLabel = ko.observable('Settings');
+    self.laptimerLabel = ko.observable('Laptimer');
+    self.sensorLabel = ko.observable('Sensor');
+    self.accessLabel = ko.pureComputed(function() {
+        return self.access.accessLabel();
+    }, this);
 
     // TODO: Tab should be disabled if sensor connection lost or not authorised.
     // Status tab always enabled for all users.
@@ -103,24 +112,14 @@ function MainViewModel() {
     // Settings and Access tabs only enabled if sensor connected.
 
     // Behaviours
-    self.goToTab = function(tab) {
-        location.hash = tab;
-    };
-    self.getTabName = function(tab) {
-        if (tab == 'Access') {
-            return self.access.label();
-        }
-        return tab.substring(tab.lastIndexOf('-') + 1);
-    };
 
     // Client-side routes
     Sammy(function() {
-        this.get('#:tab', function() {
-            self.selectedTabId(this.params.tab);
+        this.get('#:menu', function() {
+            self.selectedMenu(this.params.menu);
         });
-
         this.get('', function() {
-            this.app.runRoute('get', '#Status');
+            this.app.runRoute('get', 'Status');
         });
     }).run();
 }

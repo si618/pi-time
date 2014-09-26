@@ -76,27 +76,27 @@ module.exports = function(grunt) {
                 separator: ';'
             },
             pi_time_laptimer_js: {
-                src: ['pi_time/pi_time/web/scripts/jquery*.js', 'pi_time/pi_time/web/scripts/autobahn*.js', 'pi_time/pi_time/web/scripts/knockout*.js', 'pi_time/pi_time/web/scripts/sammy*.js', 'pi_time/pi_time/web/scripts/pi-time.js'],
+                src: ['pi_time/pi_time/web/scripts/*.js'],
                 dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/scripts/lib.js'
             },
             pi_time_sensor_js: {
-                src: ['pi_time/pi_time/web/scripts/jquery*.js', 'pi_time/pi_time/web/scripts/autobahn*.js', 'pi_time/pi_time/web/scripts/knockout*.js', 'pi_time/pi_time/web/scripts/sammy*.js', 'pi_time/pi_time/web/scripts/pi-time.js'],
+                src: ['pi_time/pi_time/web/scripts/*.js'],
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/scripts/lib.js'
             },
             laptimer_js: {
-                src: ['pi_time/pi_time/web/scripts/pi-time-knockout.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-knockout.js', 'pi_time/pi_time/web/scripts/pi-time-autobahn.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-autobahn.js'],
+                src: ['pi_time/laptimer/laptimer/web/scripts/laptimer-knockout.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-autobahn.js',],
                 dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/scripts/lib-laptimer.js'
             },
             sensor_js: {
-                src: ['pi_time/pi_time/web/scripts/pi-time-knockout.js', 'pi_time/sensor/sensor/web/scripts/sensor-knockout.js', 'pi_time/pi_time/web/scripts/pi-time-autobahn.js', 'pi_time/sensor/sensor/web/scripts/sensor-autobahn.js'],
+                src: ['pi_time/sensor/sensor/web/scripts/sensor-knockout.js', 'pi_time/sensor/sensor/web/scripts/sensor-autobahn.js'],
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/scripts/lib-sensor.js'
             },
             laptimer_css: {
-                src: ['pi_time/pi_time/web/styles/pi_time.css', 'laptimer/laptimer/web/styles/laptimer.css'],
+                src: ['pi_time/pi_time/web/styles/slidebars.css', 'pi_time/pi_time/web/styles/*.css', 'laptimer/laptimer/web/styles/*.css'],
                 dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/styles/pi-time-laptimer.css'
             },
             sensor_css: {
-                src: ['pi_time/pi_time/web/styles/pi_time.css', 'sensor/sensor/web/styles/sensor.css'],
+                src: ['pi_time/pi_time/web/styles/slidebars.css', 'pi_time/pi_time/web/styles/*.css', 'sensor/sensor/web/styles/*.css'],
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/styles/pi-time-sensor.css'
             },
         },

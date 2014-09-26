@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Pi-time sensor</title>
@@ -14,17 +14,15 @@
 </head>
 
 <body>
-    <div id='page-wrap'>
-        <div id='menu'>
-            <ul class='tabs' data-bind='foreach: tabs'>
-                <li data-bind='text: $root.getTabName($data),
-                               css: { selected: $root.selectedTabId().lastIndexOf($data, 0) === 0 },
-                               click: $root.goToTab'></li>
-            </ul>
+    <div id='fixed-top' class='sb-slide'>
+        <span class='sb-toggle-left'>MENU</span>
+        <div>
+            <img id='fullscreen' src='images/fullscreen.png' class='fullscreen' onclick='goFullscreen();' alt='Fullscreen' height='24' width='25' />
         </div>
-
-        <div data-bind='with: status, visible: $root.selectedTabId() == "Status"'>
-            <div class='main'>
+    </div>
+    <div class='sb-site-container'>
+        <div class='main-content'>
+            <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
                 <div class='ledColumn'>
                     <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
                     <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
@@ -38,62 +36,69 @@
                     <div class='label' data-bind='text: lapLabel()'></div>
                 </div>
             </div>
+            <div data-bind='with: laptimer, visible: $root.selectedMenu() == "Laptimer"'>
+                <div class='labelColumn'>
+                    <div class='label' data-bind='text: nameLabel()'></div>
+                    <div class='label' data-bind='text: urlLabel()'></div>
+                </div>
+                <div class='valueColumn'>
+                    <div class='label' data-bind='text: laptimerName()'></div>
+                    <div class='label' data-bind='text: laptimerUrl()'></div>
+                </div>
+            </div>
+            <div data-bind='with: sensor, visible: $root.selectedMenu() == "Sensor"'>
+                <div class='labelColumn'>
+                    <div class='label' data-bind='text: nameLabel()'></div>
+                    <div class='label' data-bind='text: urlLabel()'></div>
+                    <div class='label' data-bind='text: hardwareLabel()'></div>
+                    <div class='label' data-bind='text: locationLabel()'></div>
+                </div>
+                <div class='valueColumn'>
+                    <div class='label' data-bind='text: sensorName()'></div>
+                    <div class='label' data-bind='text: sensorUrl()'></div>
+                    <div class='label' data-bind='text: hardware()'></div>
+                    <div class='label' data-bind='text: location()'></div>
+                </div>
+            </div>
+            <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
+                <div class='output' data-bind='html: events' id='log'></div>
+            </div>
+            <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
+                <div class='labelColumn'>
+                    <div class='label' data-bind='text: secretLabel()'></div>
+                </div>
+                <div class='valueColumn'>
+                    <input type='password' data-bind='value: secret' />
+                    <button data-bind='text: accessLabel(), click: authenticate'></button>
+                </div>
+            </div>
         </div>
-
-        <div data-bind='with: settings,
-                        visible: $root.selectedTabId().lastIndexOf("Settings", 0) === 0'>
-            <div>
-                <ul class='tabs' data-bind='foreach: tabs'>
-                    <li data-bind='text: $root.getTabName($data),
-                                   css: { selected: $data == $root.selectedTabId() },
-                                   click: $root.goToTab'></li>
+    </div>
+    <div class='sb-slidebar sb-left'>
+        <ul class='sb-menu'>
+            <li class='sb-close'>
+                <a data-bind='text: statusLabel()' onclick='selectMenu("Status");'></a>
+            </li>
+            <li class='sb-close'>
+                <a data-bind='text: eventsLabel()' onclick='selectMenu("Events");'></a>
+            </li>
+            <li>
+                <a class='sb-toggle-submenu' onclick='return false;' data-bind='text: settingsLabel()'>
+                    <span class='sb-caret'></span>
+                </a>
+                <ul class='sb-submenu sb-hide'>
+                    <li class='sb-close'>
+                        <a data-bind='text: laptimerLabel()' onclick='selectMenu("Laptimer");'></a>
+                    </li>
+                    <li class='sb-close'>
+                        <a data-bind='text: sensorLabel()' onclick='selectMenu("Sensor");'></a>
+                    </li>
                 </ul>
-            </div>
-            <div class='main'>
-                <div data-bind='visible: $root.selectedTabId() == "Settings-Laptimer"'>
-                    <div class='labelColumn'>
-                        <div class='label' data-bind='text: nameLabel()'></div>
-                        <div class='label' data-bind='text: urlLabel()'></div>
-                    </div>
-                    <div class='valueColumn'>
-                        <div class='label' data-bind='text: laptimerName()'></div>
-                        <div class='label' data-bind='text: laptimerUrl()'></div>
-                    </div>
-                </div>
-                <div data-bind='visible: $root.selectedTabId() == "Settings-Sensor"'>
-                    <div class='labelColumn'>
-                        <div class='label' data-bind='text: nameLabel()'></div>
-                        <div class='label' data-bind='text: urlLabel()'></div>
-                        <div class='label' data-bind='text: hardwareLabel()'></div>
-                        <div class='label' data-bind='text: locationLabel()'></div>
-                    </div>
-                    <div class='valueColumn'>
-                        <div class='label' data-bind='text: sensorName()'></div>
-                        <div class='label' data-bind='text: sensorUrl()'></div>
-                        <div class='label' data-bind='text: hardware()'></div>
-                        <div class='label' data-bind='text: location()'></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div data-bind='with: events, visible: $root.selectedTabId() == "Events"'>
-            <div class='output' data-bind='html: events' id='log'></div>
-        </div>
-
-        <div data-bind='with: access, visible: $root.selectedTabId() == "Access"'>
-            <div class='labelColumn'>
-                <div class='label' data-bind='text: secretLabel()'></div>
-            </div>
-            <div class='valueColumn'>
-                <input type='password' data-bind='value: secret' />
-                <button data-bind='text: label, click: authenticate'></button>
-            </div>
-        </div>
-
-        <div>
-            <img id='fullscreen' src='images/fullscreen.png' class='fullscreen' onclick='goFullscreen()' alt='Fullscreen' height='24' width='25' />
-        </div>
+            </li>
+            <li class='sb-close'>
+                <a data-bind='text: accessLabel()' onclick='selectMenu("Access");'></a>
+            </li>
+        </ul>
     </div>
     <script src='scripts/lib-sensor.js'></script>
 </body>

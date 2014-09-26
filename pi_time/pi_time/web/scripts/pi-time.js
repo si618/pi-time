@@ -44,18 +44,13 @@ function getLocalTime() {
     return time;
 }
 
+function selectMenu(menu) {
+    location.hash = menu;
+}
 
 // Helper function to parse JSON, default to native parser, jquery as fallback
 function parseJson(json) {
     return JSON && JSON.parse(json) || $.parseJSON(json);
-}
-
-function printError(error) {
-    msg = error.error;
-    if (error.args.length > 0) {
-        msg += ': ' + error.args[0];
-    }
-    return msg;
 }
 
 // Activate full screen mode for different browsers
@@ -81,16 +76,30 @@ document.addEventListener('webkitfullscreenchange', fullscreenChanged);
 document.addEventListener('mozfullscreenchange', fullscreenChanged);
 document.addEventListener('MSFullscreenChange', fullscreenChanged);
 
-// Monitor resize events to resize matching 'output' class element
-$(document).ready(function() {
-    function resizeOutput() {
-        var height = $(window).height() - 100;
-        output = $('.output');
-        output.height(height);
-        output.scrollTop = output.height;
-    }
-    resizeOutput();
-    $(window).resize(function() {
+(function($) {
+    $(document).ready(function() {
+        $.slidebars();
+        $('.sb-toggle-submenu').off('click').on('click', function() {
+            $submenu = $(this).parent().children('.sb-submenu');
+            $(this).add($submenu).toggleClass('sb-submenu-active');
+            if ($submenu.hasClass('sb-submenu-active')) {
+                $submenu.slideDown(200);
+            } else {
+                $submenu.slideUp(200);
+            }
+        });
+        /*
+        // Monitor resize events to resize matching 'output' class element
+        function resizeOutput() {
+            var height = $(window).height();
+            output = $('.output');
+            output.height(height);
+            output.scrollTop = output.height;
+        }
         resizeOutput();
+        $(window).resize(function() {
+            resizeOutput();
+        });
+        */
     });
-});
+})(jQuery);

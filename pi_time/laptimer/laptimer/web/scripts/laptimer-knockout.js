@@ -95,8 +95,7 @@ function MainViewModel() {
 
     // Tab data
     self.tabs = ['Session', 'Records', 'Admin', 'Access'];
-    self.selectedTabId = ko.observable();
-    self.selectedTabData = ko.observable();
+    self.selectedMenu = ko.observable();
 
     // TODO: Tab should be disabled if sensor connection lost or not authorised.
     // Status tab always enabled for all users.
@@ -104,25 +103,19 @@ function MainViewModel() {
     // Events, Settings and Access tabs only enabled if sensor connected.
 
     // Behaviours
-    self.goToTab = function(tab) {
+    self.selectMenu = function(tab) {
         location.hash = tab;
-    };
-    self.getTabName = function(tab) {
-        if (tab == 'Access') {
-            return self.access.label();
-        }
-        return tab;
     };
 
     // Client-side routes
     Sammy(function() {
-        this.get('#:tab', function() {
-            self.selectedTabId(this.params.tab);
+        this.get('#:menu', function() {
+            self.selectedMenu(this.params.menu);
         });
-
+        /*
         this.get('', function() {
             this.app.runRoute('get', '#Session');
-        });
+        });*/
     }).run();
 }
 

@@ -27,7 +27,7 @@ function startLaptimer(details) {
             console.log('[lap_started]');
             vm.status.lap(true);
         }
-        subscribe(session, 'lapStarted', lapStarted);
+        subscribe(session, 'lap_started', lapStarted);
 
         function lapFinished(details) {
             console.log('[lap_finished]');
@@ -75,8 +75,7 @@ function startSensor() {
         subscribe(session, 'sensor_triggered', sensorTriggered);
 
         function laptimerConfig(details) {
-            vm.settings.laptimerName(details.name);
-            vm.settings.laptimerUrl(details.url);
+            vm.laptimer.updateConfig(details);
             vm.laptimerConnection = startLaptimer(details);
         }
         rpc('get_laptimer_config', laptimerConfig, {
@@ -84,11 +83,7 @@ function startSensor() {
         });
 
         function sensorConfig(details) {
-            sensor = details[0];
-            vm.settings.sensorName(sensor.name);
-            vm.settings.sensorUrl(sensor.url);
-            vm.settings.hardware(sensor.hardware);
-            vm.settings.location(sensor.location);
+            vm.sensor.updateConfig(details[0]);
         }
         rpc('get_sensor_config', sensorConfig, {
             'session': session
