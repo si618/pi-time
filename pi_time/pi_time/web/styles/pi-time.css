@@ -1,0 +1,83 @@
+html, body, webview {
+    font-size: medium;
+    color: #f0e7d5;
+}
+body {
+    font-family: Helvetica, Arial;
+}
+a, li {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+div {
+    color: #f0e7d5;
+}
+.fullscreen {
+    float: right;
+    top: 2px;
+    right: 2px;
+    -webkit-filter: brightness(.75);
+    filter: brightness(50);
+}
+.fullscreen:hover {
+    cursor: default;
+    -webkit-filter: brightness(1);
+    filter: brightness(100);
+}
+.label {
+    padding-top: 4px;
+    height: 32px;
+    cursor: default;
+}
+.main-content {
+    padding: 48px 16px 16px 16px;
+}
+.output {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: smaller;
+    white-space: pre;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-right: 10000px;
+    color: #f0e7d5;
+}
+.led {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 12px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: #000 0px 0px 1px 0px, -2px -4px 12px 2px inset, 0px 0px 10px 0px;
+}
+.led.green {
+    color: #6eb300;
+}
+.led.red {
+    color: #b30600;
+}
+.led.blue {
+    color: #004ab3;
+}
+.led.gray {
+    box-shadow: #222 0px 0px 1px 0px, -2px -4px 12px 2px inset, 0px 0px 10px 0px !important;
+    color: #252525;
+}
+.ledColumn {
+    float: left;
+    padding-right: 8px;
+    padding-bottom: 16px;
+}
+.ledTextColumn {
+    padding-bottom: 16px;
+}
+.labelColumn {
+    float: left;
+    padding-right: 8px;
+    padding-bottom: 8px;
+}
+.valueColumn {}
