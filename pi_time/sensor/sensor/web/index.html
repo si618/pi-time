@@ -14,63 +14,61 @@
 </head>
 
 <body>
-    <div id='fixed-top' class='sb-slide'>
-        <span class='sb-toggle-left'>MENU</span>
+    <div id='navbar' class='navbar sb-slide' role='navigation'>
+        <span class='sb-toggle-left'>&#9776;</span>
         <div>
             <img id='fullscreen' src='images/fullscreen.png' class='fullscreen' onclick='goFullscreen();' alt='Fullscreen' height='24' width='25' />
         </div>
     </div>
     <div class='sb-site-container'>
-        <div class='main-content'>
-            <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
-                <div class='ledColumn'>
-                    <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
-                    <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
-                    <div data-bind="css: triggered() ? 'led blue' : 'led gray'"></div>
-                    <div data-bind="css: lap() ? 'led red' : 'led gray'"></div>
-                </div>
-                <div class='ledTextColumn'>
-                    <div class='label' data-bind='text: laptimerLabel()'></div>
-                    <div class='label' data-bind='text: sensorLabel()'></div>
-                    <div class='label' data-bind='text: triggeredLabel()'></div>
-                    <div class='label' data-bind='text: lapLabel()'></div>
-                </div>
+        <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
+            <div class='ledColumn'>
+                <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
+                <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
+                <div data-bind="css: triggered() ? 'led blue' : 'led gray'"></div>
+                <div data-bind="css: lap() ? 'led red' : 'led gray'"></div>
             </div>
-            <div data-bind='with: laptimer, visible: $root.selectedMenu() == "Laptimer"'>
-                <div class='labelColumn'>
-                    <div class='label' data-bind='text: nameLabel()'></div>
-                    <div class='label' data-bind='text: urlLabel()'></div>
-                </div>
-                <div class='valueColumn'>
-                    <div class='label' data-bind='text: laptimerName()'></div>
-                    <div class='label' data-bind='text: laptimerUrl()'></div>
-                </div>
+            <div class='ledTextColumn'>
+                <div class='label' data-bind='text: laptimerLabel()'></div>
+                <div class='label' data-bind='text: sensorLabel()'></div>
+                <div class='label' data-bind='text: triggeredLabel()'></div>
+                <div class='label' data-bind='text: lapLabel()'></div>
             </div>
-            <div data-bind='with: sensor, visible: $root.selectedMenu() == "Sensor"'>
-                <div class='labelColumn'>
-                    <div class='label' data-bind='text: nameLabel()'></div>
-                    <div class='label' data-bind='text: urlLabel()'></div>
-                    <div class='label' data-bind='text: hardwareLabel()'></div>
-                    <div class='label' data-bind='text: locationLabel()'></div>
-                </div>
-                <div class='valueColumn'>
-                    <div class='label' data-bind='text: sensorName()'></div>
-                    <div class='label' data-bind='text: sensorUrl()'></div>
-                    <div class='label' data-bind='text: hardware()'></div>
-                    <div class='label' data-bind='text: location()'></div>
-                </div>
+        </div>
+        <div data-bind='with: laptimer, visible: $root.selectedMenu() == "Laptimer"'>
+            <div class='labelColumn'>
+                <div class='label' data-bind='text: nameLabel()'></div>
+                <div class='label' data-bind='text: urlLabel()'></div>
             </div>
-            <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
-                <div class='output' data-bind='html: events' id='log'></div>
+            <div class='valueColumn'>
+                <div class='label' data-bind='text: laptimerName()'></div>
+                <div class='label' data-bind='text: laptimerUrl()'></div>
             </div>
-            <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
-                <div class='labelColumn'>
-                    <div class='label' data-bind='text: secretLabel()'></div>
-                </div>
-                <div class='valueColumn'>
-                    <input type='password' data-bind='value: secret' />
-                    <button data-bind='text: accessLabel(), click: authenticate'></button>
-                </div>
+        </div>
+        <div data-bind='with: sensor, visible: $root.selectedMenu() == "Sensor"'>
+            <div class='labelColumn'>
+                <div class='label' data-bind='text: nameLabel()'></div>
+                <div class='label' data-bind='text: urlLabel()'></div>
+                <div class='label' data-bind='text: hardwareLabel()'></div>
+                <div class='label' data-bind='text: locationLabel()'></div>
+            </div>
+            <div class='valueColumn'>
+                <div class='label' data-bind='text: sensorName()'></div>
+                <div class='label' data-bind='text: sensorUrl()'></div>
+                <div class='label' data-bind='text: hardware()'></div>
+                <div class='label' data-bind='text: location()'></div>
+            </div>
+        </div>
+        <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
+            <div class='output' data-bind='html: events' id='log'></div>
+        </div>
+        <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
+            <div class='labelColumn'>
+                <div class='label' data-bind='text: secretLabel()'></div>
+            </div>
+            <div class='valueColumn'>
+                <input type='password' data-bind='value: secret' />
+                <button data-bind='text: accessLabel(), click: authenticate'></button>
             </div>
         </div>
     </div>

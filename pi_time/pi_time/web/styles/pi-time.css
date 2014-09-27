@@ -33,9 +33,6 @@ div {
     height: 32px;
     cursor: default;
 }
-.main-content {
-    padding: 48px 16px 16px 16px;
-}
 .output {
     font-family: 'Courier New', Courier, monospace;
     font-size: smaller;
@@ -81,3 +78,103 @@ div {
     padding-bottom: 8px;
 }
 .valueColumn {}
+/* Navigation bar */
+
+.navbar {
+    /* http://www.colorzilla.com/gradient-editor */
+    background: #6b4c00;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6b4c00), color-stop(47%, #7a5602), color-stop(53%, #6a4e00), color-stop(100%, #252525));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    /* W3C */
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#6b4c00', endColorstr='#252525', GradientType=0);
+    /* IE6-9 */
+}
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 4;
+}
+#navbar span.sb-toggle-left {
+    float: left;
+    text-align: center;
+    color: #f0e7d5;
+    margin-left: 16px;
+    font-family: monospace;
+    font-size: xx-large;
+}
+#navbar span.sb-toggle-right {
+    float: right;
+    color: #f0e7d5;
+    padding: 10px;
+}
+/*
+ Custom CSS for slidebars
+*/
+
+.sb-site-container {
+    padding: 48px 16px 16px 16px;
+}
+.sb-slidebar {
+    color: #fff;
+}
+html.sb-active #sb-site, .sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-open-right, .sb-close, .sb-toggle-submenu {
+    cursor: pointer;
+}
+/* Left and right menus */
+
+.sb-menu {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+.sb-menu li {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.sb-menu > li:first-child {
+    border-top: none;
+}
+.sb-menu > li:last-child {
+    border-bottom: none;
+}
+.sb-menu li a {
+    width: 100%;
+    padding: 1em;
+    display: inline-block;
+    color: #f2f2f2;
+}
+.sb-submenu {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+span.sb-caret {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    margin: 0 5px;
+    border: 5px solid transparent;
+}
+span.sb-caret {
+    border-top: 5px solid;
+    border-bottom: 0px solid transparent;
+}
+.sb-submenu-active > span.sb-caret {
+    border-top: 0px solid transparent;
+    border-bottom: 5px solid;
+}

@@ -24,6 +24,7 @@
 
 html, body, #sb-site, .sb-site-container, .sb-slidebar {
     /* Set box model to prevent any user added margins or paddings from altering the widths or heights. */
+    background: #6b4c00;
     margin: 0;
     padding: 0;
     -webkit-box-sizing: border-box;
