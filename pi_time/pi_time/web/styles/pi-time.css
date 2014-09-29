@@ -5,7 +5,7 @@ html, body, webview {
 body {
     font-family: Helvetica, Arial;
 }
-a, li {
+a, li, .app-title, .ledTextColumn, .labelColumn, .valueColumn {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -16,31 +16,24 @@ a, li {
 div {
     color: #f0e7d5;
 }
-.fullscreen {
-    float: right;
-    top: 2px;
-    right: 2px;
-    -webkit-filter: brightness(.75);
-    filter: brightness(50);
-}
-.fullscreen:hover {
-    cursor: default;
-    -webkit-filter: brightness(1);
-    filter: brightness(100);
-}
 .label {
     padding-top: 4px;
     height: 32px;
     cursor: default;
+}
+.output-parent{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 .output {
     font-family: 'Courier New', Courier, monospace;
     font-size: smaller;
     white-space: pre;
     width: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    padding-right: 10000px;
+    height: 100%;
+    overflow: auto;
+    padding-right: 64px;
     color: #f0e7d5;
 }
 .led {
@@ -77,63 +70,86 @@ div {
     padding-right: 8px;
     padding-bottom: 8px;
 }
-.valueColumn {}
-/* Navigation bar */
-
-.navbar {
+.valueColumn {} .navbar {
     /* http://www.colorzilla.com/gradient-editor */
-    background: #6b4c00;
+    background: #01560e;
     /* Old browsers */
-    background: -moz-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    background: -moz-linear-gradient(top, #01560e 0%, #00440c 44%, #252525 100%);
     /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6b4c00), color-stop(47%, #7a5602), color-stop(53%, #6a4e00), color-stop(100%, #252525));
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #01560e), color-stop(44%, #00440c), color-stop(100%, #252525));
     /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    background: -webkit-linear-gradient(top, #01560e 0%, #00440c 44%, #252525 100%);
     /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    background: -o-linear-gradient(top, #01560e 0%, #00440c 44%, #252525 100%);
     /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    background: -ms-linear-gradient(top, #01560e 0%, #00440c 44%, #252525 100%);
     /* IE10+ */
-    background: linear-gradient(to bottom, #6b4c00 0%, #7a5602 47%, #6a4e00 53%, #252525 100%);
+    background: linear-gradient(to bottom, #01560e 0%, #00440c 44%, #252525 100%);
     /* W3C */
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#6b4c00', endColorstr='#252525', GradientType=0);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#01560e', endColorstr='#252525', GradientType=0);
     /* IE6-9 */
 }
-#navbar {
+.navbar {
     position: fixed;
+    white-space: nowrap;
     top: 0;
     width: 100%;
-    height: 40px;
+    height: 48px;
     z-index: 4;
 }
-#navbar span.sb-toggle-left {
+.sb-toggle-left {
     float: left;
-    text-align: center;
     color: #f0e7d5;
-    margin-left: 16px;
-    font-family: monospace;
-    font-size: xx-large;
 }
-#navbar span.sb-toggle-right {
+.sb-toggle-right {
     float: right;
     color: #f0e7d5;
     padding: 10px;
 }
-/*
- Custom CSS for slidebars
-*/
-
+.app-title {
+    cursor: default;
+    margin-left: 48px;
+    margin-top: 12px;
+    font-weight: bold;
+    font-style: italic;
+}
+.top-menu-left {
+    height: 48px;
+}
+.fullscreen {
+    float: left;
+    height: 24px;
+    width: 24px;
+    margin-left: 16px;
+    margin-top: 12px;
+    -webkit-filter: brightness(.25);
+    filter: brightness(25);
+}
+.fullscreen:hover {
+    -webkit-filter: brightness(1);
+    filter: brightness(100);
+}
+.navicon {
+    height: 24px;
+    width: 24px;
+    margin-left: 16px;
+    margin-top: 8px;
+    -webkit-filter: brightness(.75);
+    filter: brightness(75);
+}
+.navicon:hover {
+    -webkit-filter: brightness(1);
+    filter: brightness(100);
+}
 .sb-site-container {
-    padding: 48px 16px 16px 16px;
+    margin: 54px 16px 16px 16px;
 }
 .sb-slidebar {
     color: #fff;
 }
-html.sb-active #sb-site, .sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-open-right, .sb-close, .sb-toggle-submenu {
+html.sb-active #sb-site, .sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-open-right, .sb-close, .sb-toggle-submenu, .fullscreen {
     cursor: pointer;
 }
-/* Left and right menus */
-
 .sb-menu {
     padding: 0;
     margin: 0;
@@ -154,7 +170,7 @@ html.sb-active #sb-site, .sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-o
 }
 .sb-menu li a {
     width: 100%;
-    padding: 1em;
+    padding: 16px;
     display: inline-block;
     color: #f2f2f2;
 }
@@ -162,6 +178,12 @@ html.sb-active #sb-site, .sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-o
     padding: 0;
     margin: 0;
     list-style-type: none;
+}
+.sb-submenu li a {
+    padding-left: 32px;
+}
+.sb-submenu > li:last-child {
+    border-bottom: none;
 }
 span.sb-caret {
     width: 0;

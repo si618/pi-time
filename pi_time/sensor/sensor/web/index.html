@@ -14,10 +14,11 @@
 </head>
 
 <body>
-    <div id='navbar' class='navbar sb-slide' role='navigation'>
-        <span class='sb-toggle-left'>&#9776;</span>
-        <div>
-            <img id='fullscreen' src='images/fullscreen.png' class='fullscreen' onclick='goFullscreen();' alt='Fullscreen' height='24' width='25' />
+    <div class='navbar sb-slide' role='navigation'>
+        <div class='sb-toggle-left'>
+            <img class='navicon' src='images/navicon-round.svg' alt='Menu' />
+        </div>
+        <div class='app-title' data-bind='text: $root.appTitle()'>
         </div>
     </div>
     <div class='sb-site-container'>
@@ -60,7 +61,14 @@
             </div>
         </div>
         <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
-            <div class='output' data-bind='html: events' id='log'></div>
+            <div class='output-parent'>
+                <div class='output' data-bind='html: events' id='events'></div>
+            </div>
+        </div>
+        <div data-bind='with: logs, visible: $root.selectedMenu() == "Logs"'>
+            <div class='output-parent'>
+                <div class='output' data-bind='html: logs' id='log'></div>
+            </div>
         </div>
         <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
             <div class='labelColumn'>
@@ -74,16 +82,14 @@
     </div>
     <div class='sb-slidebar sb-left'>
         <ul class='sb-menu'>
+            <li class='top-menu-left'>
+                <img id='fullscreen' class='fullscreen' src='images/arrow-expand.svg' onclick='goFullscreen();' alt='Fullscreen' />
+            </li>
             <li class='sb-close'>
                 <a data-bind='text: statusLabel()' onclick='selectMenu("Status");'></a>
             </li>
-            <li class='sb-close'>
-                <a data-bind='text: eventsLabel()' onclick='selectMenu("Events");'></a>
-            </li>
             <li>
-                <a class='sb-toggle-submenu' onclick='return false;' data-bind='text: settingsLabel()'>
-                    <span class='sb-caret'></span>
-                </a>
+                <a class='sb-toggle-submenu' onclick='return false;'>Settings<span class='sb-caret'></span></a> 
                 <ul class='sb-submenu sb-hide'>
                     <li class='sb-close'>
                         <a data-bind='text: laptimerLabel()' onclick='selectMenu("Laptimer");'></a>
@@ -92,6 +98,12 @@
                         <a data-bind='text: sensorLabel()' onclick='selectMenu("Sensor");'></a>
                     </li>
                 </ul>
+            </li>
+            <li class='sb-close'>
+                <a data-bind='text: eventsLabel()' onclick='selectMenu("Events");'></a>
+            </li>
+            <li class='sb-close'>
+                <a data-bind='text: logsLabel()' onclick='selectMenu("Logs");'></a>
             </li>
             <li class='sb-close'>
                 <a data-bind='text: accessLabel()' onclick='selectMenu("Access");'></a>

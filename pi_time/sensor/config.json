@@ -3,7 +3,7 @@
         "url": "ws://127.0.0.1:8080/ws"
     },
     "sensors": [{
-        "name": "start & finish",
+        "name": "Start & Finish",
         "url": "ws://127.0.0.1:8888/ws",
         "hardware": "RPI_REV2",
         "location": "START_FINISH",

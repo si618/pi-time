@@ -14,11 +14,6 @@ function StatusViewModel() {
     self.lapLabel = ko.observable('Active lap');
 }
 
-function EventsViewModel() {
-    var self = this;
-    self.events = ko.observable();
-}
-
 function LaptimerViewModel() {
     var self = this;
 
@@ -57,6 +52,16 @@ function SensorViewModel() {
     };
 }
 
+function EventsViewModel() {
+    var self = this;
+    self.events = ko.observable();
+}
+
+function LogsViewModel() {
+    var self = this;
+    self.logs = ko.observable();
+}
+
 function AccessViewModel() {
     var self = this;
 
@@ -90,20 +95,28 @@ function MainViewModel() {
 
     // Nested view models
     self.status = new StatusViewModel();
-    self.events = new EventsViewModel();
     self.laptimer = new LaptimerViewModel();
     self.sensor = new SensorViewModel();
+    self.events = new EventsViewModel();
+    self.logs = new LogsViewModel();
     self.access = new AccessViewModel();
 
     // Menu
     self.selectedMenu = ko.observable('Status');
     self.statusLabel = ko.observable('Status');
-    self.eventsLabel = ko.observable('Events');
     self.settingsLabel = ko.observable('Settings');
     self.laptimerLabel = ko.observable('Laptimer');
     self.sensorLabel = ko.observable('Sensor');
+    self.eventsLabel = ko.observable('Sensor Events');
+    self.logsLabel = ko.observable('Console Log');
     self.accessLabel = ko.pureComputed(function() {
         return self.access.accessLabel();
+    }, this);
+    self.appTitle = ko.pureComputed(function() {
+        if (self.laptimer.laptimerName() === undefined || self.sensor.sensorName() === undefined) {
+            return '';
+        }
+        return self.laptimer.laptimerName() + ' - ' + self.sensor.sensorName();
     }, this);
 
     // TODO: Tab should be disabled if sensor connection lost or not authorised.
