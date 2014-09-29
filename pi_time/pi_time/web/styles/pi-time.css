@@ -179,9 +179,6 @@ html.sb-active #sb-site, .sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-o
     margin: 0;
     list-style-type: none;
 }
-.sb-submenu li a {
-    padding-left: 32px;
-}
 .sb-submenu > li:last-child {
     border-bottom: none;
 }
