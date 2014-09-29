@@ -57,7 +57,7 @@ module.exports = function(grunt) {
             laptimer_web_images: {
                 files: [{
                     cwd: 'pi_time/pi_time/',
-                    src: ['web/images/*.png'],
+                    src: ['web/images/*.svg'],
                     dest: 'dist/laptimer/pi_time/laptimer/laptimer/',
                     expand: true
                 }],
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
             sensor_web_images: {
                 files: [{
                     cwd: 'pi_time/pi_time/',
-                    src: ['web/images/*.png'],
+                    src: ['web/images/*.svg'],
                     dest: 'dist/sensor/pi_time/sensor/sensor/',
                     expand: true
                 }],
