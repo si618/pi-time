@@ -6,22 +6,23 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Pi-time sensor</title>
-    <link rel='Stylesheet' href='styles/pi-time-sensor.css'>
+    <link rel='Stylesheet' href='css/pi-time-sensor.css'>
     <script>
     AUTOBAHN_DEBUG = true
     </script>
-    <script src='scripts/lib.js'></script>
+    <script src='js/lib.js'></script>
 </head>
 
 <body>
-    <div class='navbar sb-slide' role='navigation'>
-        <div class='sb-toggle-left'>
-            <img class='navicon' src='images/navicon-round.svg' alt='Menu' />
-        </div>
-        <div class='app-title' data-bind='text: $root.appTitle()'>
+    <div class='sb-slide navbar container-fluid' role='navigation'>
+        <div class='navbar-header'>
+            <div class='sb-toggle-left navicon'>
+                <span class='glyphicon glyphicon-tasks' alt='Menu'></span>
+            </div>
+            <a class='navbar-brand' data-bind='text: $root.appTitle()'></a>
         </div>
     </div>
-    <div class='sb-site-container'>
+    <div class='sb-site-container container-fluid'>
         <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
             <div class='ledColumn'>
                 <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
@@ -83,13 +84,13 @@
     <div class='sb-slidebar sb-left'>
         <ul class='sb-menu'>
             <li class='top-menu-left'>
-                <img id='fullscreen' class='fullscreen' src='images/arrow-expand.svg' onclick='goFullscreen();' alt='Fullscreen' />
+                <a></a>
             </li>
             <li class='sb-close'>
                 <a data-bind='text: statusLabel()' onclick='selectMenu("Status");'></a>
             </li>
             <li>
-                <a class='sb-toggle-submenu' onclick='return false;'>Settings<span class='sb-caret'></span></a> 
+                <a class='sb-toggle-submenu' onclick='return false;'>Settings<span class='sb-caret'></span></a>
                 <ul class='sb-submenu sb-hide'>
                     <li class='sb-close'>
                         <a data-bind='text: laptimerLabel()' onclick='selectMenu("Laptimer");'></a>
@@ -110,7 +111,7 @@
             </li>
         </ul>
     </div>
-    <script src='scripts/lib-sensor.js'></script>
+    <script src='js/lib-sensor.js'></script>
 </body>
 
 </html>

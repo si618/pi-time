@@ -17,11 +17,15 @@
   },
   "homepage": "https://github.com/si618/pi-time",
   "devDependencies": {
+    "grunt-bootlint": "^0.2.1",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-compress": "^0.11.0",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-htmlmin": "^0.3.0",
     "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.6.0",
     "grunt-nose": "^0.4.0",
     "grunt-pylint": "^0.4.0",
     "sublime-grunt-build": "^1.1.1"

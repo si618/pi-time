@@ -26,14 +26,21 @@ module.exports = function(grunt) {
                 curly: true
             },
             pi_time: {
-                src: ['pi_time/pi_time/web/scripts/pi-time*.js']
+                src: ['pi_time/pi_time/web/js/pi-time*.js']
             },
             laptimer: {
-                src: ['pi_time/laptimer/laptimer/web/scripts/laptimer*.js']
+                src: ['pi_time/laptimer/laptimer/web/js/laptimer*.js']
             },
             sensor: {
-                src: ['pi_time/sensor/sensor/web/scripts/sensor*.js']
+                src: ['pi_time/sensor/sensor/web/js/sensor*.js']
             },
+        },
+        bootlint: {
+            options: {
+                stoponerror: false,
+                relaxerror: []
+            },
+            files: ['pi_time/pi_time/web/*.html'],
         },
         clean: ['dist'],
         copy: {
@@ -54,18 +61,18 @@ module.exports = function(grunt) {
                     expand: true
                 }],
             },
-            laptimer_web_images: {
+            laptimer_web_fonts: {
                 files: [{
                     cwd: 'pi_time/pi_time/',
-                    src: ['web/images/*.svg'],
+                    src: ['web/fonts/*.svg'],
                     dest: 'dist/laptimer/pi_time/laptimer/laptimer/',
                     expand: true
                 }],
             },
-            sensor_web_images: {
+            sensor_web_fonts: {
                 files: [{
                     cwd: 'pi_time/pi_time/',
-                    src: ['web/images/*.svg'],
+                    src: ['web/fonts/*.svg'],
                     dest: 'dist/sensor/pi_time/sensor/sensor/',
                     expand: true
                 }],
@@ -76,42 +83,97 @@ module.exports = function(grunt) {
                 separator: ';'
             },
             pi_time_laptimer_js: {
-                src: ['pi_time/pi_time/web/scripts/*.js'],
-                dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/scripts/lib.js'
+                src: ['pi_time/pi_time/web/js/jquery*.js', 'pi_time/pi_time/web/js/*.js'],
+                dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/js/lib.js'
             },
             pi_time_sensor_js: {
-                src: ['pi_time/pi_time/web/scripts/*.js'],
-                dest: 'dist/sensor/pi_time/sensor/sensor/web/scripts/lib.js'
+                src: ['pi_time/pi_time/web/js/jquery*.js', 'pi_time/pi_time/web/js/*.js'],
+                dest: 'dist/sensor/pi_time/sensor/sensor/web/js/lib.js'
             },
             laptimer_js: {
-                src: ['pi_time/laptimer/laptimer/web/scripts/laptimer-knockout.js', 'pi_time/laptimer/laptimer/web/scripts/laptimer-autobahn.js',],
-                dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/scripts/lib-laptimer.js'
+                src: ['pi_time/laptimer/laptimer/web/js/laptimer-knockout.js', 'pi_time/laptimer/laptimer/web/js/laptimer-autobahn.js', ],
+                dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/js/lib-laptimer.js'
             },
             sensor_js: {
-                src: ['pi_time/sensor/sensor/web/scripts/sensor-knockout.js', 'pi_time/sensor/sensor/web/scripts/sensor-autobahn.js'],
-                dest: 'dist/sensor/pi_time/sensor/sensor/web/scripts/lib-sensor.js'
+                src: ['pi_time/sensor/sensor/web/js/sensor-knockout.js', 'pi_time/sensor/sensor/web/js/sensor-autobahn.js'],
+                dest: 'dist/sensor/pi_time/sensor/sensor/web/js/lib-sensor.js'
             },
             laptimer_css: {
-                src: ['pi_time/pi_time/web/styles/slidebars.css', 'pi_time/pi_time/web/styles/*.css', 'laptimer/laptimer/web/styles/*.css'],
-                dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/styles/pi-time-laptimer.css'
+                src: ['pi_time/pi_time/web/css/slidebars.css', 'pi_time/pi_time/web/css/*.css', 'laptimer/laptimer/web/css/*.css'],
+                dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/css/pi-time-laptimer.css'
             },
             sensor_css: {
-                src: ['pi_time/pi_time/web/styles/slidebars.css', 'pi_time/pi_time/web/styles/*.css', 'sensor/sensor/web/styles/*.css'],
-                dest: 'dist/sensor/pi_time/sensor/sensor/web/styles/pi-time-sensor.css'
+                src: ['pi_time/pi_time/web/css/slidebars.css', 'pi_time/pi_time/web/css/*.css', 'sensor/sensor/web/css/*.css'],
+                dest: 'dist/sensor/pi_time/sensor/sensor/web/css/pi-time-sensor.css'
             },
         },
+        htmlmin: {
+            laptimer: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {
+                    'dist/laptimer/pi_time/laptimer/laptimer/web/index.html': 'dist/laptimer/pi_time/laptimer/laptimer/web/index.html',
+                }
+            },
+            sensor: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {
+                    'dist/sensor/pi_time/sensor/sensor/web/index.html': 'dist/sensor/pi_time/sensor/sensor/web/index.html',
+                }
+            },
+        },
+        uglify: {
+            laptimer: {
+                files: {
+                    'dist/laptimer/pi_time/laptimer/laptimer/web/js/lib.js': 'dist/laptimer/pi_time/laptimer/laptimer/web/js/lib.js',
+                    'dist/laptimer/pi_time/laptimer/laptimer/web/js/lib-laptimer.js': 'dist/laptimer/pi_time/laptimer/laptimer/web/js/lib-laptimer.js'
+                }
+            },
+            sensor: {
+                files: {
+                    'dist/sensor/pi_time/sensor/sensor/web/js/lib.js': 'dist/sensor/pi_time/sensor/sensor/web/js/lib.js',
+                    'dist/sensor/pi_time/sensor/sensor/web/js/lib-sensor.js': 'dist/sensor/pi_time/sensor/sensor/web/js/lib-sensor.js'
+                }
+            }
+        },
+        cssmin: {
+            options : {
+                keepSpecialComments: 0
+            },
+            laptimer: {
+                files: {
+                    'dist/laptimer/pi_time/laptimer/laptimer/web/css/pi-time-laptimer.css': 'dist/laptimer/pi_time/laptimer/laptimer/web/css/pi-time-laptimer.css'
+                }
+            },
+            sensor: {
+                files: {
+                    'dist/sensor/pi_time/sensor/sensor/web/css/pi-time-sensor.css': 'dist/sensor/pi_time/sensor/sensor/web/css/pi-time-sensor.css'
+                }
+            }
+        }
     });
 
-    grunt.loadNpmTasks('grunt-nose');
-    grunt.loadNpmTasks('grunt-pylint');
+    grunt.loadNpmTasks('grunt-bootlint');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-nose');
+    grunt.loadNpmTasks('grunt-pylint');
 
-    grunt.registerTask('default', ['nose', 'jshint', 'clean', 'copy', 'concat']);
+    grunt.registerTask('default', ['nose', 'jshint', 'bootlint', 'clean', 'copy', 'concat']);
     grunt.registerTask('dist', ['clean', 'copy', 'concat']);
-    grunt.registerTask('lint', ['pylint', 'jshint']);
+    grunt.registerTask('lint', ['pylint', 'jshint', 'bootlint']);
+    grunt.registerTask('minify', ['dist', 'htmlmin', 'uglify', 'cssmin']);
     grunt.registerTask('test', ['nose']);
+    grunt.registerTask('release', ['lint', 'test', 'minify']);
 
 };
