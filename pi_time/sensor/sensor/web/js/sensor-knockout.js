@@ -102,6 +102,7 @@ function MainViewModel() {
     self.access = new AccessViewModel();
 
     // Menu
+    self.menuLabel = ko.observable('Menu');
     self.selectedMenu = ko.observable('Status');
     self.statusLabel = ko.observable('Status');
     self.settingsLabel = ko.observable('Settings');
@@ -125,14 +126,14 @@ function MainViewModel() {
     // Settings and Access tabs only enabled if sensor connected.
 
     // Behaviours
+    self.selectMenu = function(menu) {
+        location.hash = menu;
+    };
 
     // Client-side routes
     Sammy(function() {
         this.get('#:menu', function() {
             self.selectedMenu(this.params.menu);
-        });
-        this.get('', function() {
-            this.app.runRoute('get', 'Status');
         });
     }).run();
 }

@@ -12,12 +12,11 @@ console.log = function(message) {
     // Always uppercase first character for consistency
     message = message.charAt(0).toUpperCase() + message.slice(1);
     console._log(message);
-    log = $('#log');
+    log = $('#pt-log');
     log.text(log.text() + '[' + getLocalTime() + '] ' + message + '\n');
     log.scrollTop(log[0].scrollHeight);
 };
 console.error = console.debug = console.info = console.log;
-
 
 // Helper function to get formatted current local time including milliseconds
 function getLocalTime() {
@@ -78,16 +77,6 @@ document.addEventListener('MSFullscreenChange', fullscreenChanged);
 
 (function($) {
     $(document).ready(function() {
-        $.slidebars();
-        $('.sb-toggle-submenu').off('click').on('click', function() {
-            $submenu = $(this).parent().children('.sb-submenu');
-            $(this).add($submenu).toggleClass('sb-submenu-active');
-            if ($submenu.hasClass('sb-submenu-active')) {
-                $submenu.slideDown(200);
-            } else {
-                $submenu.slideUp(200);
-            }
-        });
         /*
         // Monitor resize events to resize matching 'output' class element
         function resizeOutput() {

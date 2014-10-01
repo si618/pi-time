@@ -1,3 +1,5 @@
+/* http://getbootstrap.com/customize/?id=908b0f45e9a8d24dcad3 */
+
 body {
     font-family: Helvetica, Arial;
 }
@@ -10,10 +12,20 @@ a, li, .navbar-text, .ledTextColumn, .labelColumn, .valueColumn {
     user-select: none;
 }
 .navbar-text, .ledTextColumn, .labelColumn, .valueColumn {
-    cursor: default;
+    /*cursor: default;*/
 }
-span.glyphicon-tasks, span.glyphicon-fullscreen {
-    font-size: 24px;
+.nav > li > a {
+    cursor: pointer;
+}
+.navicon {
+    margin-left: 16px;
+    margin-top: 8px;
+    -webkit-filter: brightness(.75);
+    filter: brightness(75);
+}
+.navicon:hover {
+    -webkit-filter: brightness(1);
+    filter: brightness(100);
 }
 .output-parent {
     height: 100%;
@@ -66,15 +78,8 @@ span.glyphicon-tasks, span.glyphicon-fullscreen {
 .valueColumn {
     /* */
 }
-.sb-toggle-left {
-    float: left;
-    color: #f0e7d5;
-}
-.sb-toggle-right {
-    float: right;
-}
-.top-menu-left {
-    height: 48px;
+.glyphicon-fullscreen {
+    font-size: 24px;
 }
 .fullscreen {
     float: right;
@@ -86,66 +91,4 @@ span.glyphicon-tasks, span.glyphicon-fullscreen {
 .fullscreen:hover {
     -webkit-filter: brightness(1);
     filter: brightness(100);
-}
-.navicon {
-    margin-left: 16px;
-    margin-top: 8px;
-    -webkit-filter: brightness(.75);
-    filter: brightness(75);
-}
-.navicon:hover {
-    -webkit-filter: brightness(1);
-    filter: brightness(100);
-}
-.sb-site-container {
-    margin: 16px;
-}
-html.sb-active #sb-site, .sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-open-right, .sb-close, .sb-toggle-submenu, .fullscreen {
-    cursor: pointer;
-}
-.sb-menu {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-}
-.sb-menu li {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-.sb-menu > li:first-child {
-    border-top: none;
-}
-.sb-menu > li:last-child {
-    border-bottom: none;
-}
-.sb-menu li a {
-    width: 100%;
-    padding: 16px;
-    display: inline-block;
-}
-.sb-submenu {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-}
-.sb-submenu > li:last-child {
-    border-bottom: none;
-}
-.sb-caret {
-    width: 0;
-    height: 0;
-    display: inline-block;
-    margin: 0 5px;
-    border: 5px solid transparent;
-}
-.sb-caret {
-    border-top: 5px solid;
-    border-bottom: 0px solid transparent;
-}
-.sb-submenu-active > .sb-caret {
-    border-top: 0px solid transparent;
-    border-bottom: 5px solid;
 }

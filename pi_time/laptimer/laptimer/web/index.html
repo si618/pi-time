@@ -6,40 +6,34 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Pi-time laptimer</title>
-    <link rel='Stylesheet' href='styles/pi-time-laptimer.css'>
+    <link rel='Stylesheet' href='css/pi-time-laptimer.css'>
     <script>
     AUTOBAHN_DEBUG = true
     </script>
-    <script src='scripts/lib.js'></script>
+    <script src='js/libs.js'></script>
 </head>
 
 <body>
-    <div id='page-wrap'>
-        <div id='menu'>
-            <ul class='tabs' data-bind='foreach: tabs'>
-                <li data-bind='text: $root.getTabName($data),
-                               css: { selected: $data == $root.selectedMenu() },
-                               click: $root.selectMenu'></li>
-            </ul>
-        </div>
-
-        <div data-bind='with: session, visible: $root.selectedMenu() == "Session"'>
-        </div>
-
-        <div data-bind='with: records, visible: $root.selectedMenu() == "Records"'>
-        </div>
-
-        <div data-bind='with: admin, visible: $root.selectedMenu() == "Admin"'>
-            <!-- TODO: Move to events sub-menu -->
-            <div data-bind='with: events'>
-                <div class='output' data-bind='html: events' id='log'></div>
+    <div class='sb-slide navbar container-fluid' role='navigation'>
+        <div class='navbar-header'>
+            <div class='sb-toggle-left navicon'>
+                <span class='glyphicon glyphicon-tasks' alt='Menu'></span>
             </div>
-        </div>
-
-        <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
+            <a class='navbar-brand' data-bind='text: $root.appTitle()'></a>
         </div>
     </div>
-    <script src='scripts/lib-laptimer.js'></script>
+    <div class='sb-site-container container-fluid'>
+    </div>
+    <div class='sb-slidebar sb-left'>
+        <ul class='sb-menu'>
+            <li class='top-menu-left'>
+                <a></a>
+            </li>
+            <li class='sb-close'>
+            </li>
+        </ul>
+    </div>
+    <script src='js/libs-laptimer.js'></script>
 </body>
 
 </html>

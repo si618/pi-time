@@ -10,19 +10,56 @@
     <script>
     AUTOBAHN_DEBUG = true
     </script>
-    <script src='js/lib.js'></script>
+    <script src='js/libs.js'></script>
 </head>
 
 <body>
-    <div class='sb-slide navbar container-fluid' role='navigation'>
-        <div class='navbar-header'>
-            <div class='sb-toggle-left navicon'>
-                <span class='glyphicon glyphicon-tasks' alt='Menu'></span>
+    <nav class='navbar navbar-default navbar-static-top' role='navigation'>
+        <div class='container-fluid'>
+            <div class='navbar-header'>
+                <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#pt-navbar-collapse'>
+                    <span class='sr-only' data-bind='text: $root.menuLabel()'></span>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                </button>
+                <a class='navbar-brand' data-bind='text: $root.sensor.sensorName()'></a>
             </div>
-            <a class='navbar-brand' data-bind='text: $root.appTitle()'></a>
+
+            <div id='pt-navbar-collapse' class='collapse navbar-collapse'>
+                <ul class='nav navbar-nav' data-bind='with: $root'>
+                    <li>
+                        <a onclick='selectMenu("Status");' data-bind='text: statusLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
+                    </li>
+                    <li class='dropdown'>
+                        <a class='dropdown-toggle' data-toggle='dropdown'>
+                           Settings <span class='caret'></span>
+                        </a>
+                        <ul class='dropdown-menu' role='menu'>
+                            <li>
+                                <a onclick='selectMenu("Laptimer");' data-bind='text: laptimerLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
+                            </li>
+                            <li>
+                                <a onclick='selectMenu("Sensor");' data-bind='text: sensorLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a onclick='selectMenu("Events");' data-bind='text: eventsLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
+                    </li>
+                    <li>
+                        <a onclick='selectMenu("Logs");' data-bind='text: logsLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
+                    </li>
+                    <li>
+                        <a onclick='selectMenu("Access");' data-bind='text: accessLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class='sb-site-container container-fluid'>
+    </nav>
+
+    <!-- Main site content -->
+    <div class='container-fluid'>
         <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
             <div class='ledColumn'>
                 <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
@@ -68,7 +105,7 @@
         </div>
         <div data-bind='with: logs, visible: $root.selectedMenu() == "Logs"'>
             <div class='output-parent'>
-                <div class='output' data-bind='html: logs' id='log'></div>
+                <div class='output' data-bind='html: logs' id='pt-log'></div>
             </div>
         </div>
         <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
@@ -81,37 +118,7 @@
             </div>
         </div>
     </div>
-    <div class='sb-slidebar sb-left'>
-        <ul class='sb-menu'>
-            <li class='top-menu-left'>
-                <a></a>
-            </li>
-            <li class='sb-close'>
-                <a data-bind='text: statusLabel()' onclick='selectMenu("Status");'></a>
-            </li>
-            <li>
-                <a class='sb-toggle-submenu' onclick='return false;'>Settings<span class='sb-caret'></span></a>
-                <ul class='sb-submenu sb-hide'>
-                    <li class='sb-close'>
-                        <a data-bind='text: laptimerLabel()' onclick='selectMenu("Laptimer");'></a>
-                    </li>
-                    <li class='sb-close'>
-                        <a data-bind='text: sensorLabel()' onclick='selectMenu("Sensor");'></a>
-                    </li>
-                </ul>
-            </li>
-            <li class='sb-close'>
-                <a data-bind='text: eventsLabel()' onclick='selectMenu("Events");'></a>
-            </li>
-            <li class='sb-close'>
-                <a data-bind='text: logsLabel()' onclick='selectMenu("Logs");'></a>
-            </li>
-            <li class='sb-close'>
-                <a data-bind='text: accessLabel()' onclick='selectMenu("Access");'></a>
-            </li>
-        </ul>
-    </div>
-    <script src='js/lib-sensor.js'></script>
+    <script src='js/libs-sensor.js'></script>
 </body>
 
 </html>
