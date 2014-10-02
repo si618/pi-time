@@ -54,6 +54,10 @@ function parseJson(json) {
 
 // Activate full screen mode for different browsers
 function goFullscreen() {
+    /* 
+    TODO: Fullscreen currently leaves white background on Chrome and Android browers.
+    Oddly enough, using F11 on Chrome on windows works fine?
+    */
     element = document.documentElement;
     if (element.requestFullscreen) {
         element.requestFullscreen();
@@ -75,20 +79,9 @@ document.addEventListener('webkitfullscreenchange', fullscreenChanged);
 document.addEventListener('mozfullscreenchange', fullscreenChanged);
 document.addEventListener('MSFullscreenChange', fullscreenChanged);
 
+/* Not currently needed...
 (function($) {
     $(document).ready(function() {
-        /*
-        // Monitor resize events to resize matching 'output' class element
-        function resizeOutput() {
-            var height = $(window).height();
-            output = $('.output');
-            output.height(height);
-            output.scrollTop = output.height;
-        }
-        resizeOutput();
-        $(window).resize(function() {
-            resizeOutput();
-        });
-        */
     });
 })(jQuery);
+*/

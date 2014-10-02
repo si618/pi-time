@@ -17,6 +17,7 @@
     <nav class='navbar navbar-default navbar-static-top' role='navigation'>
         <div class='container-fluid'>
             <div class='navbar-header'>
+                <span class='navbar-brand glyphicon glyphicon-fullscreen fullscreen' onclick='goFullscreen();'></span>
                 <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#pt-navbar-collapse'>
                     <span class='sr-only' data-bind='text: $root.menuLabel()'></span>
                     <span class='icon-bar'></span>
@@ -61,42 +62,99 @@
     <!-- Main site content -->
     <div class='container-fluid'>
         <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
-            <div class='ledColumn'>
-                <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
-                <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
-                <div data-bind="css: triggered() ? 'led blue' : 'led gray'"></div>
-                <div data-bind="css: lap() ? 'led red' : 'led gray'"></div>
-            </div>
-            <div class='ledTextColumn'>
-                <div class='label' data-bind='text: laptimerLabel()'></div>
-                <div class='label' data-bind='text: sensorLabel()'></div>
-                <div class='label' data-bind='text: triggeredLabel()'></div>
-                <div class='label' data-bind='text: lapLabel()'></div>
-            </div>
+            <table class='table status'>
+                <tr>
+                    <td>
+                        <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
+                    </td>
+                    <td>
+                        <p data-bind='text: laptimerLabel()'></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
+                    </td>
+                    <td>
+                        <p data-bind='text: sensorLabel()'></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div data-bind="css: triggered() ? 'led blue' : 'led gray'"></div>
+                    </td>
+                    <td>
+                        <p data-bind='text: triggeredLabel()'>
+                            <p/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div data-bind="css: lap() ? 'led red' : 'led gray'"></div>
+                    </td>
+                    <td>
+                        <p data-bind='text: lapLabel()'></p>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div data-bind='with: laptimer, visible: $root.selectedMenu() == "Laptimer"'>
-            <div class='labelColumn'>
-                <div class='label' data-bind='text: nameLabel()'></div>
-                <div class='label' data-bind='text: urlLabel()'></div>
-            </div>
-            <div class='valueColumn'>
-                <div class='label' data-bind='text: laptimerName()'></div>
-                <div class='label' data-bind='text: laptimerUrl()'></div>
-            </div>
+            <table class='table settings'>
+                <tr>
+                    <td>
+                        <p data-bind='text: nameLabel()'></p>
+                    </td>
+                    <td>
+                        <p data-bind='text: laptimerName()'></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p data-bind='text: urlLabel()'></p>
+                    </td>
+                    <td>
+                        <p data-bind='text: laptimerUrl()'></p>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div data-bind='with: sensor, visible: $root.selectedMenu() == "Sensor"'>
-            <div class='labelColumn'>
-                <div class='label' data-bind='text: nameLabel()'></div>
-                <div class='label' data-bind='text: urlLabel()'></div>
-                <div class='label' data-bind='text: hardwareLabel()'></div>
-                <div class='label' data-bind='text: locationLabel()'></div>
-            </div>
-            <div class='valueColumn'>
-                <div class='label' data-bind='text: sensorName()'></div>
-                <div class='label' data-bind='text: sensorUrl()'></div>
-                <div class='label' data-bind='text: hardware()'></div>
-                <div class='label' data-bind='text: location()'></div>
-            </div>
+            <table class='table settings'>
+                <tr>
+                    <td>
+                        <p data-bind='text: nameLabel()'></p>
+                    </td>
+                    <td>
+                        <div class='input-group'>
+                            <input type='text' class='form-control' data-bind='textInput: sensorName()'>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p data-bind='text: urlLabel()'></p>
+                    </td>
+                    <td>
+                        <p data-bind='text: sensorUrl()'></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p data-bind='text: hardwareLabel()'></p>
+                    </td>
+                    <td>
+                        <p data-bind='text: hardware()'></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p data-bind='text: locationLabel()'></p>
+                    </td>
+                    <td>
+                        <p data-bind='text: location()'></p>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
             <div class='output-parent'>
@@ -109,12 +167,16 @@
             </div>
         </div>
         <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
-            <div class='labelColumn'>
-                <div class='label' data-bind='text: secretLabel()'></div>
+            <div>
+                <div data-bind='text: secretLabel()'></div>
             </div>
-            <div class='valueColumn'>
-                <input type='password' data-bind='value: secret' />
-                <button data-bind='text: accessLabel(), click: authenticate'></button>
+            <div>
+                <div class='input-group'>
+                    <input type='password' class='form-control' data-bind='value: secret'>
+                    <span class='input-group-btn'>
+                        <button class='btn btn-default' type='button' data-loading-text='text: accessingLabel()' data-bind='text: accessLabel(), click: authenticate'></button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

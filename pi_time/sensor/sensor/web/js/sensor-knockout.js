@@ -3,7 +3,7 @@
 function StatusViewModel() {
     var self = this;
 
-    self.laptimer = ko.observable(false);
+    self.laptimer = ko.observable(false); /* TODO: Needs to link to event on sensor app on server */
     self.sensor = ko.observable(false);
     self.triggered = ko.observable(false);
     self.lap = ko.observable(false);
@@ -74,6 +74,9 @@ function AccessViewModel() {
     }, this);
     self.secretLabel = ko.observable('Password');
     self.secret = ko.observable();
+    self.accessingLabel = ko.pureComputed(function() {
+        return self.authenticated() ? 'Logging out...' : 'Logging in...';
+    }, this);
 
     // Behaviours
     function authenticated(result) {
@@ -103,6 +106,7 @@ function MainViewModel() {
 
     // Menu
     self.menuLabel = ko.observable('Menu');
+    self.fullscreenLabel = ko.observable('Fullscreen');
     self.selectedMenu = ko.observable('Status');
     self.statusLabel = ko.observable('Status');
     self.settingsLabel = ko.observable('Settings');
