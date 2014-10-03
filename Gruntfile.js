@@ -91,11 +91,11 @@ module.exports = function(grunt) {
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/js/libs.js'
             },
             laptimer_js: {
-                src: ['pi_time/laptimer/laptimer/web/js/laptimer-knockout.js', 'pi_time/laptimer/laptimer/web/js/laptimer-autobahn.js', ],
+                src: ['pi_time/laptimer/laptimer/web/js/laptimer*.js'],
                 dest: 'dist/laptimer/pi_time/laptimer/laptimer/web/js/libs-laptimer.js'
             },
             sensor_js: {
-                src: ['pi_time/sensor/sensor/web/js/sensor-knockout.js', 'pi_time/sensor/sensor/web/js/sensor-autobahn.js'],
+                src: ['pi_time/sensor/sensor/web/js/sensor*.js'],
                 dest: 'dist/sensor/pi_time/sensor/sensor/web/js/libs-sensor.js'
             },
             laptimer_css: {
