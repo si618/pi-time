@@ -24,7 +24,7 @@
                     <span class='icon-bar'></span>
                     <span class='icon-bar'></span>
                 </button>
-                <a class='navbar-brand' data-bind='text: $root.sensor.sensorName()'></a>
+                <a class='navbar-brand' data-bind='text: $root.appTitle()'></a>
             </div>
 
             <div id='pt-navbar-collapse' class='collapse navbar-collapse'>
@@ -105,7 +105,7 @@
                         <p data-bind='text: nameLabel()'></p>
                     </td>
                     <td>
-                        <p data-bind='text: laptimerName()'></p>
+                        <p data-bind='text: name()'></p>
                     </td>
                 </tr>
                 <tr>
@@ -113,7 +113,7 @@
                         <p data-bind='text: urlLabel()'></p>
                     </td>
                     <td>
-                        <p data-bind='text: laptimerUrl()'></p>
+                        <p data-bind='text: url()'></p>
                     </td>
                 </tr>
             </table>
@@ -126,7 +126,7 @@
                     </td>
                     <td>
                         <div class='input-group'>
-                            <input type='text' class='form-control' data-bind='textInput: sensorName()'>
+                            <input type='text' class='form-control' data-bind='textInput: name()'>
                         </div>
                     </td>
                 </tr>
@@ -135,7 +135,7 @@
                         <p data-bind='text: urlLabel()'></p>
                     </td>
                     <td>
-                        <p data-bind='text: sensorUrl()'></p>
+                        <p data-bind='text: url()'></p>
                     </td>
                 </tr>
                 <tr>
