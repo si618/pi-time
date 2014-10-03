@@ -1,6 +1,7 @@
 // Pi-time autobahn scripts shared between laptimer and sensor
 
-URI_PREFIX = 'pi-time.';
+var connection; // Autobahn websocket connection
+var URI_PREFIX = 'pi-time.';
 
 function printError(error) {
     msg = error.error;
@@ -56,6 +57,34 @@ function rpc(method, callback, options) {
         }
     );
 }
+
+// Helper function to invoke to an autobahn rpc call.
+function rpc2(method, params) {
+    var deferred = new $.Deferred();
+    if (connection === null) {
+        error = 'Unable to call ' + method + ' (connection closed)';
+        console.log(error);
+        deferred.reject(error);
+    } else if (connection.session === null || !connection.session.isOpen) {
+        error = 'Unable to call ' + method + ' (session closed)';
+        console.log(error);
+        deferred.reject(error);
+    } else {
+        console.log('Request ' + method);
+        session.call(URI_PREFIX + method, params).then(
+            function(res) {
+                console.log('Response from ' + method + ' (ok)');
+                deferred.resolve(res);
+            },
+            function(err) {
+                console.log('Response from ' + method + ' (' + printError(err) + ')');
+                deferred.reject(err);
+            }
+        );
+    }
+    return deferred.promise();
+}
+
 function getConnection(wsuri) {
     // URL of WAMP Router (Crossbar.io)
     if (wsuri === undefined) {
