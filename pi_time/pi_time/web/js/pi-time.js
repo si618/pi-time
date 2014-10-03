@@ -47,11 +47,6 @@ function selectMenu(menu) {
     location.hash = menu;
 }
 
-// Helper function to parse JSON, default to native parser, jquery as fallback
-function parseJson(json) {
-    return JSON && JSON.parse(json) || $.parseJSON(json);
-}
-
 // Activate full screen mode for different browsers
 function goFullscreen() {
     /* 
