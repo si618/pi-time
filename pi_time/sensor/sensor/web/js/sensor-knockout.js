@@ -20,14 +20,8 @@ function LaptimerViewModel() {
     self.nameLabel = ko.observable('Name');
     self.urlLabel = ko.observable('Address');
 
-    self.laptimerName = ko.observable();
-    self.laptimerUrl = ko.observable();
-
-    // Behaviours
-    self.updateConfig = function(laptimer) {
-        self.laptimerName(laptimer.name);
-        self.laptimerUrl(laptimer.url);
-    };
+    self.name = ko.observable();
+    self.url = ko.observable();
 }
 
 function SensorViewModel() {
@@ -38,18 +32,12 @@ function SensorViewModel() {
     self.hardwareLabel = ko.observable('Hardware');
     self.locationLabel = ko.observable('Location');
 
-    self.sensorName = ko.observable();
-    self.sensorUrl = ko.observable();
+    self.name = ko.observable();
+    self.url = ko.observable();
     self.hardware = ko.observable();
+    self.hardwares = ko.observableArray();
     self.location = ko.observable();
-
-    // Behaviours
-    self.updateConfig = function(sensor) {
-        self.sensorName(sensor.name);
-        self.sensorUrl(sensor.url);
-        self.hardware(sensor.hardware);
-        self.location(sensor.location);
-    };
+    self.locations = ko.observableArray();
 }
 
 function EventsViewModel() {
@@ -92,10 +80,6 @@ function AccessViewModel() {
 function MainViewModel() {
     var self = this;
 
-    // Autobahn websocket connections
-    var connection = null;
-    var laptimerConnection = null;
-
     // Nested view models
     self.status = new StatusViewModel();
     self.laptimer = new LaptimerViewModel();
@@ -104,7 +88,6 @@ function MainViewModel() {
     self.logs = new LogsViewModel();
     self.access = new AccessViewModel();
 
-    // Menu
     self.menuLabel = ko.observable('Menu');
     self.fullscreenLabel = ko.observable('Fullscreen');
     self.selectedMenu = ko.observable('Status');
@@ -114,25 +97,20 @@ function MainViewModel() {
     self.sensorLabel = ko.observable('Sensor');
     self.eventsLabel = ko.observable('Sensor Events');
     self.logsLabel = ko.observable('Console Log');
-    self.accessLabel = ko.pureComputed(function() {
+    self.accessLabel = ko.computed(function() {
         return self.access.accessLabel();
     }, this);
-    self.appTitle = ko.pureComputed(function() {
-        if (self.laptimer.laptimerName() === undefined || self.sensor.sensorName() === undefined) {
-            return '';
+    self.appTitle = ko.computed(function() {
+        if (!self.sensor.name()) {
+            return self.sensorLabel();
         }
-        return self.laptimer.laptimerName() + ' - ' + self.sensor.sensorName();
+        return self.sensor.name();
     }, this);
 
     // TODO: Tab should be disabled if sensor connection lost or not authorised.
     // Status tab always enabled for all users.
     // Settings tab only enabled if authorised.
     // Settings and Access tabs only enabled if sensor connected.
-
-    // Behaviours
-    self.selectMenu = function(menu) {
-        location.hash = menu;
-    };
 
     // Client-side routes
     Sammy(function() {

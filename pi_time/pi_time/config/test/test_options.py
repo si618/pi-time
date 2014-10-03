@@ -1,6 +1,6 @@
 import unittest
 
-import pytz
+from pytz import common_timezones
 
 from pi_time import settings
 from pi_time.config import options
@@ -10,21 +10,21 @@ class OptionsTestCase(unittest.TestCase):
 
     def test_get_laptimer_options_returns_expected_options(self):
         # Arrange
-        units = ('unitsOfMeasurement', settings.OPTIONS_UNIT_OF_MEASUREMENT)
-        timezones = ('timezones', pytz.common_timezones)
+        units = settings.OPTIONS_UNIT_OF_MEASUREMENT
+        timezones = common_timezones
         # Act
         laptimer_options = options.get_laptimer_options()
         # Assert
-        self.assertSequenceEqual(units, laptimer_options[0])
-        self.assertSequenceEqual(timezones, laptimer_options[1])
+        self.assertSequenceEqual(units, laptimer_options['unitsOfMeasurement'])
+        self.assertSequenceEqual(timezones, laptimer_options['timezones'])
 
 
     def test_get_sensor_options_returns_expected_options(self):
         # Arrange
-        locations = ('locations', settings.OPTIONS_SENSOR_LOCATION)
-        hardwares = ('hardwares', settings.OPTIONS_HARDWARE)
+        locations = settings.OPTIONS_SENSOR_LOCATION
+        hardwares = settings.OPTIONS_HARDWARE
         # Act
         sensor_options = options.get_sensor_options()
         # Assert
-        self.assertEqual(locations, sensor_options[0])
-        self.assertEqual(hardwares, sensor_options[1])
+        self.assertEqual(locations, sensor_options['locations'])
+        self.assertEqual(hardwares, sensor_options['hardwares'])

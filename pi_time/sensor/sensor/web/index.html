@@ -144,6 +144,7 @@
                     </td>
                     <td>
                         <p data-bind='text: hardware()'></p>
+                        <select class='form-control' data-bind='options: hardwares, optionsText: "description", optionsValue: "hardware", value: hardware'></select>
                     </td>
                 </tr>
                 <tr>
@@ -152,6 +153,7 @@
                     </td>
                     <td>
                         <p data-bind='text: location()'></p>
+                        <select class='form-control' data-bind='options: locations, optionsText: "description", optionsValue: "location", value: location'></select>
                     </td>
                 </tr>
             </table>

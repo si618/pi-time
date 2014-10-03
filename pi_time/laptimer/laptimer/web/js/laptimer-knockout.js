@@ -83,19 +83,11 @@ function AccessViewModel() {
 function MainViewModel() {
     var self = this;
 
-    // Autobahn websocket connections
-    var connection = null;
-    var sensorConnections = []; // One connection per sensor
-
     // Nested view models
     self.session = new SessionViewModel();
     self.records = new RecordsViewModel();
     self.admin = new AdminViewModel();
     self.access = new AccessViewModel();
-
-    // Tab data
-    self.tabs = ['Session', 'Records', 'Admin', 'Access'];
-    self.selectedMenu = ko.observable();
 
     // TODO: Tab should be disabled if sensor connection lost or not authorised.
     // Status tab always enabled for all users.
@@ -103,19 +95,11 @@ function MainViewModel() {
     // Events, Settings and Access tabs only enabled if sensor connected.
 
     // Behaviours
-    self.selectMenu = function(tab) {
-        location.hash = tab;
-    };
-
     // Client-side routes
     Sammy(function() {
         this.get('#:menu', function() {
             self.selectedMenu(this.params.menu);
         });
-        /*
-        this.get('', function() {
-            this.app.runRoute('get', '#Session');
-        });*/
     }).run();
 }
 

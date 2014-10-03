@@ -1,8 +1,5 @@
 // Pi-time autobahn scripts shared between laptimer and sensor
 
-var connection; // Autobahn websocket connection
-var URI_PREFIX = 'pi-time.';
-
 function printError(error) {
     msg = error.error;
     if (AUTOBAHN_DEBUG === true && error.args.length > 0) {
@@ -13,7 +10,7 @@ function printError(error) {
 
 
 // Helper function to subscribe to an autobahn event
-function subscribe(session, name, method, success, failure) {
+function subscribe(name, method, success, failure) {
     session.subscribe(URI_PREFIX + name, method).then(
         function(sub) {
             console.log('Subscribed to ' + name);
@@ -36,8 +33,7 @@ function subscribe(session, name, method, success, failure) {
 //   params: RPC parameters, otherwise, pass none
 //   failure: Name of function to call if unsuccessfull
 function rpc(method, callback, options) {
-    var session = options.session ? options.session : vm.connection.session;
-    var params = options.params ? options.params : [];
+    var params = options ? (options.params ? options.params : []) : [];
     if (session === null || !session.isOpen) {
         console.log('Unable to call ' + method + ' (session closed)');
     }
@@ -61,11 +57,9 @@ function rpc(method, callback, options) {
 // Helper function to invoke to an autobahn rpc call.
 function rpc2(method, params) {
     var deferred = new $.Deferred();
-    if (connection === null) {
-        error = 'Unable to call ' + method + ' (connection closed)';
-        console.log(error);
-        deferred.reject(error);
-    } else if (connection.session === null || !connection.session.isOpen) {
+    // TODO: Call getConnection()) if connection === null?
+    // TODO: Call connection.open() if connection.session === null || !connection.session.isOpen?
+    if (connection === null || connection.session === null || !connection.session.isOpen) {
         error = 'Unable to call ' + method + ' (session closed)';
         console.log(error);
         deferred.reject(error);
@@ -85,16 +79,13 @@ function rpc2(method, params) {
     return deferred.promise();
 }
 
-function getConnection(wsuri) {
+function getConnection() {
     // URL of WAMP Router (Crossbar.io)
-    if (wsuri === undefined) {
-        protocol = document.location.protocol === 'http:' ? 'ws:' : 'wss:';
-        wsuri = protocol + '//' + document.location.host + '/ws';
-    }
+    protocol = document.location.protocol === 'http:' ? 'ws:' : 'wss:';
+    wsuri = protocol + '//' + document.location.host + '/ws';
     // WAMP connection to Router
-    var connection = new autobahn.Connection({
+    return new autobahn.Connection({
         url: wsuri,
         realm: 'pi-time'
     });
-    return connection;
 }

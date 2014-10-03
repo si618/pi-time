@@ -5,17 +5,19 @@ LAPTIMER_NODE = u'pi-time-laptimer-node'
 # URI prefix for PUBSUB and RPC
 URI_PREFIX = u'pi-time.'
 
-PLAYA_RIDE = 'RIDE'
+PLAYA_BIKE = 'BIKE'
+PLAYA_MOTORBIKE = 'MOTO'
 PLAYA_RUN = 'RUN'
 PLAYA_DRIVE = 'DRIVE'
 PLAYA_FLY = 'FLY'
 PLAYA_SWIM = 'SWIM'
 OPTIONS_PLAYA = (
-    (PLAYA_RIDE, 'Ride', 'Rider'),
-    (PLAYA_RUN, 'Run', 'Runner'),
-    (PLAYA_SWIM, 'Swim', 'Swimmer'),
-    (PLAYA_DRIVE, 'Drive', 'Driver'),
-    (PLAYA_FLY, 'Fly', 'Pilot'),
+    (PLAYA_BIKE, 'Ride', 'Rider', ('Track', 'Dirt Jumps', 'Cross Country')),
+    (PLAYA_MOTORBIKE, 'Ride', 'Rider', ('Motorcross', 'Rally')),
+    (PLAYA_RUN, 'Run', 'Runner', ('Track', 'Cross Country')),
+    (PLAYA_SWIM, 'Swim', 'Swimmer', ('Pool', 'Ocean')),
+    (PLAYA_DRIVE, 'Drive', 'Driver', ('Track', 'Hillclimb', 'Rally')),
+    (PLAYA_FLY, 'Fly', 'Pilot', 'Course')
 )
 
 # Report speed in km/h|m/s, distance in metres.
@@ -59,6 +61,13 @@ SENSOR_PIN_LED_LAP = ('pinLedLap', 'Pin for LED when lap is active')
 SENSOR_PIN_LED_EVENT = ('pinLedEvent', 'Pin for LED when sensor event is ' \
     'triggered')
 SENSOR_PIN_EVENT = ('pinEvent', 'Pin for triggering sensor event')
+OPTIONS_PIN = (
+    PIN_LED_APP,
+    SENSOR_PIN_LED_HEARTBEAT,
+    SENSOR_PIN_LED_LAP,
+    SENSOR_PIN_LED_EVENT,
+    SENSOR_PIN_EVENT
+)
 
 # Raspberry Pi pin layouts - http://pi.gadgetoid.com/pinout
 # http://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/

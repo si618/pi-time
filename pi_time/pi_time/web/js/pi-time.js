@@ -1,4 +1,11 @@
-// Pi-time general scripts shared between laptimer and sensor apps
+// Pi-time global variables, constants and common functions
+
+var connection = null; // Autobahn connection
+var session = null; // Connection session
+var wsuri = null; // Websocket address
+var vm = null; // Knockout view model
+
+var URI_PREFIX = 'pi-time.';
 
 // Subvert console log to output to div in window as well as console
 if (typeof console != 'undefined') {
@@ -49,7 +56,7 @@ function selectMenu(menu) {
 
 // Activate full screen mode for different browsers
 function goFullscreen() {
-    /* 
+    /*
     TODO: Fullscreen currently leaves white background on Chrome and Android browers.
     Oddly enough, using F11 on Chrome on windows works fine?
     */
