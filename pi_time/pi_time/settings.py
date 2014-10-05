@@ -6,18 +6,27 @@ LAPTIMER_NODE = u'pi-time-laptimer-node'
 URI_PREFIX = u'pi-time.'
 
 PLAYA_BIKE = 'BIKE'
-PLAYA_MOTORBIKE = 'MOTO'
-PLAYA_RUN = 'RUN'
 PLAYA_DRIVE = 'DRIVE'
 PLAYA_FLY = 'FLY'
+PLAYA_MOTORBIKE = 'MOTO'
+PLAYA_RC = 'RC'
+PLAYA_RUN = 'RUN'
 PLAYA_SWIM = 'SWIM'
+OPTIONS_BIKE = ('Pump Track', 'BMX', 'Downhill', 'Enduro', 'Cross Country')
+OPTIONS_MOTORBIKE = ('Motocross')
+OPTIONS_RC = ('Track')
+OPTIONS_RUN = ('Track', 'Cross Country')
+OPTIONS_SWIM = ('Pool', 'Ocean')
+OPTIONS_DRIVE = ('Track', 'Hillclimb', 'Rally')
+OPTIONS_FLY = ('Course')
 OPTIONS_PLAYA = (
-    (PLAYA_BIKE, 'Ride', 'Rider', ('Track', 'Dirt Jumps', 'Cross Country')),
-    (PLAYA_MOTORBIKE, 'Ride', 'Rider', ('Motorcross', 'Rally')),
-    (PLAYA_RUN, 'Run', 'Runner', ('Track', 'Cross Country')),
-    (PLAYA_SWIM, 'Swim', 'Swimmer', ('Pool', 'Ocean')),
-    (PLAYA_DRIVE, 'Drive', 'Driver', ('Track', 'Hillclimb', 'Rally')),
-    (PLAYA_FLY, 'Fly', 'Pilot', 'Course')
+    (PLAYA_BIKE, 'Ride', 'Rider', OPTIONS_BIKE),
+    (PLAYA_DRIVE, 'Drive', 'Driver', OPTIONS_DRIVE),
+    (PLAYA_FLY, 'Fly', 'Pilot', OPTIONS_FLY),
+    (PLAYA_MOTORBIKE, 'Ride', 'Rider', OPTIONS_MOTORBIKE),
+    (PLAYA_RC, 'Remote Control', 'Driver', OPTIONS_RC),
+    (PLAYA_RUN, 'Run', 'Runner', OPTIONS_RUN),
+    (PLAYA_SWIM, 'Swim', 'Swimmer', OPTIONS_SWIM)
 )
 
 # Report speed in km/h|m/s, distance in metres.
