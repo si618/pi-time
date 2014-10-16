@@ -2,187 +2,193 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Pi-time sensor</title>
     <link rel='Stylesheet' href='css/pi-time-sensor.css'>
     <script>
-    AUTOBAHN_DEBUG = true
+        AUTOBAHN_DEBUG = true
     </script>
     <script src='js/libs.js'></script>
 </head>
 
 <body>
-    <nav class='navbar navbar-default navbar-static-top' role='navigation'>
-        <div class='container-fluid'>
-            <div class='navbar-header'>
-                <span class='navbar-brand glyphicon glyphicon-fullscreen fullscreen' onclick='goFullscreen();'></span>
-                <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#pt-navbar-collapse'>
-                    <span class='sr-only' data-bind='text: $root.menuLabel()'></span>
-                    <span class='icon-bar'></span>
-                    <span class='icon-bar'></span>
-                    <span class='icon-bar'></span>
-                </button>
-                <a class='navbar-brand' data-bind='text: $root.appTitle()'></a>
-            </div>
-
-            <div id='pt-navbar-collapse' class='collapse navbar-collapse'>
-                <ul class='nav navbar-nav' data-bind='with: $root'>
-                    <li>
-                        <a onclick='selectMenu("Status");' data-bind='text: statusLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
-                    </li>
-                    <li class='dropdown'>
-                        <a class='dropdown-toggle' data-toggle='dropdown'>
-                           Settings <span class='caret'></span>
-                        </a>
-                        <ul class='dropdown-menu' role='menu'>
-                            <li>
-                                <a onclick='selectMenu("Laptimer");' data-bind='text: laptimerLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
-                            </li>
-                            <li>
-                                <a onclick='selectMenu("Sensor");' data-bind='text: sensorLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a onclick='selectMenu("Events");' data-bind='text: eventsLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
-                    </li>
-                    <li>
-                        <a onclick='selectMenu("Logs");' data-bind='text: logsLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
-                    </li>
-                    <li>
-                        <a onclick='selectMenu("Access");' data-bind='text: accessLabel()' data-toggle='collapse' data-target='#pt-navbar-collapse'></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main site content -->
+<nav class='navbar navbar-default navbar-static-top' role='navigation'>
     <div class='container-fluid'>
-        <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
-            <table class='table status'>
-                <tr>
-                    <td>
-                        <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
-                    </td>
-                    <td>
-                        <p data-bind='text: laptimerLabel()'></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
-                    </td>
-                    <td>
-                        <p data-bind='text: sensorLabel()'></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div data-bind="css: triggered() ? 'led blue' : 'led gray'"></div>
-                    </td>
-                    <td>
-                        <p data-bind='text: triggeredLabel()'>
-                            <p/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div data-bind="css: lap() ? 'led red' : 'led gray'"></div>
-                    </td>
-                    <td>
-                        <p data-bind='text: lapLabel()'></p>
-                    </td>
-                </tr>
-            </table>
+        <div class='navbar-header'>
+            <span class='navbar-brand glyphicon glyphicon-fullscreen fullscreen' onclick='goFullscreen();'></span>
+            <button type='button' class='navbar-toggle collapsed' data-toggle='collapse'
+                    data-target='#pt-navbar-collapse'>
+                <span class='sr-only' data-bind='text: $root.menuLabel()'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' data-bind='text: $root.appTitle()'></a>
         </div>
-        <div data-bind='with: laptimer, visible: $root.selectedMenu() == "Laptimer"'>
-            <table class='table settings'>
-                <tr>
-                    <td>
-                        <p data-bind='text: nameLabel()'></p>
-                    </td>
-                    <td>
-                        <p data-bind='text: name()'></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p data-bind='text: urlLabel()'></p>
-                    </td>
-                    <td>
-                        <p data-bind='text: url()'></p>
-                    </td>
-                </tr>
-            </table>
+
+        <div id='pt-navbar-collapse' class='collapse navbar-collapse'>
+            <ul class='nav navbar-nav' data-bind='with: $root'>
+                <li>
+                    <a onclick='selectMenu("Status");' data-bind='text: statusLabel()'></a>
+                </li>
+                <li class='dropdown'>
+                    <a class='dropdown-toggle' data-toggle='dropdown'>
+                        Settings <span class='caret'></span>
+                    </a>
+                    <ul class='dropdown-menu' role='menu'>
+                        <li>
+                            <a onclick='selectMenu("Laptimer");' data-bind='text: laptimerLabel()'></a>
+                        </li>
+                        <li>
+                            <a onclick='selectMenu("Sensor");' data-bind='text: sensorLabel()'></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a onclick='selectMenu("Events");' data-bind='text: eventsLabel()'></a>
+                </li>
+                <li>
+                    <a onclick='selectMenu("Logs");' data-bind='text: logsLabel()'></a>
+                </li>
+                <li>
+                    <a onclick='selectMenu("Access");' data-bind='text: accessLabel()'></a>
+                </li>
+            </ul>
         </div>
-        <div data-bind='with: sensor, visible: $root.selectedMenu() == "Sensor"'>
-            <table class='table settings'>
-                <tr>
-                    <td>
-                        <p data-bind='text: nameLabel()'></p>
-                    </td>
-                    <td>
-                        <div class='input-group'>
-                            <input type='text' class='form-control' data-bind='textInput: name()'>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p data-bind='text: urlLabel()'></p>
-                    </td>
-                    <td>
-                        <p data-bind='text: url()'></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p data-bind='text: hardwareLabel()'></p>
-                    </td>
-                    <td>
-                        <p data-bind='text: hardware()'></p>
-                        <select class='form-control' data-bind='options: hardwares, optionsText: "description", optionsValue: "hardware", value: hardware'></select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p data-bind='text: locationLabel()'></p>
-                    </td>
-                    <td>
-                        <p data-bind='text: location()'></p>
-                        <select class='form-control' data-bind='options: locations, optionsText: "description", optionsValue: "location", value: location'></select>
-                    </td>
-                </tr>
-            </table>
+    </div>
+</nav>
+
+<!-- Main site content -->
+<div class='container-fluid'>
+    <div data-bind='with: status, visible: $root.selectedMenu() == "Status"'>
+        <table class='table status'>
+            <tr>
+                <td>
+                    <div data-bind="css: laptimer() ? 'led green' : 'led gray'"></div>
+                </td>
+                <td>
+                    <p data-bind='text: laptimerLabel()'></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div data-bind="css: sensor() ? 'led green' : 'led gray'"></div>
+                </td>
+                <td>
+                    <p data-bind='text: sensorLabel()'></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div data-bind="css: triggered() ? 'led blue' : 'led gray'"></div>
+                </td>
+                <td>
+                    <p data-bind='text: triggeredLabel()'>
+
+                    <p/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div data-bind="css: lap() ? 'led red' : 'led gray'"></div>
+                </td>
+                <td>
+                    <p data-bind='text: lapLabel()'></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div data-bind='with: laptimer, visible: $root.selectedMenu() == "Laptimer"'>
+        <table class='table settings'>
+            <tr>
+                <td>
+                    <p data-bind='text: nameLabel()'></p>
+                </td>
+                <td>
+                    <p data-bind='text: name()'></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: urlLabel()'></p>
+                </td>
+                <td>
+                    <p data-bind='text: url()'></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div data-bind='with: sensor, visible: $root.selectedMenu() == "Sensor"'>
+        <table class='table settings'>
+            <tr>
+                <td>
+                    <p data-bind='text: nameLabel()'></p>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <input type='text' class='form-control' data-bind='textInput: name()'>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: urlLabel()'></p>
+                </td>
+                <td>
+                    <p data-bind='text: url()'></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: hardwareLabel()'></p>
+                </td>
+                <td>
+                    <p data-bind='text: hardware()'></p>
+                    <select class='form-control'
+                            data-bind='options: hardwares, optionsText: "description", optionsValue: "hardware", value: hardware'></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: locationLabel()'></p>
+                </td>
+                <td>
+                    <p data-bind='text: location()'></p>
+                    <select class='form-control'
+                            data-bind='options: locations, optionsText: "description", optionsValue: "location", value: location'></select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
+        <div class='output-parent'>
+            <div class='output' data-bind='html: events' id='events'></div>
         </div>
-        <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
-            <div class='output-parent'>
-                <div class='output' data-bind='html: events' id='events'></div>
-            </div>
+    </div>
+    <div data-bind='with: logs, visible: $root.selectedMenu() == "Logs"'>
+        <div class='output-parent'>
+            <div class='output' data-bind='html: logs' id='pt-log'></div>
         </div>
-        <div data-bind='with: logs, visible: $root.selectedMenu() == "Logs"'>
-            <div class='output-parent'>
-                <div class='output' data-bind='html: logs' id='pt-log'></div>
-            </div>
+    </div>
+    <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
+        <div>
+            <div data-bind='text: secretLabel()'></div>
         </div>
-        <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
-            <div>
-                <div data-bind='text: secretLabel()'></div>
-            </div>
-            <div>
-                <div class='input-group'>
-                    <input type='password' class='form-control' data-bind='value: secret'>
+        <div>
+            <div class='input-group'>
+                <input type='password' class='form-control' data-bind='value: secret'>
                     <span class='input-group-btn'>
-                        <button class='btn btn-default' type='button' data-loading-text='text: accessingLabel()' data-bind='text: accessLabel(), click: authenticate'></button>
+                        <button class='btn btn-default' type='button' data-loading-text='text: accessingLabel()'
+                                data-bind='text: accessLabel(), click: authenticate'></button>
                     </span>
-                </div>
             </div>
         </div>
     </div>
-    <script src='js/libs-sensor.js'></script>
+</div>
+<script src='js/libs-sensor.js'></script>
 </body>
 
 </html>

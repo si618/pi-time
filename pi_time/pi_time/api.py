@@ -52,7 +52,7 @@ class Api(object):
     @wamp.register(u'pi-time.update_laptimer')
     def update_laptimer(self, laptimer):
         config = update.update_laptimer(self.config_file, self.config,
-            laptimer)
+                                        laptimer)
         if 'laptimer' in config:
             self.config = config
             self._publish('laptimer_changed', config['laptimer'])
@@ -60,7 +60,7 @@ class Api(object):
     @wamp.register(u'pi-time.add_sensor')
     def add_sensor(self, sensor):
         config = update.add_sensor(self.config_file, self.config,
-            sensor)
+                                   sensor)
         if 'sensors' in config:
             self.config = config
             self._publish('sensor_changed', config['sensors'])
@@ -68,7 +68,7 @@ class Api(object):
     @wamp.register(u'pi-time.update_sensor')
     def update_sensor(self, sensor):
         config = update.update_sensor(self.config_file, self.config,
-            sensor)
+                                      sensor)
         if 'sensors' in config:
             self.config = config
             self._publish('sensor_changed', config['sensors'])
@@ -76,7 +76,7 @@ class Api(object):
     @wamp.register(u'pi-time.rename_sensor')
     def rename_sensor(self, sensor_name, new_sensor_name):
         config = update.rename_sensor(self.config_file, self.config,
-            name, new_name)
+                                      sensor_name, new_sensor_name)
         if 'sensors' in config:
             self.config = config
             self._publish('sensor_changed', config['sensors'])
@@ -84,7 +84,7 @@ class Api(object):
     @wamp.register(u'pi-time.remove_sensor')
     def remove_sensor(self, sensor_name):
         config = update.remove_sensor(self.config_file, self.config,
-            sensor_name)
+                                      sensor_name)
         if 'sensors' in config:
             self.config = config
             self._publish('sensor_changed', config['sensors'])

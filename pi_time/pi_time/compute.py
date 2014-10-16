@@ -4,7 +4,7 @@ from pi_time import settings
 
 
 def average_speed_per_hour(start, finish, distance,
-    unit_of_measurement=settings.METRIC):
+                           unit_of_measurement=settings.METRIC):
     """
     Calculates average speed per hour.
 
@@ -25,7 +25,7 @@ def average_speed_per_hour(start, finish, distance,
         return average_miles_per_hour(start, finish, distance)
     else:
         raise ValueError("Unknown unit of measurement '%s'" %
-            (unit_of_measurement))
+                         unit_of_measurement)
 
 
 def average_speed_per_second(start, finish, distance):
@@ -38,8 +38,6 @@ def average_speed_per_second(start, finish, distance):
     :type finish: datetime
     :param distance: Distance travelled. Must be greater than zero.
     :type distance: int or float
-    :param unit_of_measurement: Unit of measurement. Defaults to metric.
-    :type unit_of_measurement: str
     :returns: Average speed per second in specified unit of measurement.
     :rtype: float
     """

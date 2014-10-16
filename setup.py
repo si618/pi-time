@@ -1,29 +1,29 @@
 from setuptools import setup, \
-                       find_packages
+    find_packages
 import pi_time
 
 
 setup(
-	name='pi-time',
-	version=pi_time.__version__,
-	description='Lap timer running on a solar powered Raspberry Pi.',
-	author=pi_time.__author__,
-	author_email='sshnug.si+pi-time@gmail.com',
-	url='http://github.com/si618/pi-time',
-	packages=find_packages(),
-	license='GNU General Public License v3 or later (GPLv3+)',
-	include_package_data=True,
-	classifiers=[
-		'Development Status :: 2 - Pre-Alpha',
-		'Environment :: Web Environment',
-		'Intended Audience :: Other Audience',
-		'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
-		'Operating System :: OS Independent',
-		'Programming Language :: Python',
-		'Programming Language :: Python :: 2.7',
-	],
-	install_requires=open('requirements.txt').read(),
-	zip_safe=False,
+    name='pi-time',
+    version=pi_time.__version__,
+    description='Lap timer running on a solar powered Raspberry Pi.',
+    author=pi_time.__author__,
+    author_email='sshnug.si+pi-time@gmail.com',
+    url='http://github.com/si618/pi-time',
+    packages=find_packages(),
+    license='GNU General Public License v3 or later (GPLv3+)',
+    include_package_data=True,
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Environment :: Web Environment',
+        'Intended Audience :: Other Audience',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+    ],
+    install_requires=open('requirements.txt').read(),
+    zip_safe=False,
 )
 
 

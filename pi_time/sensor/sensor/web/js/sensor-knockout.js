@@ -3,7 +3,8 @@
 function StatusViewModel() {
     var self = this;
 
-    self.laptimer = ko.observable(false); /* TODO: Needs to link to event on sensor app on server */
+    self.laptimer = ko.observable(false);
+    /* TODO: Needs to link to event on sensor app on server */
     self.sensor = ko.observable(false);
     self.triggered = ko.observable(false);
     self.lap = ko.observable(false);
@@ -57,12 +58,12 @@ function AccessViewModel() {
     self.role = ko.observable('anonymous');
 
     // UI
-    self.accessLabel = ko.pureComputed(function() {
+    self.accessLabel = ko.pureComputed(function () {
         return self.authenticated() ? 'Logout' : 'Login';
     }, this);
     self.secretLabel = ko.observable('Password');
     self.secret = ko.observable();
-    self.accessingLabel = ko.pureComputed(function() {
+    self.accessingLabel = ko.pureComputed(function () {
         return self.authenticated() ? 'Logging out...' : 'Logging in...';
     }, this);
 
@@ -70,7 +71,8 @@ function AccessViewModel() {
     function authenticated(result) {
         console.log('authenticated: ' + result);
     }
-    self.authenticate = function(tab) {
+
+    self.authenticate = function (tab) {
         rpc('authenticate', authenticated, {
             'params': [self.secret]
         });
@@ -97,10 +99,10 @@ function MainViewModel() {
     self.sensorLabel = ko.observable('Sensor');
     self.eventsLabel = ko.observable('Sensor Events');
     self.logsLabel = ko.observable('Console Log');
-    self.accessLabel = ko.computed(function() {
+    self.accessLabel = ko.computed(function () {
         return self.access.accessLabel();
     }, this);
-    self.appTitle = ko.computed(function() {
+    self.appTitle = ko.computed(function () {
         if (!self.sensor.name()) {
             return self.sensorLabel();
         }
@@ -113,8 +115,8 @@ function MainViewModel() {
     // Settings and Access tabs only enabled if sensor connected.
 
     // Client-side routes
-    Sammy(function() {
-        this.get('#:menu', function() {
+    Sammy(function () {
+        this.get('#:menu', function () {
             self.selectedMenu(this.params.menu);
         });
     }).run();

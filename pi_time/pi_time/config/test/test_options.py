@@ -7,7 +7,6 @@ from pi_time.config import options
 
 
 class OptionsTestCase(unittest.TestCase):
-
     def test_get_laptimer_options_returns_expected_options(self):
         # Arrange
         units = settings.OPTIONS_UNIT_OF_MEASUREMENT
@@ -17,7 +16,6 @@ class OptionsTestCase(unittest.TestCase):
         # Assert
         self.assertSequenceEqual(units, laptimer_options['unitsOfMeasurement'])
         self.assertSequenceEqual(timezones, laptimer_options['timezones'])
-
 
     def test_get_sensor_options_returns_expected_options(self):
         # Arrange

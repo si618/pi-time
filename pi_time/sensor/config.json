@@ -2,14 +2,16 @@
     "laptimer": {
         "url": "ws://127.0.0.1:8080/ws"
     },
-    "sensors": [{
-        "name": "Start & Finish",
-        "url": "ws://127.0.0.1:8888/ws",
-        "hardware": "RPI_REV2",
-        "location": "START_FINISH",
-        "pinLedApp": 13,
-        "pinLedLap": 16,
-        "pinLedEvent": 18,
-        "pinEvent": 22
-    }]
+    "sensors": [
+        {
+            "name": "Start & Finish",
+            "url": "ws://127.0.0.1:8888/ws",
+            "hardware": "RPI_REV2",
+            "location": "START_FINISH",
+            "pinLedApp": 13,
+            "pinLedLap": 16,
+            "pinLedEvent": 18,
+            "pinEvent": 22
+        }
+    ]
 }

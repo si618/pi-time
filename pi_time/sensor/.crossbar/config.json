@@ -6,69 +6,82 @@
             "title": "pi-time-sensor-controller"
         }
     },
-    "workers": [{
-        "type": "router",
-        "options": {
-            "pythonpath": [".."]
-        },
-        "realms": [{
-            "name": "pi-time",
-            "roles": [{
-                "name": "anonymous",
-                "permissions": [{
-                    "uri": "*",
-                    "publish": true,
-                    "subscribe": true,
-                    "call": true,
-                    "register": true
-                }]
-            }]
-        }],
-        "transports": [{
-            "type": "web",
-            "endpoint": {
-                "type": "tcp",
-                "port": 8888
+    "workers": [
+        {
+            "type": "router",
+            "options": {
+                "pythonpath": [".."]
             },
-            "paths": {
-                "/": {
-                    "type": "static",
-                    "directory": "../sensor/web"
-                },
-                "ws": {
-                    "type": "websocket"
+            "realms": [
+                {
+                    "name": "pi-time",
+                    "roles": [
+                        {
+                            "name": "anonymous",
+                            "permissions": [
+                                {
+                                    "uri": "*",
+                                    "publish": true,
+                                    "subscribe": true,
+                                    "call": true,
+                                    "register": true
+                                }
+                            ]
+                        }
+                    ]
                 }
-            }
-        }]
-    }, {
-        "type": "container",
-        "options": {
-            "pythonpath": [".."]
-        },
-        "components": [{
-            "type": "class",
-            "realm": "pi-time",
-            "classname": "sensor.sensor.SensorAppSession",
-            "transport": {
-                "type": "websocket",
-                "endpoint": {
-                    "type": "tcp",
-                    "host": "127.0.0.1",
-                    "port": 8888
-                },
-                "url": "ws://127.0.0.1:8888/ws",
-                "options": {
-                    "compression": {
-                        "deflate": {
-                            "request_no_context_takeover": false,
-                            "request_max_window_bits": 11,
-                            "no_context_takeover": false,
-                            "max_window_bits": 11,
-                            "memory_level": 4
+            ],
+            "transports": [
+                {
+                    "type": "web",
+                    "endpoint": {
+                        "type": "tcp",
+                        "port": 8888
+                    },
+                    "paths": {
+                        "/": {
+                            "type": "static",
+                            "directory": "../sensor/web"
+                        },
+                        "ws": {
+                            "type": "websocket"
                         }
                     }
                 }
-            }
-        }]
-    }]
+            ]
+        },
+        {
+            "type": "container",
+            "options": {
+                "pythonpath": [".."]
+            },
+            "components": [
+                {
+                    "type": "class",
+                    "realm": "pi-time",
+                    "classname": "sensor.sensor.SensorAppSession",
+                    "transport": {
+                        "type": "websocket",
+                        "endpoint": {
+                            "type": "tcp",
+                            "host": "127.0.0.1",
+                            "port": 8888
+                        },
+                        "url": "ws://127.0.0.1:8888/ws",
+                        "options": {
+                            "compression": {
+                                "deflate": {
+                                    "request_no_context_takeover": false,
+                                    "request_max_window_bits": 11,
+                                    "no_context_takeover": false,
+                                    "max_window_bits": 11,
+                                    "memory_level": 4
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
 }

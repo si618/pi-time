@@ -4,7 +4,7 @@ function openSensorConnection() {
 
     connection = getConnection();
 
-    connection.onopen = function(connectionSession, details) {
+    connection.onopen = function (connectionSession, details) {
         session = connectionSession;
 
         subscribe('sensor_changed', sensorChanged);
@@ -21,7 +21,7 @@ function openSensorConnection() {
         connectionOpened(details);
     };
 
-    connection.onclose = function(reason, details) {
+    connection.onclose = function (reason, details) {
         connectionClosed(reason, details);
     };
 

@@ -3,6 +3,7 @@
 *.pot
 *.pyc
 *.sublime-workspace
+.sublime-grunt.cache
 pi_time.egg-info
 dist
-/.sublime-grunt.cache
+.idea

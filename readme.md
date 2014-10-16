@@ -6,23 +6,25 @@ Lap timer running on a solar powered Raspberry Pi.
 
 #### Development Status
 
-Still lots of work to do, hardware is working and API is getting there, but most of the web front end code still needs to be written.
+Still lots of work to do, hardware prototype is working and API is getting there, but most of the web front end code still needs to be written.
 
 ## Overview
 
-An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), or whatever needs timing, with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
+An active infrared sensor is placed on a [pump track](http://adventuresportsjournal.com/biking/pumpin-an-introduction-to-the-world-of-pump-tracks), or whatever activity needs timing, with a cable running between the sensor and a Raspberry Pi, detecting when a lap starts or finishes, which is then broadcast to riders and spectators over wifi.
 
-The Raspberry Pi (RPi), or any hardware capable of running python and networking, acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser or mobile app.
+The Raspberry Pi (RPi), or any hardware capable of running python and networking, acts as a wireless access point, web server and sensor receiver, providing users access to lap data via any modern web browser.
 
-Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor.
+Power for the sensor and RPi comes from batteries recharged from a photovoltaic panel (PV). RPi and the PV panel are housed in an enclosure to provide protection from adverse weather, with an external switch to turn on both the RPi and sensor. Data is stored on the RPi SD card with backup to an authenticated client or cloud service.
 
-Data is stored on the RPi SD card with backup to an authenticated client or cloud service.
+Need more information?  Feel free to ask in the [web forum](https://groups.google.com/forum/#!forum/pi-time).  
 
 ## Software
 
 #### Design
 
 Pi-time is built upon the [Crossbar](http://crossbar.io/) platform, which uses [WebSockets](http://tools.ietf.org/html/rfc6455) and [WAMP](http://wamp.ws). A crossbar application is used as the application and web [server](https://github.com/si618/pi-time/tree/master/pi_time/laptimer), pushing out notifications of events in near real-time as they are received from [sensors](https://github.com/si618/pi-time/tree/master/pi_time/sensor) which are separate crossbar applications, or users from a web browser or mobile app. A single Raspberry Pi can be used to run both the laptimer server and sensor application, although the design allows for multiple sensors to be connected.
+
+As there are many different types of activities that can benefit from the use of timers, pi-time is designed to allow different activities to be added as needed, and is not restricted to a particular hardware platform, although it is being built using a 'mobile first' approach, so assumes that users will interact with the software via a mobile device.  
 
 #### Requirements
 
@@ -47,7 +49,7 @@ See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt
 * Compatible USB WiFi & optional antenna
 * Power source (tested on [solar charger and battery pack](http://cgi.cottonpickers.plus.com/~cottonpickers/forum/viewtopic.php?f=2&t=474&sid=ec0e5edc2965ab799801f71ed28f6c23))
   * [USB 5V to 12V](http://www.ebay.com.au/itm/271176652645?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649) step up to power 12V sensor.
-* Sensor (tested on [active infrared dectector](http://www.ebay.com.au/itm/350771078173?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649))
+* Sensor (tested on [active infrared detector](http://www.ebay.com.au/itm/350771078173?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649))
 * Enclosure (tested on IP66 [190x290x140 TIBOX](http://www.ebay.com.au/itm/121133523629?ssPageName=STRK:MEWNX:IT&_trksid=p3984.m1497.l2649) lid width too small so had to dremel and silicon)
 
 ## Installation

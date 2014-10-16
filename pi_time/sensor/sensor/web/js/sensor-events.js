@@ -21,16 +21,16 @@ function sensorChanged(details) {
 
 function sensorTriggered(details) {
     console.log('Event sensor_triggered (' + details + ')');
-    ko.mapping.fromJS(details, vm.status);
+    // ko.mapping.fromJS(details, vm.status);
     vm.status.triggered(true);
-    setTimeout(function() {
+    setTimeout(function () {
         vm.status.triggered(false);
     }, 1000);
 }
 
 function sensorConfig(details) {
     // ko.mapping.fromJSON(details[0], vm.sensor); TODO: Not working?
-    sensor = details[0];
+    var sensor = details[0];
     vm.sensor.name(sensor.name);
     vm.sensor.url(sensor.url);
     vm.sensor.hardware(sensor.hardware);
@@ -40,12 +40,14 @@ function sensorConfig(details) {
 function sensorOptions(details) {
     // ko.mapping.fromJSON(options, vm.sensor); TODO: Not working?
     vm.sensor.hardwares.removeAll();
+    var hw, hwModel;
     for (var index = 0; index < details.hardwares.length; index++) {
         hw = details.hardwares[index];
         hwModel = new HardwareModel(hw[0], hw[1], hw[2]);
         vm.sensor.hardwares.push(hwModel);
     }
     vm.sensor.locations.removeAll();
+    var loc, locModel;
     for (index = 0; index < details.locations.length; index++) {
         loc = details.locations[index];
         locModel = new LocationModel(loc[0], loc[1]);

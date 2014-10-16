@@ -32,51 +32,26 @@ function subscribe(name, method, success, failure) {
 //   session: Name of session, otherwise use default vm.connection.session
 //   params: RPC parameters, otherwise, pass none
 //   failure: Name of function to call if unsuccessfull
-function rpc(method, callback, options) {
+function rpc(procedure, callback, options) {
     var params = options ? (options.params ? options.params : []) : [];
     if (session === null || !session.isOpen) {
         console.log('Unable to call ' + method + ' (session closed)');
     }
-    console.log('Request ' + method);
-    session.call(URI_PREFIX + method, params).then(
+    console.log('Request ' + procedure);
+    session.call(URI_PREFIX + procedure, params).then(
         function(res) {
-            console.log('Response from ' + method + ' (ok)');
+            console.log('Response from ' + procedure + ' (ok)');
             if (callback) {
                 callback(res);
             }
         },
         function(err) {
-            console.log('Response from ' + method + ' (' + printError(err) + ')');
+            console.log('Response from ' + procedure + ' (' + printError(err) + ')');
             if (options.failure) {
                 options.failure(err);
             }
         }
     );
-}
-
-// Helper function to invoke to an autobahn rpc call.
-function rpc2(method, params) {
-    var deferred = new $.Deferred();
-    // TODO: Call getConnection()) if connection === null?
-    // TODO: Call connection.open() if connection.session === null || !connection.session.isOpen?
-    if (connection === null || connection.session === null || !connection.session.isOpen) {
-        error = 'Unable to call ' + method + ' (session closed)';
-        console.log(error);
-        deferred.reject(error);
-    } else {
-        console.log('Request ' + method);
-        session.call(URI_PREFIX + method, params).then(
-            function(res) {
-                console.log('Response from ' + method + ' (ok)');
-                deferred.resolve(res);
-            },
-            function(err) {
-                console.log('Response from ' + method + ' (' + printError(err) + ')');
-                deferred.reject(err);
-            }
-        );
-    }
-    return deferred.promise();
 }
 
 function getConnection() {

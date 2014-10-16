@@ -5,9 +5,11 @@
         "unitOfMeasurement": "METRIC",
         "timezone": "Australia/Adelaide"
     },
-    "sensors": [{
-        "name": "Start & Finish Sensor",
-        "url": "ws://127.0.0.1:8888/ws",
-        "location": "START_FINISH"
-    }]
+    "sensors": [
+        {
+            "name": "Start & Finish Sensor",
+            "url": "ws://127.0.0.1:8888/ws",
+            "location": "START_FINISH"
+        }
+    ]
 }

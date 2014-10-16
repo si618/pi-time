@@ -43,7 +43,8 @@ a, p, li, .led, .navbar-text {
     white-space: pre;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding-right: 64px;
 }
 .led {

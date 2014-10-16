@@ -20,7 +20,7 @@ def update_laptimer(config_file, config, laptimer):
     :returns: Complete configuration contents after being updated.
     :rtype: dict   
     """
-    # Merges existing content, prefering new laptimer config for duplicates
+    # Merges existing content, preferring new laptimer config for duplicates
     # TODO: Handle case when items are removed rather than updated or added.
     config['laptimer'].update(laptimer)
     check.check_laptimer(config['laptimer'])
@@ -54,7 +54,7 @@ def add_sensor(config_file, config, sensor):
     if match is not None:
         raise Exception("Sensor '%s' already found in configuration" % name)
     check.check_sensor(sensor)
-    # Merges existing content, prefering new sensor config for duplicates
+    # Merges existing content, preferring new sensor config for duplicates
     config['sensors'].append(sensor)
     _update_config(config_file, config)
     log.msg("Configuration added for sensor '%s'" % name)
@@ -86,13 +86,13 @@ def update_sensor(config_file, config, sensor):
             break
         index += 1
     if match is None:
-        raise Exception("Sensor '%s' not found in configuration" % (name))
-    # Merges existing content, prefering new sensor config for duplicates
+        raise Exception("Sensor '%s' not found in configuration" % name)
+    # Merges existing content, preferring new sensor config for duplicates
     # TODO: Handle case when items are removed rather than updated or added.
     config['sensors'][index].update(sensor)
     check.check_sensor(config['sensors'][index])
     _update_config(config_file, config)
-    log.msg("Configuration updated for sensor '%s'" % (name))
+    log.msg("Configuration updated for sensor '%s'" % name)
     return config
     
 
@@ -133,7 +133,7 @@ def rename_sensor(config_file, config, sensor_name, new_sensor_name):
 
 def remove_sensor(config_file, config, sensor_name):
     """
-    Removes sensor from configuraiton.
+    Removes sensor from configuration.
 
     :param config_file: Name of configuration file to update.
     :type config_file: str
@@ -152,10 +152,10 @@ def remove_sensor(config_file, config, sensor_name):
         index += 1
     if match is None:
         raise Exception("Can't remove as sensor '%s' not found " \
-            "in configuration" % (sensor_name))
+            "in configuration" % sensor_name)
     del config['sensors'][index]
     _update_config(config_file, config)
-    log.msg("Configuration for sensor '%s' removed" % (sensor_name))
+    log.msg("Configuration for sensor '%s' removed" % sensor_name)
     return config
 
 
