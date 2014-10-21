@@ -1,3 +1,4 @@
+"""Module for laptimer sensor."""
 import pi_time
 
 from os import path
@@ -12,6 +13,8 @@ from pi_time.api import Api
 
 
 class SensorAppSession(ApplicationSession):
+    """Sensor application session."""
+
     @inlineCallbacks
     def onJoin(self, details):
         config_dir = path.dirname(path.dirname(path.realpath(__file__)))
@@ -22,11 +25,11 @@ class SensorAppSession(ApplicationSession):
         # Methods to publish events from sensor node to sensor clients
         # def sensor_triggered(msg):
         # # Let sensor clients know a sensor event was triggered
-        #    yield self.publish(settings.URI_PREFIX + 'sensor_triggered', msg)
+        # yield self.publish(settings.URI_PREFIX + 'sensor_triggered', msg)
 
         # Subscribe to events from laptimer or sensor clients
-        #yield self.subscribe(sensor_triggered,
-        #    settings.URI_PREFIX + 'sensor_triggered')
+        # yield self.subscribe(sensor_triggered,
+        # settings.URI_PREFIX + 'sensor_triggered')
 
         # Register procedures available from sensor clients
         yield self.register(api)
