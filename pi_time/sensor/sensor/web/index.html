@@ -48,9 +48,6 @@
                     </ul>
                 </li>
                 <li>
-                    <a onclick='selectMenu("Events");' data-bind='text: eventsLabel()'></a>
-                </li>
-                <li>
                     <a onclick='selectMenu("Logs");' data-bind='text: logsLabel()'></a>
                 </li>
                 <li>
@@ -88,7 +85,7 @@
                 <td>
                     <p data-bind='text: triggeredLabel()'>
 
-                    <p/>
+                    <p></p>
                 </td>
             </tr>
             <tr>
@@ -162,11 +159,6 @@
                 </td>
             </tr>
         </table>
-    </div>
-    <div data-bind='with: events, visible: $root.selectedMenu() == "Events"'>
-        <div class='output-parent'>
-            <div class='output' data-bind='html: events' id='events'></div>
-        </div>
     </div>
     <div data-bind='with: logs, visible: $root.selectedMenu() == "Logs"'>
         <div class='output-parent'>

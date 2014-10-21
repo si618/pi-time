@@ -41,11 +41,6 @@ function SensorViewModel() {
     self.locations = ko.observableArray();
 }
 
-function EventsViewModel() {
-    var self = this;
-    self.events = ko.observable();
-}
-
 function LogsViewModel() {
     var self = this;
     self.logs = ko.observable();
@@ -86,7 +81,6 @@ function MainViewModel() {
     self.status = new StatusViewModel();
     self.laptimer = new LaptimerViewModel();
     self.sensor = new SensorViewModel();
-    self.events = new EventsViewModel();
     self.logs = new LogsViewModel();
     self.access = new AccessViewModel();
 
@@ -97,7 +91,6 @@ function MainViewModel() {
     self.settingsLabel = ko.observable('Settings');
     self.laptimerLabel = ko.observable('Laptimer');
     self.sensorLabel = ko.observable('Sensor');
-    self.eventsLabel = ko.observable('Sensor Events');
     self.logsLabel = ko.observable('Console Log');
     self.accessLabel = ko.computed(function () {
         return self.access.accessLabel();

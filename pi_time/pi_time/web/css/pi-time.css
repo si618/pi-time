@@ -1,6 +1,7 @@
 body {
     font-family: Helvetica, Arial;
 }
+
 a, p, li, .led, .navbar-text {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -9,34 +10,48 @@ a, p, li, .led, .navbar-text {
     -ms-user-select: none;
     user-select: none;
 }
+
 .led, .ledText, .navbar-brand, .navbar-text {
     cursor: default;
 }
+
+.navbar-brand {
+    font-size: 20px;
+    line-height: 16px;
+    height: 46px;
+}
+
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
     color: #c8c8c8;
-    background-color: none;
+    background-color: transparent;
 }
+
 .nav > li > a {
     cursor: pointer;
 }
+
 .glyphicon-fullscreen {
     font-size: 24px;
 }
+
 .fullscreen {
     margin: 4px -10px 0 0;
     -webkit-filter: brightness(.20);
     filter: brightness(20);
 }
+
 .fullscreen:hover {
     cursor: pointer;
     -webkit-filter: brightness(1);
     filter: brightness(100);
 }
+
 .output-parent {
     height: 100%;
     width: 100%;
     overflow: hidden;
 }
+
 .output {
     font-family: 'Courier New', Courier, monospace;
     font-size: smaller;
@@ -47,44 +62,55 @@ a, p, li, .led, .navbar-text {
     overflow-y: auto;
     padding-right: 64px;
 }
+
 .led {
     width: 24px;
     height: 24px;
     padding: 12px;
     background-color: #fff;
     border-radius: 50%;
-    box-shadow: #000 0px 0px 1px 0px, -2px -4px 12px 2px inset, 0px 0px 10px 0px;
+    box-shadow: #000 0 0 1px 0, -2px -4px 12px 2px inset, 0 0 10px 0;
 }
+
 .led.green {
     color: #6eb300;
 }
+
 .led.red {
     color: #b30600;
 }
+
 .led.blue {
     color: #004ab3;
 }
+
 .led.gray {
     color: #272b30;
     -webkit-filter: brightness(.5);
     filter: brightness(50);
 }
+
 .status > tbody > tr > td {
     vertical-align: middle !important;
     cursor: default;
 }
+
 .status > tbody > tr > td:first-child {
     width: 24px;
 }
+
 .status > tbody > tr > td:last-child > p {
     margin: 0;
 }
+
 .settings > tbody > tr {
     vertical-align: middle !important;
 }
+
 .settings > tbody > tr > td:first-child {
     width: 100px;
 }
+
 .settings > tbody > tr > td > p {
     cursor: default;
     margin: 4px;
