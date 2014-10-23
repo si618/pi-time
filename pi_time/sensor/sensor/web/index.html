@@ -18,7 +18,8 @@
 <nav class='navbar navbar-default navbar-static-top' role='navigation'>
     <div class='container-fluid'>
         <div class='navbar-header'>
-            <span class='navbar-brand glyphicon glyphicon-fullscreen fullscreen' onclick='goFullscreen();'></span>
+            <!-- Fullscreen API doesn't seem to be working reliably enough... -->
+            <!--<img class='navbar-brand fullscreen' src='../images/fullscreen.png' onclick='goFullscreen();'/>-->
             <button type='button' class='navbar-toggle collapsed' data-toggle='collapse'
                     data-target='#pt-navbar-collapse'>
                 <span class='sr-only' data-bind='text: $root.menuLabel()'></span>
@@ -105,7 +106,9 @@
                     <p data-bind='text: nameLabel()'></p>
                 </td>
                 <td>
-                    <p data-bind='text: name()'></p>
+                    <div class='input-group'>
+                        <input type='text' class='form-control' data-bind='textInput: name()'>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -113,7 +116,9 @@
                     <p data-bind='text: urlLabel()'></p>
                 </td>
                 <td>
-                    <p data-bind='text: url()'></p>
+                    <div class='input-group'>
+                        <input type='text' class='form-control' data-bind='textInput: url()'>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -135,17 +140,9 @@
                     <p data-bind='text: urlLabel()'></p>
                 </td>
                 <td>
-                    <p data-bind='text: url()'></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p data-bind='text: hardwareLabel()'></p>
-                </td>
-                <td>
-                    <p data-bind='text: hardware()'></p>
-                    <select class='form-control'
-                            data-bind='options: hardwares, optionsText: "description", optionsValue: "hardware", value: hardware'></select>
+                    <div class='input-group'>
+                        <input type='text' class='form-control' data-bind='textInput: url()'>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -153,9 +150,21 @@
                     <p data-bind='text: locationLabel()'></p>
                 </td>
                 <td>
-                    <p data-bind='text: location()'></p>
-                    <select class='form-control'
-                            data-bind='options: locations, optionsText: "description", optionsValue: "location", value: location'></select>
+                    <div class='input-group'>
+                        <select class='selectpicker'
+                                data-bind='options: locations, optionsText: "description", optionsValue: "location", value: location'></select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: hardwareLabel()'></p>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <select class='selectpicker'
+                                data-bind='options: hardwares, optionsText: "description", optionsValue: "hardware", value: hardware'></select>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -166,18 +175,22 @@
         </div>
     </div>
     <div data-bind='with: access, visible: $root.selectedMenu() == "Access"'>
-        <div>
-            <div data-bind='text: secretLabel()'></div>
-        </div>
-        <div>
-            <div class='input-group'>
-                <input type='password' class='form-control' data-bind='value: secret'>
-                    <span class='input-group-btn'>
-                        <button class='btn btn-default' type='button' data-loading-text='text: accessingLabel()'
-                                data-bind='text: accessLabel(), click: authenticate'></button>
-                    </span>
-            </div>
-        </div>
+        <table class='table settings'>
+            <tr>
+                <td>
+                    <p data-bind='text: secretLabel()'></p>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <input type='password' class='form-control' data-bind='value: secret'>
+                        <span class='input-group-btn'>
+                            <button class='btn btn-default' type='button' data-loading-text='text: accessingLabel()'
+                                    data-bind='text: accessLabel(), click: authenticate'></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 <script src='js/libs-sensor.js'></script>

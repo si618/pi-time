@@ -17,10 +17,7 @@ class ApiTestCase(unittest.TestCase):
             '       "url": "ws://127.0.0.1:8888/ws",' \
             '       "location": "START_FINISH",' \
             '       "hardware": "RPI_REV2",' \
-            '       "pinLedApp": 13,' \
-            '       "pinLedLap": 16,' \
-            '       "pinLedEvent": 18,' \
-            '       "pinEvent": 22' \
+            '       "pinLedApp": 13' \
             '    }]' \
             '}'
         config_file = os.path.join(os.getcwd(), 'test_api.json')

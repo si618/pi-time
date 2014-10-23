@@ -1,3 +1,4 @@
+"""Unit tests for check module."""
 import json
 import os
 import unittest

@@ -91,7 +91,7 @@ function MainViewModel() {
     self.settingsLabel = ko.observable('Settings');
     self.laptimerLabel = ko.observable('Laptimer');
     self.sensorLabel = ko.observable('Sensor');
-    self.logsLabel = ko.observable('Console Log');
+    self.logsLabel = ko.observable('Log');
     self.accessLabel = ko.computed(function () {
         return self.access.accessLabel();
     }, this);

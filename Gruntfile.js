@@ -67,21 +67,21 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            laptimer_web_fonts: {
+            laptimer_web_images: {
                 files: [
                     {
                         cwd: 'pi_time/pi_time/',
-                        src: ['web/fonts/*.svg'],
+                        src: ['web/images/*.png'],
                         dest: 'dist/laptimer/pi_time/laptimer/laptimer/',
                         expand: true
                     }
                 ]
             },
-            sensor_web_fonts: {
+            sensor_web_images: {
                 files: [
                     {
                         cwd: 'pi_time/pi_time/',
-                        src: ['web/fonts/*.svg'],
+                        src: ['web/images/*.png'],
                         dest: 'dist/sensor/pi_time/sensor/sensor/',
                         expand: true
                     }

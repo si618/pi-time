@@ -1,3 +1,4 @@
+"""Module for API related code."""
 import logging
 
 import pi_time

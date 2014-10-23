@@ -26,24 +26,17 @@ a, p, li, .led, .navbar-text {
     background-color: transparent;
 }
 
-.nav > li > a {
+.nav > li > a, .dropdown-menu > li > a {
     cursor: pointer;
 }
 
-.glyphicon-fullscreen {
-    font-size: 24px;
-}
-
 .fullscreen {
-    margin: 4px -10px 0 0;
-    -webkit-filter: brightness(.20);
-    filter: brightness(20);
+    margin: -2px -3px 0 0;
+    height: 48px;
 }
 
 .fullscreen:hover {
     cursor: pointer;
-    -webkit-filter: brightness(1);
-    filter: brightness(100);
 }
 
 .output-parent {
@@ -113,5 +106,9 @@ a, p, li, .led, .navbar-text {
 
 .settings > tbody > tr > td > p {
     cursor: default;
-    margin: 4px;
+    margin: 8px;
+}
+
+.input-group, .form-control {
+    width: 300px;
 }
