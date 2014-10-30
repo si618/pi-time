@@ -67,6 +67,32 @@ def check_timezone(laptimer):
                              "valid timezone, but got {}".format(timezone))
 
 
+def check_pin(config, pin_name):
+    if pin_name not in config:
+        return
+    pin = config[pin_name]
+    if type(pin) not in six.integer_types:
+        raise TypeError("'{}' in sensor configuration must be "
+                        "integer, but got {}".format(pin, type(pin).__name__))
+    if 'hardware' in config:
+        # Safe to assume hardware has already been checked
+        hardware = config['hardware']
+        # Ignore test hardware as it has no pins and any existing pin
+        # configuration should remain to avoid re-entry
+        if hardware == settings.HARDWARE_TEST:
+            return
+        for n, hw in enumerate(settings.OPTIONS_HARDWARE):
+            if hw[0] == hardware:
+                pins = zip(*hw[2])[0]
+                if pin not in pins:
+                    raise ValueError("'{}' in sensor configuration invalid for "
+                                     "'{}' hardware, must be {}, but got {}"
+                                     .format(pin_name, hardware, pins, pin))
+    else:
+        raise ValueError("'hardware' in sensor configuration must be "
+                         "specified if setting pin")
+
+
 def check_sensor_location(sensor):
     if 'location' in sensor:
         location = sensor['location']
@@ -86,32 +112,6 @@ def check_sensor_position(sensor):
         if position <= 0:
             raise ValueError("'position' in sensor configuration must be "
                              "greater than zero".format(position))
-
-
-def check_sensor_pin(sensor, pin_name):
-    if pin_name not in sensor:
-        return
-    pin = sensor[pin_name]
-    if type(pin) not in six.integer_types:
-        raise TypeError("'{}' in sensor configuration must be "
-                        "integer, but got {}".format(pin, type(pin).__name__))
-    if 'hardware' in sensor:
-        # Safe to assume hardware has already been checked
-        hardware = sensor['hardware']
-        # Ignore test hardware as it has no pins and any existing pin
-        # configuration should remain to avoid re-entry
-        if hardware == settings.HARDWARE_TEST:
-            return
-        for n, hw in enumerate(settings.OPTIONS_HARDWARE):
-            if hw[0] == hardware:
-                pins = zip(*hw[2])[0]
-                if pin not in pins:
-                    raise ValueError("'{}' in sensor configuration invalid for "
-                                     "'{}' hardware, must be {}, but got {}"
-                                     .format(pin_name, hardware, pins, pin))
-    else:
-        raise ValueError("'hardware' in sensor configuration must be "
-                         "specified if setting pin")
 
 
 def check_laptimer(laptimer):
@@ -134,6 +134,8 @@ def check_laptimer(laptimer):
     check_hardware(laptimer, 'laptimer')
     check_unit_of_measurement(laptimer)
     check_timezone(laptimer)
+    check_pin(laptimer, settings.PIN_LED_APP[0])
+    check_pin(laptimer, settings.PIN_LED_LAP[0])
 
     return laptimer
 
@@ -153,7 +155,7 @@ def check_sensor(sensor):
 
     for key in sensor:
         if key not in ['name', 'url', 'hardware', 'location', 'position',
-                       settings.PIN_LED_APP[0], settings.SENSOR_PIN_LED_LAP[0],
+                       settings.PIN_LED_APP[0], settings.PIN_LED_LAP[0],
                        settings.SENSOR_PIN_LED_EVENT[0], settings.SENSOR_PIN_EVENT[0]]:
             raise ValueError("Unknown attribute '{}' in sensor configuration"
                              .format(key))
@@ -163,10 +165,10 @@ def check_sensor(sensor):
     check_hardware(sensor, 'sensor')
     check_sensor_location(sensor)
     check_sensor_position(sensor)
-    check_sensor_pin(sensor, settings.PIN_LED_APP[0])
-    check_sensor_pin(sensor, settings.SENSOR_PIN_LED_LAP[0])
-    check_sensor_pin(sensor, settings.SENSOR_PIN_LED_EVENT[0])
-    check_sensor_pin(sensor, settings.SENSOR_PIN_EVENT[0])
+    check_pin(sensor, settings.PIN_LED_APP[0])
+    check_pin(sensor, settings.PIN_LED_LAP[0])
+    check_pin(sensor, settings.SENSOR_PIN_LED_EVENT[0])
+    check_pin(sensor, settings.SENSOR_PIN_EVENT[0])
 
     return sensor
 

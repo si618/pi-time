@@ -30,15 +30,23 @@ function SensorViewModel() {
 
     self.nameLabel = ko.observable('Name');
     self.urlLabel = ko.observable('Address');
-    self.hardwareLabel = ko.observable('Hardware');
     self.locationLabel = ko.observable('Location');
+    self.hardwareLabel = ko.observable('Hardware');
+    self.pinLedAppLabel = ko.observable('Sensor Active');
+    self.pinLedLapLabel = ko.observable('Lap Active');
+    self.pinLedEventLabel = ko.observable('Sensor LED');
+    self.pinEventLabel = ko.observable('Sensor Event');
 
     self.name = ko.observable();
     self.url = ko.observable();
-    self.hardware = ko.observable();
-    self.hardwares = ko.observableArray();
     self.location = ko.observable();
     self.locations = ko.observableArray();
+    self.hardware = ko.observable();
+    self.hardwares = ko.observableArray();
+    self.pinLedApp = ko.observable();
+    self.pinLedLap = ko.observable();
+    self.pinLedEvent = ko.observable();
+    self.pinEvent = ko.observable();
 }
 
 function LogsViewModel() {

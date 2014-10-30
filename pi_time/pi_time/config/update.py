@@ -1,8 +1,8 @@
+"""Module for updating configuration file."""
 import json
 
 from twisted.python import log
 
-from pi_time import settings
 from pi_time.config import check
 
 
@@ -38,8 +38,6 @@ def add_sensor(config_file, config, sensor):
     :type config_file: str
     :param config: Complete current configuration.
     :type config: dict
-    :param laptimer: Sensor configuration to be added.
-    :type config_file: dict
     :returns: Complete configuration contents after being updated.
     :rtype: dict   
     """
@@ -70,8 +68,6 @@ def update_sensor(config_file, config, sensor):
     :type config_file: str
     :param config: Complete current configuration.
     :type config: dict
-    :param laptimer: Sensor configuration to be updated.
-    :type config_file: dict
     :returns: Complete configuration contents after being updated.
     :rtype: dict   
     """
@@ -94,7 +90,7 @@ def update_sensor(config_file, config, sensor):
     _update_config(config_file, config)
     log.msg("Configuration updated for sensor '%s'" % name)
     return config
-    
+
 
 def rename_sensor(config_file, config, sensor_name, new_sensor_name):
     """
@@ -119,15 +115,15 @@ def rename_sensor(config_file, config, sensor_name, new_sensor_name):
         if sensor['name'] == sensor_name:
             match = sensor
         if sensor['name'] == new_sensor_name:
-            raise Exception("Can't rename sensor '%s' as '%s' already " \
-                "found in configuration" % (sensor_name, new_sensor_name))
+            raise Exception("Can't rename sensor '%s' as '%s' already "
+                            "found in configuration" % (sensor_name, new_sensor_name))
     if match is None:
-        raise Exception("Can't rename as existing sensor '%s' not found " \
-            "in configuration" % sensor_name)
+        raise Exception("Can't rename as existing sensor '%s' not found "
+                        "in configuration" % sensor_name)
     match['name'] = new_sensor_name
     _update_config(config_file, config)
     log.msg("Configuration renamed from sensor '%s' to '%s'" % (sensor_name,
-        new_sensor_name))
+                                                                new_sensor_name))
     return config
 
 
@@ -151,8 +147,8 @@ def remove_sensor(config_file, config, sensor_name):
             match = sensor_name
         index += 1
     if match is None:
-        raise Exception("Can't remove as sensor '%s' not found " \
-            "in configuration" % sensor_name)
+        raise Exception("Can't remove as sensor '%s' not found "
+                        "in configuration" % sensor_name)
     del config['sensors'][index]
     _update_config(config_file, config)
     log.msg("Configuration for sensor '%s' removed" % sensor_name)

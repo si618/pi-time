@@ -167,6 +167,50 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: pinLedAppLabel()'></p>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <select class='selectpicker'
+                                data-bind='options: hardware.layout, optionsText: "description", optionsValue: "pin", value: pinLedApp, selectPicker: {}'></select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: pinLedLapLabel()'></p>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <select class='selectpicker'
+                                data-bind='options: hardware.layout, optionsText: "description", optionsValue: "pin", value: pinLedLap, selectPicker: {}'></select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: pinLedEventLabel()'></p>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <select class='selectpicker'
+                                data-bind='options: hardware.layout, optionsText: "description", optionsValue: "pin", value: pinLedEvent, selectPicker: {}'></select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p data-bind='text: pinEventLabel()'></p>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <select class='selectpicker'
+                                data-bind='options: hardware.layout, optionsText: "description", optionsValue: "pin", value: pinEvent, selectPicker: {}'></select>
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
     <div data-bind='with: logs, visible: $root.selectedMenu() == "Logs"'>

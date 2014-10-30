@@ -33,19 +33,16 @@ function sensorConfig(details) {
     var sensor = details[0];
     vm.sensor.name(sensor.name);
     vm.sensor.url(sensor.url);
-    vm.sensor.hardware(sensor.hardware);
     vm.sensor.location(sensor.location);
+    vm.sensor.hardware(sensor.hardware);
+    // TODO: vm.sensor.pinLedApp(sensor.hardware.pinLedApp);
+    // TODO: vm.sensor.pinLedLap(sensor.hardware.pinLedLap);
+    // TODO: vm.sensor.pinLedEvent(sensor.hardware.pinLedEvent);
+    // TODO: vm.sensor.pinEvent(sensor.hardware.pinEvent);
 }
 
 function sensorOptions(details) {
     // ko.mapping.fromJSON(options, vm.sensor); TODO: Not working?
-    vm.sensor.hardwares.removeAll();
-    var hw, hwModel;
-    for (var index = 0; index < details.hardwares.length; index++) {
-        hw = details.hardwares[index];
-        hwModel = new HardwareModel(hw[0], hw[1], hw[2]);
-        vm.sensor.hardwares.push(hwModel);
-    }
     vm.sensor.locations.removeAll();
     var loc, locModel;
     for (index = 0; index < details.locations.length; index++) {
@@ -53,6 +50,17 @@ function sensorOptions(details) {
         locModel = new LocationModel(loc[0], loc[1]);
         vm.sensor.locations.push(locModel);
     }
+    vm.sensor.hardwares.removeAll();
+    var hw, hwModel;
+    for (var index = 0; index < details.hardwares.length; index++) {
+        hw = details.hardwares[index];
+        hwModel = new HardwareModel(hw[0], hw[1], hw[2]);
+        vm.sensor.hardwares.push(hwModel);
+    }
+    //vm.sensor.pinLedAppLabel(details.pins[0][1]);
+    //vm.sensor.pinLedLapLabel(details.pins[1][1]);
+    //vm.sensor.pinLedEventLabel(details.pins[2][1]);
+    //vm.sensor.pinEventLabel(details.pins[3][1]);
 }
 
 function laptimerConfig(laptimer) {

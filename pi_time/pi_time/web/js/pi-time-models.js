@@ -18,9 +18,9 @@ function HardwareModel(hardware, description, layout) {
     self.hardware = hardware;
     self.description = description;
     self.layout = [];
-    for (index = 0; index < layout.length; index++) {
-        lay = layout[index];
-        layoutModel = new LayoutModel(lay[0], lay[1]);
+    for (var index = 0; index < layout.length; index++) {
+        var lay = layout[index];
+        var layoutModel = new LayoutModel(lay[0], lay[1]);
         self.layout.push(layoutModel);
     }
 }
@@ -36,4 +36,3 @@ function LocationModel(location, description) {
     self.location = location;
     self.description = description;
 }
-

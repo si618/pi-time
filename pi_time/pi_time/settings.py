@@ -40,8 +40,8 @@ OPTIONS_UNIT_OF_MEASUREMENT = (
 
 # TODO: Needed? Also consider i18n
 # SENSOR_TYPE_INFRARED_ACTIVE = 'AIR'
-#SENSOR_TYPE_INFRARED_PASSIVE = 'PIR'
-#SENSOR_TYPE_RADIO = 'RAD'
+# SENSOR_TYPE_INFRARED_PASSIVE = 'PIR'
+# SENSOR_TYPE_RADIO = 'RAD'
 #SENSOR_TYPE = ( # Defines the hardware used by sensor
 #    (SENSOR_TYPE_INFRARED_ACTIVE, 'Active Infrared'),
 #    (SENSOR_TYPE_INFRARED_PASSIVE, 'Passive Infrared'),
@@ -62,18 +62,20 @@ OPTIONS_SENSOR_LOCATION = (
     (SENSOR_LOCATION_SECTOR, 'Sector checkpoint (split time)'),
 )
 
-# Pin layouts, first value of tuple is config key, second is description
-PIN_LED_APP = ('pinLedApp', 'Pin for LED when application is active')
-SENSOR_PIN_LED_HEARTBEAT = ('pinLedHeartbeat', 'Pin for LED when sensor '
-                            'received heartbeat from laptimer')
-SENSOR_PIN_LED_LAP = ('pinLedLap', 'Pin for LED when lap is active')
-SENSOR_PIN_LED_EVENT = ('pinLedEvent', 'Pin for LED when sensor event is '
-                        'triggered')
-SENSOR_PIN_EVENT = ('pinEvent', 'Pin for triggering sensor event')
-OPTIONS_PIN = (
+# Laptimer pins, tuple of config key, caption, description
+PIN_LED_APP = ('pinLedApp', 'App Active',
+               'Pin for LED when application is active')
+PIN_LED_LAP = ('pinLedLap', 'Lap Active', 'Pin for LED when lap is active')
+OPTIONS_PIN_LAPTIMER = (
     PIN_LED_APP,
-    SENSOR_PIN_LED_HEARTBEAT,
-    SENSOR_PIN_LED_LAP,
+    PIN_LED_LAP,
+)
+# Sensor pins, tuple of config key, caption, description
+SENSOR_PIN_LED_EVENT = ('pinLedEvent', 'Sensor LED',
+                        'Pin for LED when sensor triggered')
+SENSOR_PIN_EVENT = ('pinEvent', 'Sensor Event',
+                    'Pin for receiving sensor events')
+OPTIONS_PIN_SENSOR = OPTIONS_PIN_LAPTIMER + (
     SENSOR_PIN_LED_EVENT,
     SENSOR_PIN_EVENT
 )
@@ -102,9 +104,9 @@ RPI_GPIO_REV1 = (
 )
 # Model A/B - Revision 2.0
 RPI_GPIO_REV2 = (
-                    (3, '3 = GPIO 2'),
-                    (5, '5 = GPIO 3')
-                ) + RPI_GPIO_REV1[2:]  # Same as revision 1 after pin 5
+    (3, '3 = GPIO 2'),
+    (5, '5 = GPIO 3')
+) + RPI_GPIO_REV1[2:]  # Same as revision 1 after pin 5
 # Model B+
 RPI_GPIO_BPLUS = RPI_GPIO_REV2 + (
     (29, '29 = GPIO 5'),
@@ -124,8 +126,8 @@ HARDWARE_RPI_REV1 = 'RPI_REV1'
 HARDWARE_RPI_REV2 = 'RPI_REV2'
 HARDWARE_RPI_BPLUS = 'RPI_B+'
 OPTIONS_HARDWARE = (
-    (HARDWARE_TEST, 'Test via software triggered events', ()),
     (HARDWARE_RPI_REV1, 'Raspberry Pi Model B - Revision 1.0', RPI_GPIO_REV1),
     (HARDWARE_RPI_REV2, 'Raspberry Pi Model A/B - Revision 2.0', RPI_GPIO_REV2),
     (HARDWARE_RPI_BPLUS, 'Raspberry Pi Model B+', RPI_GPIO_BPLUS),
+    (HARDWARE_TEST, 'Test (software triggered sensor events)', ()),
 )

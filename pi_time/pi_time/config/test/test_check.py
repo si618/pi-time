@@ -114,8 +114,9 @@ class CheckTestCase(unittest.TestCase):
             check.check_hardware(sensor, 'sensor')
         # Assert
         self.assertEqual(context.exception.message,
-                         "'hardware' in sensor configuration must be ('TEST', 'RPI_REV1', "
-                         "'RPI_REV2', 'RPI_B+'), but got bogus")
+                         "'hardware' in sensor configuration must be "
+                         "('RPI_REV1', 'RPI_REV2', 'RPI_B+', 'TEST'), "
+                         "but got bogus")
 
     def test_check_hardware_passes_when_hardware_is_valid(self):
         # Arrange
@@ -169,58 +170,58 @@ class CheckTestCase(unittest.TestCase):
         # Act & Assert
         check.check_sensor_position(sensor)
 
-    def test_check_sensor_pin_raises_exception_when_pin_is_invalid_type(self):
+    def test_check_pin_raises_exception_when_pin_is_invalid_type(self):
         # Arrange
         pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"%s": "bogus"}' % pin)
         # Act
         with self.assertRaises(Exception) as context:
-            check.check_sensor_pin(sensor, pin)
+            check.check_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
                          "'bogus' in sensor configuration must be integer, but got unicode")
 
-    def test_check_sensor_pin_raises_exception_when_hardware_is_missing(self):
+    def test_check_pin_raises_exception_when_hardware_is_missing(self):
         # Arrange
         pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"%s": 22}' % pin)
         # Act
         with self.assertRaises(Exception) as context:
-            check.check_sensor_pin(sensor, pin)
+            check.check_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
                          "'hardware' in sensor configuration must be specified if setting "
                          "pin")
 
-    def test_check_sensor_pin_raises_exception_when_pin_is_invalid(self):
+    def test_check_pin_raises_exception_when_pin_is_invalid(self):
         # Arrange
         hardware = settings.HARDWARE_RPI_REV1
         pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"hardware": "%s", "%s": 40}' % (hardware, pin))
         # Act
         with self.assertRaises(Exception) as context:
-            check.check_sensor_pin(sensor, pin)
+            check.check_pin(sensor, pin)
         # Assert
         self.assertEqual(context.exception.message,
                          "'pinLedApp' in sensor configuration invalid for 'RPI_REV1' "
                          "hardware, must be (3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, "
                          "21, 22, 23, 24, 26), but got 40")
 
-    def test_check_sensor_pin_passes_with_test_hardware(self):
+    def test_check_pin_passes_with_test_hardware(self):
         # Arrange
         hardware = settings.HARDWARE_TEST
         pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"hardware": "%s","%s": 40}' % (hardware, pin))
         # Act & Assert
-        check.check_sensor_pin(sensor, pin)
+        check.check_pin(sensor, pin)
 
-    def test_check_sensor_pin_passes_when_hardware_and_pin_are_valid(self):
+    def test_check_pin_passes_when_hardware_and_pin_are_valid(self):
         # Arrange
         hardware = settings.HARDWARE_RPI_BPLUS
         pin = settings.PIN_LED_APP[0]
         sensor = json.loads('{"hardware": "%s","%s": 40}' % (hardware, pin))
         # Act & Assert
-        check.check_sensor_pin(sensor, pin)
+        check.check_pin(sensor, pin)
 
     def test_check_sensor_raises_exception_when_not_dictionary(self):
         # Arrange

@@ -101,7 +101,7 @@ a, p, li, .led, .navbar-text {
 }
 
 .settings > tbody > tr > td:first-child {
-    width: 100px;
+    width: 120px;
 }
 
 .settings > tbody > tr > td > p {
