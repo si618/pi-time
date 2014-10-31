@@ -99,6 +99,7 @@
             </tr>
         </table>
     </div>
+
     <div data-bind="with: laptimer, visible: $root.selectedMenu() == 'Laptimer'">
         <table class="table settings">
             <tr>
@@ -123,6 +124,7 @@
             </tr>
         </table>
     </div>
+
     <div data-bind="with: sensor, visible: $root.selectedMenu() == 'Sensor'">
         <table class="table settings">
             <tr>
@@ -168,63 +170,49 @@
                 </td>
             </tr>
         </table>
-        <table class="table settings">
-            <thead>
-            <tr>
-                <td colspan="2">
-                    <h4 data-bind="text: pinoutLabel()"></h4>
-                </td>
-            </tr>
-            </thead>
-            <tr>
-                <td>
-                    <p data-bind="text: pinLedAppLabel()"></p>
-                    <div class="input-group">
-                        <select class="selectpicker"
-                                data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinLedApp, selectPicker: {}"></select>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p data-bind="text: pinLedLapLabel()"></p>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <select class="selectpicker"
-                                data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinLedLap, selectPicker: {}"></select>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p data-bind="text: pinLedEventLabel()"></p>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <select class="selectpicker"
-                                data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinLedEvent, selectPicker: {}"></select>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p data-bind="text: pinEventLabel()"></p>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <select class="selectpicker"
-                                data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinEvent, selectPicker: {}"></select>
-                    </div>
-                </td>
-            </tr>
-        </table>
+
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="pinLedApp" class="col-sm-2 control-label" data-bind="text: pinLedAppLabel()"></label>
+
+                <div class="col-sm-4 input-group">
+                    <select id="pinLedApp" class="selectpicker"
+                            data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinLedApp, selectPicker: {}"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pinLedLap" class="col-sm-2 control-label" data-bind="text: pinLedLapLabel()"></label>
+
+                <div class="col-sm-4 input-group">
+                    <select id="pinLedLap" class="selectpicker"
+                            data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinLedLap, selectPicker: {}"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pinLedEvent" class="col-sm-2 control-label" data-bind="text: pinLedEventLabel()"></label>
+
+                <div class="col-sm-4 input-group">
+                    <select id="pinLedEvent" class="selectpicker"
+                            data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinLedEvent, selectPicker: {}"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pinEvent" class="col-sm-2 control-label" data-bind="text: pinEventLabel()"></label>
+
+                <div class="col-sm-4 input-group">
+                    <select id="pinEvent" class="selectpicker"
+                            data-bind="options: hardware.pinout, optionsText: 'description', optionsValue: 'pin', value: pinEvent, selectPicker: {}"></select>
+                </div>
+            </div>
+        </form>
     </div>
+
     <div data-bind="with: logs, visible: $root.selectedMenu() == 'Logs'">
         <div class="output-parent">
             <div class="output" data-bind="html: logs" id="pt-log"></div>
         </div>
     </div>
+
     <div data-bind="with: access, visible: $root.selectedMenu() == 'Access'">
         <table class="table settings">
             <tr>

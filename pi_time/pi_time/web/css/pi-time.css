@@ -2,7 +2,7 @@ body {
     font-family: Helvetica, Arial;
 }
 
-a, h4, li, p, .led, .navbar-text {
+a, h4, li, p, .control-label, .led, .navbar-text {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -115,5 +115,5 @@ table {
 }
 
 .input-group, .form-control {
-    width: 240px;
+    margin: 0 16px 0 16px;
 }

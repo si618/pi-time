@@ -63,9 +63,10 @@ OPTIONS_SENSOR_LOCATION = (
 )
 
 # Laptimer pins, tuple of config key, caption, description
-PIN_LED_APP = ("pinLedApp", "App Active",
+PIN_LED_APP = ("pinLedApp", "App Active LED",
                "Pin for LED when application is active")
-PIN_LED_LAP = ("pinLedLap", "Lap Active", "Pin for LED when lap is active")
+PIN_LED_LAP = ("pinLedLap", "Lap Active LED",
+               "Pin for LED when lap is active")
 OPTIONS_PIN_LAPTIMER = (
     PIN_LED_APP,
     PIN_LED_LAP,
@@ -121,13 +122,13 @@ RPI_GPIO_BPLUS = RPI_GPIO_REV2 + (
 )
 
 # Laptimer or sensor hardware
-HARDWARE_TEST = "TEST"  # Dev/test box
 HARDWARE_RPI_REV1 = "RPI_REV1"
 HARDWARE_RPI_REV2 = "RPI_REV2"
 HARDWARE_RPI_BPLUS = "RPI_B+"
+HARDWARE_TEST = "TEST"  # Virtual emulation on dev/test box
 OPTIONS_HARDWARE = (
-    (HARDWARE_RPI_REV1, "Raspberry Pi B Revision 1.0", RPI_GPIO_REV1),
-    (HARDWARE_RPI_REV2, "Raspberry Pi A/B Revision 2.0", RPI_GPIO_REV2),
-    (HARDWARE_RPI_BPLUS, "Raspberry Pi B+", RPI_GPIO_BPLUS),
-    (HARDWARE_TEST, "Virtual (software based events)", ()),
+    (HARDWARE_RPI_REV1, "Raspberry Pi Model B Revision 1.0", RPI_GPIO_REV1),
+    (HARDWARE_RPI_REV2, "Raspberry Pi Model A/B Revision 2.0", RPI_GPIO_REV2),
+    (HARDWARE_RPI_BPLUS, "Raspberry Pi Model B+", RPI_GPIO_BPLUS),
+    (HARDWARE_TEST, "Virtual (software triggered events)", ()),
 )
