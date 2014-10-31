@@ -13,19 +13,19 @@ function UnitOfMeasurementModel(unitOfMeasurement, description) {
     self.description = description;
 }
 
-function HardwareModel(hardware, description, layout) {
+function HardwareModel(hardware, description, pinout) {
     var self = this;
     self.hardware = hardware;
     self.description = description;
-    self.layout = [];
-    for (var index = 0; index < layout.length; index++) {
-        var lay = layout[index];
-        var layoutModel = new LayoutModel(lay[0], lay[1]);
-        self.layout.push(layoutModel);
+    self.pinout = [];
+    for (var index = 0; index < pinout.length; index++) {
+        var pin = pinout[index];
+        var pinoutModel = new PinoutModel(pin[0], pin[1]);
+        self.pinout.push(pinoutModel);
     }
 }
 
-function LayoutModel(pin, description) {
+function PinoutModel(pin, description) {
     var self = this;
     self.pin = pin;
     self.description = description;

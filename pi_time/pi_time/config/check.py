@@ -32,7 +32,7 @@ def check_url(config, section):
             raise TypeError("'url' in {} configuration must be str, "
                             "but got {}".format(section, type(url).__name__))
         try:
-            u = parseWsUrl(url)
+            parseWsUrl(url)
         except Exception as e:
             raise ValueError("Invalid 'url' in {} configuration: {}".format(
                 section, e))
@@ -107,7 +107,7 @@ def check_sensor_position(sensor):
         position = sensor['position']
         if type(position) not in six.integer_types:
             raise TypeError("'position' in sensor configuration must be "
-                            "integer, but got {}" \
+                            "integer, but got {}"
                             .format(type(position).__name__))
         if position <= 0:
             raise ValueError("'position' in sensor configuration must be "
@@ -154,7 +154,7 @@ def check_sensor(sensor):
                         .format(type(sensor)))
 
     for key in sensor:
-        if key not in ['name', 'url', 'hardware', 'location', 'position',
+        if key not in ['name', 'url', 'hardware', 'location',
                        settings.PIN_LED_APP[0], settings.PIN_LED_LAP[0],
                        settings.SENSOR_PIN_LED_EVENT[0], settings.SENSOR_PIN_EVENT[0]]:
             raise ValueError("Unknown attribute '{}' in sensor configuration"
@@ -222,6 +222,7 @@ def check_config_file(config_file):
             logLevel=logging.DEBUG)
 
     config_file = os.path.abspath(config_file)
+    config = {}
 
     with open(config_file, 'rb') as infile:
         try:

@@ -36,13 +36,13 @@ ko.onDemandObservable = function (callback, target) {
 ko.bindingHandlers.selectPicker = {
     init: function (element, valueAccessor, allBindingsAccessor) {
         var $element = $(element);
-        $element.addClass('selectpicker').selectpicker();
+        $element.addClass("selectpicker").selectpicker();
 
         var doRefresh = function () {
-            $element.selectpicker('refresh');
+            $element.selectpicker("refresh");
         }, subscriptions = [];
 
-        // KO 3 requires subscriptions instead of relying on this binding's update
+        // KO 3 requires subscriptions instead of relying on this binding"s update
         // function firing when any other binding on the element is updated.
 
         // Add them to a subscription array so we can remove them when KO
@@ -55,9 +55,9 @@ ko.bindingHandlers.selectPicker = {
             }
         };
 
-        addSubscription('options');
-        addSubscription('value');           // Single
-        addSubscription('selectedOptions'); // Multiple
+        addSubscription("options");
+        addSubscription("value");           // Single
+        addSubscription("selectedOptions"); // Multiple
 
         ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
             while (subscriptions.length) {

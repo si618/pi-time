@@ -7,16 +7,16 @@ function openSensorConnection() {
     connection.onopen = function (connectionSession, details) {
         session = connectionSession;
 
-        subscribe('sensor_changed', sensorChanged);
-        subscribe('sensor_triggered', sensorTriggered);
+        subscribe("sensor_changed", sensorChanged);
+        subscribe("sensor_triggered", sensorTriggered);
 
-        subscribe('laptimer_started', laptimerStarted);
-        subscribe('laptimer_stopped', laptimerStopped);
-        subscribe('laptimer_changed', laptimerChanged);
+        subscribe("laptimer_started", laptimerStarted);
+        subscribe("laptimer_stopped", laptimerStopped);
+        subscribe("laptimer_changed", laptimerChanged);
 
-        subscribe('lap_started', lapStarted);
-        subscribe('lap_finished', lapFinished);
-        subscribe('lap_cancelled', lapCancelled);
+        subscribe("lap_started", lapStarted);
+        subscribe("lap_finished", lapFinished);
+        subscribe("lap_cancelled", lapCancelled);
 
         connectionOpened(details);
     };

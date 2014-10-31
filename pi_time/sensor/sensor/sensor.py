@@ -18,7 +18,7 @@ class SensorAppSession(ApplicationSession):
     @inlineCallbacks
     def onJoin(self, details):
         config_dir = path.dirname(path.dirname(path.realpath(__file__)))
-        config_file = path.join(config_dir, 'config.json')
+        config_file = path.join(config_dir, "config.json")
 
         api = Api(session=self, config_file=config_file)
 
@@ -34,12 +34,12 @@ class SensorAppSession(ApplicationSession):
         # Register procedures available from sensor clients
         yield self.register(api)
 
-        log.msg('Pi-time sensor v{} ready'.format(pi_time.VERSION))
+        log.msg("Pi-time sensor v{} ready".format(pi_time.VERSION))
 
-        yield self.publish(settings.URI_PREFIX + 'sensor_started',
+        yield self.publish(settings.URI_PREFIX + "sensor_started",
                            str(details))
 
     @inlineCallbacks
     def onLeave(self, details):
-        yield self.publish(settings.URI_PREFIX + 'sensor_stopped',
+        yield self.publish(settings.URI_PREFIX + "sensor_stopped",
                            str(details))

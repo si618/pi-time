@@ -1,26 +1,25 @@
 // Pi-time autobahn scripts shared between laptimer and sensor
 
 function printError(error) {
-    msg = error.error;
+    var msg = error.error;
     if (AUTOBAHN_DEBUG === true && error.args.length > 0) {
-        msg += ': ' + error.args[0];
+        msg += ": " + error.args[0];
     }
     return msg;
 }
 
-
 // Helper function to subscribe to an autobahn event
 function subscribe(name, method, success, failure) {
     session.subscribe(URI_PREFIX + name, method).then(
-        function(sub) {
-            console.log('Subscribed to ' + name);
+        function (sub) {
+            console.log("Subscribed to " + name);
             if (success !== undefined) {
                 success(sub);
             }
         },
-        function(err) {
-            console.log('Failed to subscribe to ' + name +
-                ' (' + printError(err) + ')');
+        function (err) {
+            console.log("Failed to subscribe to " + name +
+                " (" + printError(err) + ")");
             if (failure !== undefined) {
                 failure(err);
             }
@@ -35,18 +34,18 @@ function subscribe(name, method, success, failure) {
 function rpc(procedure, callback, options) {
     var params = options ? (options.params ? options.params : []) : [];
     if (session === null || !session.isOpen) {
-        console.log('Unable to call ' + method + ' (session closed)');
+        console.log("Unable to call " + procedure + " (session closed)");
     }
-    console.log('Request ' + procedure);
+    console.log("Request " + procedure);
     session.call(URI_PREFIX + procedure, params).then(
-        function(res) {
-            console.log('Response from ' + procedure + ' (ok)');
+        function (res) {
+            console.log("Response from " + procedure + " (ok)");
             if (callback) {
                 callback(res);
             }
         },
-        function(err) {
-            console.log('Response from ' + procedure + ' (' + printError(err) + ')');
+        function (err) {
+            console.log("Response from " + procedure + " (" + printError(err) + ")");
             if (options.failure) {
                 options.failure(err);
             }
@@ -56,11 +55,11 @@ function rpc(procedure, callback, options) {
 
 function getConnection() {
     // URL of WAMP Router (Crossbar.io)
-    protocol = document.location.protocol === 'http:' ? 'ws:' : 'wss:';
-    wsuri = protocol + '//' + document.location.host + '/ws';
+    var protocol = document.location.protocol === "http:" ? "ws:" : "wss:";
+    var wsuri = protocol + "//" + document.location.host + "/ws";
     // WAMP connection to Router
     return new autobahn.Connection({
         url: wsuri,
-        realm: 'pi-time'
+        realm: "pi-time"
     });
 }

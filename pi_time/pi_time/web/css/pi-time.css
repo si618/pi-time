@@ -2,7 +2,7 @@ body {
     font-family: Helvetica, Arial;
 }
 
-a, p, li, .led, .navbar-text {
+a, h4, li, p, .led, .navbar-text {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -11,7 +11,7 @@ a, p, li, .led, .navbar-text {
     user-select: none;
 }
 
-.led, .ledText, .navbar-brand, .navbar-text {
+h4, .led, .ledText, .navbar-brand, .navbar-text {
     cursor: default;
 }
 
@@ -59,6 +59,7 @@ a, p, li, .led, .navbar-text {
 .led {
     width: 24px;
     height: 24px;
+    margin: 8px;
     padding: 12px;
     background-color: #fff;
     border-radius: 50%;
@@ -83,6 +84,10 @@ a, p, li, .led, .navbar-text {
     filter: brightness(50);
 }
 
+table {
+    border: 1px solid #1c1e22;
+}
+
 .status > tbody > tr > td {
     vertical-align: middle !important;
     cursor: default;
@@ -104,11 +109,11 @@ a, p, li, .led, .navbar-text {
     width: 120px;
 }
 
-.settings > tbody > tr > td > p {
+.settings > tbody > tr > td > p, .settings > thead > tr > td > h4 {
     cursor: default;
     margin: 8px;
 }
 
 .input-group, .form-control {
-    width: 300px;
+    width: 240px;
 }

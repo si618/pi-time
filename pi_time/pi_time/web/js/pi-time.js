@@ -5,11 +5,11 @@ var session = null; // Connection session
 var wsuri = null; // Websocket address
 var vm = null; // Knockout view model
 
-var URI_PREFIX = 'pi-time.';
+var URI_PREFIX = "pi-time.";
 
 // Subvert console log to output to div in window as well as console
-if (typeof console != 'undefined') {
-    if (typeof console.log != 'undefined') {
+if (typeof console != "undefined") {
+    if (typeof console.log != "undefined") {
         console._log = console.log;
     } else {
         console._log = function () {
@@ -20,8 +20,8 @@ console.log = function (message) {
     // Always uppercase first character for consistency
     message = message.charAt(0).toUpperCase() + message.slice(1);
     console._log(message);
-    log = $('#pt-log');
-    log.text(log.text() + '[' + getLocalTime() + '] ' + message + '\n');
+    log = $("#pt-log");
+    log.text(log.text() + "[" + getLocalTime() + "] " + message + "\n");
     log.scrollTop(log[0].scrollHeight);
 };
 console.error = console.debug = console.info = console.log;
@@ -31,24 +31,23 @@ function getLocalTime() {
     var now = new Date();
     var hours = now.getHours();
     if (hours < 10) {
-        hours = '0' + hours;
+        hours = "0" + hours;
     }
     var minutes = now.getMinutes();
     if (minutes < 10) {
-        minutes = '0' + minutes;
+        minutes = "0" + minutes;
     }
     var seconds = now.getSeconds();
     if (seconds < 10) {
-        seconds = '0' + seconds;
+        seconds = "0" + seconds;
     }
     var milliseconds = now.getMilliseconds();
     if (milliseconds < 10) {
-        milliseconds = '00' + milliseconds;
+        milliseconds = "00" + milliseconds;
     } else if (milliseconds < 100) {
-        milliseconds = '0' + milliseconds;
+        milliseconds = "0" + milliseconds;
     }
-    var time = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
-    return time;
+    return hours + ":" + minutes + ":" + seconds + ":" + milliseconds;
 }
 
 function selectMenu(menu) {
@@ -58,7 +57,7 @@ function selectMenu(menu) {
 // Activate full screen mode for different browsers
 function goFullscreen() {
     /*
-     TODO: Fullscreen currently leaves white background on Chrome and Android browers.
+     TODO: Fullscreen currently leaves white background on Chrome and Android browsers.
      Oddly enough, using F11 on Chrome on windows works fine?
      */
     var element = document.documentElement;
@@ -74,20 +73,20 @@ function goFullscreen() {
 }
 // Toggles full screen state
 function fullscreenChanged() {
-    $('.fullscreen').toggle();
+    $(".fullscreen").toggle();
 }
 // Wire up full screen events in different browsers
-document.addEventListener('fullscreenchange', fullscreenChanged);
-document.addEventListener('webkitfullscreenchange', fullscreenChanged);
-document.addEventListener('mozfullscreenchange', fullscreenChanged);
-document.addEventListener('MSFullscreenChange', fullscreenChanged);
+document.addEventListener("fullscreenchange", fullscreenChanged);
+document.addEventListener("webkitfullscreenchange", fullscreenChanged);
+document.addEventListener("mozfullscreenchange", fullscreenChanged);
+document.addEventListener("MSFullscreenChange", fullscreenChanged);
 
 (function ($) {
     $(document).ready(function () {
         // Auto-close navigation when selected
-        $('.navbar-collapse a:not(.dropdown-toggle)').click(function () {
+        $(".navbar-collapse a:not(.dropdown-toggle)").click(function () {
             if ($(window).width() < 768) {
-                $(".navbar-collapse").collapse('hide');
+                $(".navbar-collapse").collapse("hide");
             }
         });
     });

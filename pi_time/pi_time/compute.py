@@ -44,9 +44,9 @@ def average_speed_per_second(start, finish, distance):
     if start is None or finish is None:
         return None
     if finish <= start:
-        raise ValueError('Start time must be before finish time!')
+        raise ValueError("Start time must be before finish time!")
     if distance <= 0:
-        raise ValueError('Track distance must be greater than zero!')
+        raise ValueError("Track distance must be greater than zero!")
     delta = finish - start
     avg_per_second = float(distance) / delta.seconds
     return avg_per_second

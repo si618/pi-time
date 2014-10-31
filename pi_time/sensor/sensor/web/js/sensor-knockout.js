@@ -9,17 +9,17 @@ function StatusViewModel() {
     self.triggered = ko.observable(false);
     self.lap = ko.observable(false);
 
-    self.laptimerLabel = ko.observable('Connected to laptimer');
-    self.sensorLabel = ko.observable('Connected to sensor');
-    self.triggeredLabel = ko.observable('Sensor triggered');
-    self.lapLabel = ko.observable('Active lap');
+    self.laptimerLabel = ko.observable("Connected to laptimer");
+    self.sensorLabel = ko.observable("Connected to sensor");
+    self.triggeredLabel = ko.observable("Sensor triggered");
+    self.lapLabel = ko.observable("Active lap");
 }
 
 function LaptimerViewModel() {
     var self = this;
 
-    self.nameLabel = ko.observable('Name');
-    self.urlLabel = ko.observable('Address');
+    self.nameLabel = ko.observable("Name");
+    self.urlLabel = ko.observable("Address");
 
     self.name = ko.observable();
     self.url = ko.observable();
@@ -28,14 +28,15 @@ function LaptimerViewModel() {
 function SensorViewModel() {
     var self = this;
 
-    self.nameLabel = ko.observable('Name');
-    self.urlLabel = ko.observable('Address');
-    self.locationLabel = ko.observable('Location');
-    self.hardwareLabel = ko.observable('Hardware');
-    self.pinLedAppLabel = ko.observable('Sensor Active');
-    self.pinLedLapLabel = ko.observable('Lap Active');
-    self.pinLedEventLabel = ko.observable('Sensor LED');
-    self.pinEventLabel = ko.observable('Sensor Event');
+    self.nameLabel = ko.observable("Name");
+    self.urlLabel = ko.observable("Address");
+    self.locationLabel = ko.observable("Location");
+    self.hardwareLabel = ko.observable("Hardware");
+    self.pinoutLabel = ko.observable("Pin Layout");
+    self.pinLedAppLabel = ko.observable("Sensor Active");
+    self.pinLedLapLabel = ko.observable("Lap Active");
+    self.pinLedEventLabel = ko.observable("Sensor LED");
+    self.pinEventLabel = ko.observable("Sensor Event");
 
     self.name = ko.observable();
     self.url = ko.observable();
@@ -58,26 +59,26 @@ function AccessViewModel() {
     var self = this;
 
     self.authenticated = ko.observable(false);
-    self.role = ko.observable('anonymous');
+    self.role = ko.observable("anonymous");
 
     // UI
     self.accessLabel = ko.pureComputed(function () {
-        return self.authenticated() ? 'Logout' : 'Login';
+        return self.authenticated() ? "Logout" : "Login";
     }, this);
-    self.secretLabel = ko.observable('Password');
+    self.secretLabel = ko.observable("Password");
     self.secret = ko.observable();
     self.accessingLabel = ko.pureComputed(function () {
-        return self.authenticated() ? 'Logging out...' : 'Logging in...';
+        return self.authenticated() ? "Logging out..." : "Logging in...";
     }, this);
 
     // Behaviours
     function authenticated(result) {
-        console.log('authenticated: ' + result);
+        console.log("authenticated: " + result);
     }
 
-    self.authenticate = function (tab) {
-        rpc('authenticate', authenticated, {
-            'params': [self.secret]
+    self.authenticate = function () {
+        rpc("authenticate", authenticated, {
+            "params": [self.secret]
         });
     };
 }
@@ -92,14 +93,14 @@ function MainViewModel() {
     self.logs = new LogsViewModel();
     self.access = new AccessViewModel();
 
-    self.menuLabel = ko.observable('Menu');
-    self.fullscreenLabel = ko.observable('Fullscreen');
-    self.selectedMenu = ko.observable('Status');
-    self.statusLabel = ko.observable('Status');
-    self.settingsLabel = ko.observable('Settings');
-    self.laptimerLabel = ko.observable('Laptimer');
-    self.sensorLabel = ko.observable('Sensor');
-    self.logsLabel = ko.observable('Log');
+    self.menuLabel = ko.observable("Menu");
+    self.fullscreenLabel = ko.observable("Fullscreen");
+    self.selectedMenu = ko.observable("Status");
+    self.statusLabel = ko.observable("Status");
+    self.settingsLabel = ko.observable("Settings");
+    self.laptimerLabel = ko.observable("Laptimer");
+    self.sensorLabel = ko.observable("Sensor");
+    self.logsLabel = ko.observable("Log");
     self.accessLabel = ko.computed(function () {
         return self.access.accessLabel();
     }, this);
@@ -117,7 +118,7 @@ function MainViewModel() {
 
     // Client-side routes
     Sammy(function () {
-        this.get('#:menu', function () {
+        this.get("#:menu", function () {
             self.selectedMenu(this.params.menu);
         });
     }).run();
