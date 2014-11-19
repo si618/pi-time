@@ -132,7 +132,7 @@ _Fix_: Similar to shortcut issue, add sensors to allow different start and finis
 
 * [Install git](http://git-scm.com/downloads)
 * [Clone pi-time](https://github.com/si618/pi-time.git)
-* [Install python](#Requirements)
+* [Install python](#requirements)
 * [Install python-dev](http://packages.debian.org/wheezy/python-dev)
 * [Install node.js](http://nodejs.org/download/) (also installs NPM)
 * [Install grunt](http://gruntjs.com/getting-started)
