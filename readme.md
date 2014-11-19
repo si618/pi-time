@@ -150,7 +150,7 @@ _Fix_: Similar to shortcut issue, add sensors to allow different start and finis
 
 [Grunt](http://gruntjs.com/) manages build, test and release processes. Run `grunt --help` for available tasks and see [Gruntfile.js](https://github.com/si618/pi-time/blob/master/Gruntfile.js) for configuration.
 
-[Travis]((https://travis-ci.org/si618/pi-time)) provides continuous integration. See [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
+[Travis](https://travis-ci.org/si618/pi-time) provides continuous integration. See [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
 
 Run `python requirements.py` to update all PIP, NPM and Bower dependencies.   
 
