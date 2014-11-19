@@ -1,0 +1,7 @@
+{
+   "name": "autobahnjs",
+   "version": "0.9.5",
+   "main": "./autobahn.js",
+   "dependencies": {
+   }
+}

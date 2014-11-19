@@ -1,0 +1,25 @@
+{
+  "name": "pi-time",
+  "version": "0.0.1",
+  "homepage": "https://github.com/si618/pi-time",
+  "authors": [
+    "Simon McKenna"
+  ],
+  "description": "Lap timer running on a solar powered Raspberry Pi.",
+  "license": "GPLv3+",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dist"
+  ],
+  "dependencies": {
+    "autobahn": "~0.9.5",
+    "bootstrap": "~3.3.1",
+    "bootstrap-select": "~1.6.3",
+    "jquery": "~2.1.1",
+    "knockoutjs": "~3.2.0",
+    "sammy": "~0.7.6"
+  }
+}

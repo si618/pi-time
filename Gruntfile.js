@@ -171,10 +171,32 @@ module.exports = function (grunt) {
                     "dist/sensor/pi_time/sensor/sensor/web/css/pi-time-sensor.css": "dist/sensor/pi_time/sensor/sensor/web/css/pi-time-sensor.css"
                 }
             }
+        },
+        bowercopy: {
+            options: {
+                srcPrefix: 'bower_components'
+            },
+            scripts: {
+                options: {
+                    destPrefix: 'pi_time/pi_time/web'
+                },
+                files: {
+                    'js/autobahn.js': 'autobahn/autobahn.js',
+                    /* Need to manually update as using slate theme from bootswatch */
+                    /*'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css', */
+                    'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js',
+                    'css/bootstrap-select.css': 'bootstrap-select/dist/css/bootstrap-select.css',
+                    'js/bootstrap-select.js': 'bootstrap-select/dist/js/bootstrap-select.js',
+                    'js/jquery.js': 'jquery/dist/jquery.js',
+                    'js/knockout.js': 'knockoutjs/dist/knockout.js',
+                    'js/sammy.js': 'sammy/lib/sammy.js'
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks("grunt-bootlint");
+    grunt.loadNpmTasks("grunt-bowercopy");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-clean");

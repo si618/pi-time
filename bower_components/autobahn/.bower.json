@@ -1,0 +1,17 @@
+{
+  "name": "autobahnjs",
+  "version": "0.9.5",
+  "main": "./autobahn.js",
+  "dependencies": {},
+  "homepage": "https://github.com/tavendo/AutobahnJSbuilt",
+  "_release": "0.9.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.5",
+    "commit": "001a40ea8f4faae7d2cb0fed45c20e3b96e848b6"
+  },
+  "_source": "git://github.com/tavendo/AutobahnJSbuilt.git",
+  "_target": "~0.9.5",
+  "_originalSource": "autobahn",
+  "_direct": true
+}

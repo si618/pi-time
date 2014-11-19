@@ -28,20 +28,9 @@ As there are many different types of activities that can benefit from the use of
 
 #### Requirements
 
-* [crossbar](http://crossbar.io/)
-* [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 * [python](http://python.org/download/)
-* [python-win32api](http://sourceforge.net/projects/pywin32/) (if testing on windows)
-* [pytz](http://pytz.sourceforge.net/)
-
-See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt) for specific versions, and [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
-
-
-#### Recommended
-
+* [python-win32api](http://sourceforge.net/projects/pywin32/) (if using on windows o/s)
 * [pip](http://www.pip-installer.org/en/latest/installing.html) ([windows install](http://stackoverflow.com/a/12476379/44540))
-* [python-dev](http://packages.debian.org/wheezy/python-dev)
-
 
 ## Hardware
 
@@ -57,8 +46,8 @@ See [requirements](https://github.com/si618/pi-time/blob/master/requirements.txt
 * [Setup operating system](http://www.raspberrypi.org/downloads)
 * [Expand file system](http://elinux.org/RPi_raspi-config#expand_rootfs_-_Expand_root_partition_to_fill_SD_card)
 * [Config memory split](http://elinux.org/RPi_raspi-config#memory_split_-_Change_memory_split)
-* [Setup wifi access point](http://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/overview)
-* [Setup captive portal](http://sirlagz.net/2013/08/23/how-to-captive-portal-on-the-raspberry-pi/)
+* [Setup wifi access point](http://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/overview) (optional, could connect via ethernet)
+* [Setup captive portal](http://sirlagz.net/2013/08/23/how-to-captive-portal-on-the-raspberry-pi/) (optional, could use existing wifi network)
 * [Install pi-time](https://pypi.python.org/pypi/pi-time)
 
 Example setup for RT5370 wifi adapter running as wifi access point with captive portal
@@ -136,3 +125,34 @@ _Fix_: Similar to shortcut issue, add sensors to allow different start and finis
 * Provide option to connect to existing WiFi access point instead of RPi, use RPi access point as fallback.
 * Add chat for riders, spectators and admin (different permissions, broadcast ability, etc.).
 * Instead of just timing laps, add scoring system (for slopestyle, dirt jams, etc.) which is broadcast like lap times.
+
+### Development
+
+#### Setting up a development environment:
+
+* [Install git](http://git-scm.com/downloads)
+* [Clone pi-time](https://github.com/si618/pi-time.git)
+* [Install python](#Requirements)
+* [Install python-dev](http://packages.debian.org/wheezy/python-dev)
+* [Install node.js](http://nodejs.org/download/) (also installs NPM)
+* [Install grunt](http://gruntjs.com/getting-started)
+* [Install bower](http://bower.io/#install-bower)
+
+#### Dependency management
+
+[PIP](http://www.pip-installer.org) is used for python packages.
+
+[NPM](https://www.npmjs.org/) is used for developer modules (unit tests, linting, ...).
+
+[Bower](http://bower.io/) is used for web front-end components (jquery, knockout, ...).
+
+#### Workflow
+
+[Grunt](http://gruntjs.com/) manages build, test and release processes. Run `grunt --help` for available tasks and see [Gruntfile.js](https://github.com/si618/pi-time/blob/master/Gruntfile.js) for configuration.
+
+[Travis]((https://travis-ci.org/si618/pi-time)) provides continuous integration. See [travis config](https://github.com/si618/pi-time/blob/master/.travis.yml) for test environments.
+
+Run `python requirements.py` to update all PIP, NPM and Bower dependencies.   
+
+Pi-time uses the [Bootstrap](http://getbootstrap.com/) web framework, along with a customised version of a [Bootswatch](http://bootswatch.com/slate) theme.
+When new releases of bootstrap or bootswatch are available, currently the bootstrap css must be manually recompiled by copying the variables.less from pi-time to a clone of bootswatch, running `grunt swatch:slate` then copying the bootstrap css back to pi-time. Hopefully this will get automated (via bower?) in the future.  
