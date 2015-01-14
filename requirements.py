@@ -11,7 +11,7 @@ call("npm update", shell=True)
 
 print "\nUpdating bower components..."
 call("bower update", shell=True)
-call("grunt bowercopy", shell=True)
+# call("grunt bowercopy", shell=True)
 
 print "\nInstalled python packages:"
 for package in packages:
