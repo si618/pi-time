@@ -1,6 +1,6 @@
 {
     "controller": {
-        "id": "pi-time-sensor-node",
+        "id": "sensor",
         "realm": "pi-time-sensor-management",
         "options": {
             "title": "pi-time-sensor-controller"

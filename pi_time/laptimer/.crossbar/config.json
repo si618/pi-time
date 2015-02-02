@@ -1,6 +1,6 @@
 {
     "controller": {
-        "id": "pi-time-laptimer-node",
+        "id": "laptimer",
         "realm": "pi-time-laptimer-management",
         "options": {
             "title": "pi-time-laptimer-controller"
