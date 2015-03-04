@@ -104,13 +104,13 @@ TODO: Add ability to query app log
 
 ## Issues
 
-_Issue_:  Only one rider can be on the track at any one time.
+_Issue_:  Only one rider can be on the track at any one time.  
 _Fix_: Use [radio tags](https://en.wikipedia.org/wiki/Transponder_timing) passing a decoder instead of using an infrared sensor.
 
-_Issue_:  Possible to shortcut tracks which cross over.
+_Issue_:  Possible to shortcut tracks which cross over.  
 _Fix_: Add sensors at key points in the track which have to be triggered before the lap counts as finished. Could also be used for sectors and split times.
 
-_Issue_ : Lap start and finish must be from the same sensor location.
+_Issue_ : Lap start and finish must be from the same sensor location.  
 _Fix_: Similar to shortcut issue, add sensors to allow different start and finish locations. Would be good to have automated discovery, so each sensor looks for the lap timer server on the network.
 
 ### Hardware Improvements
