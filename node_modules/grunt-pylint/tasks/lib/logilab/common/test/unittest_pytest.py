@@ -46,5 +46,56 @@ class ModuleFunctionTC(TestCase):
         self.assertTrue(this_is_a_testfile(join("coincoin", "unittest_bibi.py")))
         self.assertFalse(this_is_a_testfile(join("unittest", "spongebob.py")))
 
+    def test_replace_trace(self):
+        def tracefn(frame, event, arg):
+            pass
+
+        oldtrace = sys.gettrace()
+        with replace_trace(tracefn):
+            self.assertIs(sys.gettrace(), tracefn)
+
+        self.assertIs(sys.gettrace(), oldtrace)
+
+    def test_pause_trace(self):
+        def tracefn(frame, event, arg):
+            pass
+
+        oldtrace = sys.gettrace()
+        sys.settrace(tracefn)
+        try:
+            self.assertIs(sys.gettrace(), tracefn)
+            with pause_trace():
+                self.assertIs(sys.gettrace(), None)
+            self.assertIs(sys.gettrace(), tracefn)
+        finally:
+            sys.settrace(oldtrace)
+
+    def test_nocoverage(self):
+        def tracefn(frame, event, arg):
+            pass
+
+        @nocoverage
+        def myfn():
+            self.assertIs(sys.gettrace(), None)
+
+        with replace_trace(tracefn):
+            myfn()
+
+    def test_legacy_pause_resume_tracing(self):
+        def tracefn(frame, event, arg):
+            pass
+
+        with replace_trace(tracefn):
+            pause_tracing()
+            self.assertIs(sys.gettrace(), None)
+            with replace_trace(tracefn):
+                pause_tracing()
+                self.assertIs(sys.gettrace(), None)
+                resume_tracing()
+                self.assertIs(sys.gettrace(), tracefn)
+            self.assertIs(sys.gettrace(), None)
+            resume_tracing()
+            self.assertIs(sys.gettrace(), tracefn)
+
 if __name__ == '__main__':
     unittest_main()

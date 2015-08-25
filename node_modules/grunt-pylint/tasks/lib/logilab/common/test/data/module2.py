@@ -37,14 +37,14 @@ del YO.member
 
 del YO
 [SYN1, SYN2] = Concrete0, Concrete1
-assert `1`
+assert '1'
 b = 1 | 2 & 3 ^ 8
-exec 'c = 3'
-exec 'c = 3' in {}, {}
+exec('c = 3')
+exec('c = 3', {}, {})
 
 def raise_string(a=2, *args, **kwargs):
     raise 'pas glop'
-    raise Exception, 'yo'
+    raise Exception('yo')
     yield 'coucou'
 
 a = b + 2

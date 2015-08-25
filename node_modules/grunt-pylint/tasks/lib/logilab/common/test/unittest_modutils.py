@@ -54,7 +54,7 @@ class ModuleFileTC(ModutilsTestCase):
 
     def setUp(self):
         super(ModuleFileTC, self).setUp()
-        for k in sys.path_importer_cache.keys():
+        for k in list(sys.path_importer_cache.keys()):
             if 'MyPyPa' in k:
                 del sys.path_importer_cache[k]
 

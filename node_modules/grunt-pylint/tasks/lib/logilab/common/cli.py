@@ -33,18 +33,21 @@ Example::
 
         help_do_pionce = ("pionce", "pionce duree", _("met ton corps en veille"))
         def do_pionce(self):
-            print 'nap is good'
+            print('nap is good')
 
         help_do_ronfle = ("ronfle", "ronfle volume", _("met les autres en veille"))
         def do_ronfle(self):
-            print 'fuuuuuuuuuuuu rhhhhhrhrhrrh'
+            print('fuuuuuuuuuuuu rhhhhhrhrhrrh')
 
     cl = BookShell()
 """
 
+from __future__ import print_function
+
 __docformat__ = "restructuredtext en"
 
-from logilab.common.compat import raw_input, builtins
+from six.moves import builtins, input
+
 if not hasattr(builtins, '_'):
     builtins._ = str
 
@@ -65,7 +68,7 @@ def init_readline(complete_method, histfile=None):
             import atexit
             atexit.register(readline.write_history_file, histfile)
     except:
-        print 'readline is not available :-('
+        print('readline is not available :-(')
 
 
 class Completer :
@@ -107,7 +110,7 @@ class CLIHelper:
         """loop on user input, exit on EOF"""
         while True:
             try:
-                line = raw_input('>>> ')
+                line = input('>>> ')
             except EOFError:
                 print
                 break
@@ -156,10 +159,10 @@ class CLIHelper:
         return self.commands.keys()
 
     def _print_help(self, cmd, syntax, explanation):
-        print _('Command %s') % cmd
-        print _('Syntax: %s') % syntax
-        print '\t', explanation
-        print
+        print(_('Command %s') % cmd)
+        print(_('Syntax: %s') % syntax)
+        print('\t', explanation)
+        print()
 
 
     # predefined commands #####################################################
@@ -169,20 +172,20 @@ class CLIHelper:
         if command in self._command_help:
             self._print_help(*self._command_help[command])
         elif command is None or command not in self._topics:
-            print _("Use help <topic> or help <command>.")
-            print _("Available topics are:")
+            print(_("Use help <topic> or help <command>."))
+            print(_("Available topics are:"))
             topics = sorted(self._topics.keys())
             for topic in topics:
-                print '\t', topic
-            print
-            print _("Available commands are:")
+                print('\t', topic)
+            print()
+            print(_("Available commands are:"))
             commands = self.commands.keys()
             commands.sort()
             for command in commands:
-                print '\t', command[len(self.CMD_PREFIX):]
+                print('\t', command[len(self.CMD_PREFIX):])
 
         else:
-            print _('Available commands about %s:') % command
+            print(_('Available commands about %s:') % command)
             print
             for command_help_method in self._topics[command]:
                 try:
@@ -193,8 +196,8 @@ class CLIHelper:
                 except:
                     import traceback
                     traceback.print_exc()
-                    print 'ERROR in help method %s'% (
-                        command_help_method.func_name)
+                    print('ERROR in help method %s'% (
+                        command_help_method.__name__))
 
     help_do_help = ("help", "help [topic|command]",
                     _("print help message for the given topic/command or \

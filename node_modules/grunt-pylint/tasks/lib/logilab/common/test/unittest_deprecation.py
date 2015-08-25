@@ -19,6 +19,8 @@
 
 import warnings
 
+from six import add_metaclass
+
 from logilab.common.testlib import TestCase, unittest_main
 from logilab.common import deprecation
 
@@ -45,8 +47,9 @@ class RawInputTC(TestCase):
         return any_func
 
     def test_class_deprecated(self):
-        class AnyClass:
-            __metaclass__ = deprecation.class_deprecated
+        @add_metaclass(deprecation.class_deprecated)
+        class AnyClass(object):
+            pass
         AnyClass()
         self.assertEqual(self.messages,
                          ['AnyClass is deprecated'])
@@ -104,8 +107,9 @@ class RawInputTC(TestCase):
     def test_class_deprecated_manager(self):
         deprecator = deprecation.DeprecationManager("module_name")
         deprecator.compatibility('1.3')
-        class AnyClass:
-            __metaclass__ = deprecator.class_deprecated('1.2')
+        @add_metaclass(deprecator.class_deprecated('1.2'))
+        class AnyClass(object):
+            pass
         AnyClass()
         self.assertEqual(self.messages,
                          ['[module_name 1.2] AnyClass is deprecated'])

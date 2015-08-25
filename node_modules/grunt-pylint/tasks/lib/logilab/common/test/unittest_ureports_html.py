@@ -18,7 +18,6 @@
 '''unit tests for ureports.html_writer
 '''
 
-__revision__ = "$Id: unittest_ureports_html.py,v 1.3 2005-05-27 12:27:08 syt Exp $"
 
 from utils import WriterTC
 from logilab.common.testlib import TestCase, unittest_main

@@ -20,6 +20,8 @@ import sys
 import email
 from os.path import join, dirname, abspath
 
+from six import text_type
+
 from logilab.common.testlib import TestCase, unittest_main
 from logilab.common.umessage import UMessage, decode_QP
 
@@ -40,22 +42,22 @@ class UMessageTC(TestCase):
 
     def test_get_subject(self):
         subj = self.umessage2.get('Subject')
-        self.assertEqual(type(subj), unicode)
+        self.assertEqual(type(subj), text_type)
         self.assertEqual(subj, u'À LA MER')
 
     def test_get_all(self):
         to = self.umessage2.get_all('To')
-        self.assertEqual(type(to[0]), unicode)
+        self.assertEqual(type(to[0]), text_type)
         self.assertEqual(to, [u'élément à accents <alf@logilab.fr>'])
 
     def test_get_payload_no_multi(self):
         payload = self.umessage1.get_payload()
-        self.assertEqual(type(payload), unicode)
+        self.assertEqual(type(payload), text_type)
 
     def test_decode_QP(self):
         test_line =  '=??b?UmFwaGHrbA==?= DUPONT<raphael.dupont@societe.fr>'
         test = decode_QP(test_line)
-        self.assertEqual(type(test), unicode)
+        self.assertEqual(type(test), text_type)
         self.assertEqual(test, u'Raphaël DUPONT<raphael.dupont@societe.fr>')
 
 

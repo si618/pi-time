@@ -195,18 +195,19 @@ class Doctest(Plugin):
         if options.doctestOptions:
             flags = ",".join(options.doctestOptions).split(',')
             for flag in flags:
-                try:
-                    if flag.startswith('+'):
-                        self.optionflags |= getattr(doctest, flag[1:])
-                    elif flag.startswith('-'):
-                        self.optionflags &= ~getattr(doctest, flag[1:])
-                    else:
-                        raise ValueError(
-                            "Must specify doctest options with starting " +
-                            "'+' or '-'.  Got %s" % (flag,))
-                except AttributeError:
+                if not flag or flag[0] not in '+-':
+                    raise ValueError(
+                        "Must specify doctest options with starting " +
+                        "'+' or '-'.  Got %s" % (flag,))
+                mode, option_name = flag[0], flag[1:]
+                option_flag = doctest.OPTIONFLAGS_BY_NAME.get(option_name)
+                if not option_flag:
                     raise ValueError("Unknown doctest option %s" %
-                                     (flag[1:],))
+                                     (option_name,))
+                if mode == '+':
+                    self.optionflags |= option_flag
+                elif mode == '-':
+                    self.optionflags &= ~option_flag
 
     def prepareTestLoader(self, loader):
         """Capture loader's suiteClass.
@@ -387,6 +388,8 @@ class DocTestCase(doctest.DocTestCase):
         filename = self._dt_test.filename
         if filename is not None:
             pk = getpackage(filename)
+            if pk is None:
+                return name
             if not name.startswith(pk):
                 name = "%s.%s" % (pk, name)
         return name

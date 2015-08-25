@@ -1,4 +1,4 @@
-
+from __future__ import print_function
 
 import unittest
 
@@ -20,7 +20,7 @@ class TestCase(unittest.TestCase):
     def xxx(self):
         if False:
             pass
-            print 'a'
+            print('a')
 
         if False:
             pass
@@ -28,9 +28,9 @@ class TestCase(unittest.TestCase):
 
         if False:
             pass
-            print 'rara'
+            print('rara')
 
 
 if __name__ == '__main__':
-    print 'test2'
+    print('test2')
     unittest.main()

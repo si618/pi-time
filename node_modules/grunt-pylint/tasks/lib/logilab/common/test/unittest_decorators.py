@@ -106,13 +106,10 @@ class DecoratorsTC(TestCase):
                 """ what's up doc ? """
         self.assertEqual(Foo.foo.__doc__, """ what's up doc ? """)
         self.assertEqual(Foo.foo.__name__, 'foo')
-        self.assertEqual(Foo.foo.func_name, 'foo')
         self.assertEqual(Foo.bar.__doc__, """ what's up doc ? """)
         self.assertEqual(Foo.bar.__name__, 'bar')
-        self.assertEqual(Foo.bar.func_name, 'bar')
         self.assertEqual(Foo.quux.__doc__, """ what's up doc ? """)
         self.assertEqual(Foo.quux.__name__, 'quux')
-        self.assertEqual(Foo.quux.func_name, 'quux')
 
     def test_cached_single_cache(self):
         class Foo(object):

@@ -22,9 +22,10 @@ from logilab.common.testlib import TestCase, unittest_main, tag
 
 from logilab.common.date import date_range, endOfMonth
 from logilab.common.date import add_days_worked, nb_open_days, \
-         get_national_holidays, ustrftime, ticks2datetime
+         get_national_holidays, ustrftime, ticks2datetime, utcdatetime
 
 from datetime import date, datetime, timedelta
+import pytz
 
 try:
     from mx.DateTime import Date as mxDate, DateTime as mxDateTime, \
@@ -144,6 +145,26 @@ class DateTC(TestCase):
                             incmonth=True))
         expected = [self.datecls(2006, 5, 6), self.datecls(2006, 6, 1), self.datecls(2006, 7, 1), self.datecls(2006, 8, 1)]
         self.assertListEqual(expected, r)
+
+    def test_utcdatetime(self):
+        if self.datetimecls is mxDateTime:
+            raise self.skipTest('standard datetime only test')
+        d = self.datetimecls(2014, 11, 26, 12, 0, 0, 57, tzinfo=pytz.utc)
+        d = utcdatetime(d)
+        self.assertEqual(d, self.datetimecls(2014, 11, 26, 12, 0, 0, 57))
+        self.assertIsNone(d.tzinfo)
+
+        d = pytz.timezone('Europe/Paris').localize(
+            self.datetimecls(2014, 11, 26, 12, 0, 0, 57))
+        d = utcdatetime(d)
+        self.assertEqual(d, self.datetimecls(2014, 11, 26, 11, 0, 0, 57))
+        self.assertIsNone(d.tzinfo)
+
+        d = pytz.timezone('Europe/Paris').localize(
+            self.datetimecls(2014, 7, 26, 12, 0, 0, 57))
+        d = utcdatetime(d)
+        self.assertEqual(d, self.datetimecls(2014, 7, 26, 10, 0, 0, 57))
+        self.assertIsNone(d.tzinfo)
 
 
 class MxDateTC(DateTC):
