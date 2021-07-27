@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/si618/pi-time",
   "devDependencies": {
-    "grunt": "^1.4.1",
+    "grunt": "^1.3.0",
     "grunt-bootlint": "^1.1.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^2.0.0",
